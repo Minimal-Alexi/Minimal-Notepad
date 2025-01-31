@@ -13,7 +13,6 @@ public class AuthenticationService {
     private PasswordEncoder passwordEncoder;
 
     public String authenticate(String username, String password) {
-
         return jwtUtils.generateToken(username);
     }
 }
