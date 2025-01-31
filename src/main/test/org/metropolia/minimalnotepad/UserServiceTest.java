@@ -5,19 +5,17 @@ import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.metropolia.minimalnotepad.service.UserService;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)  // Enables Mockito
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
     @Mock
@@ -29,16 +27,11 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     public void testRegisterUserSuccessfulRegistration() {
         User userToRegister = new User();
         userToRegister.setUsername("newUser");
-        userToRegister.setPassword("password");
+        userToRegister.setPassword("encodedPassword");
         userToRegister.setEmail("newEmail@email.com");
 
         when(userRepository.findUserByUsername("newUser")).thenReturn(null);
