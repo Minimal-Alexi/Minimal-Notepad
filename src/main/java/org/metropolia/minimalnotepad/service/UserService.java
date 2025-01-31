@@ -10,7 +10,7 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    public User registerUser(String username, String password) {
+    public User registerUser(String username, String email, String password) {
         return null; //userRepository.save(user);
     }
 }
