@@ -10,8 +10,10 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    public User getUserByUsername(String username) {
-        return userRepository.findByUserName(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public User login(String username, String password) {
+        return null;
+    }
+    public User register(String username, String password) {
+        return null;
     }
 }
