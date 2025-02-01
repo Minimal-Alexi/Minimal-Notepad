@@ -52,6 +52,7 @@ public class AuthenticationControllerTest {
     public void testLoginInvalidPassword()
     {
 
+
     }
     @Test
     public void testLoginInvalidUser()

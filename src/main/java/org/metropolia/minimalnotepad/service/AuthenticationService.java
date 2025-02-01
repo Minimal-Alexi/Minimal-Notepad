@@ -22,12 +22,11 @@ public class AuthenticationService {
     }
 
     public String authenticate(String username, String password) {
-        String encodedPassword = passwordEncoder.encode(password);
         User findUser = userRepository.findUserByUsername(username);
         if (findUser == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        if (!encodedPassword.equals(findUser.getPassword()))
+        if (!passwordEncoder.matches(password, findUser.getPassword()))
         {
             throw new BadCredentialsException("Bad credentials");
         }
