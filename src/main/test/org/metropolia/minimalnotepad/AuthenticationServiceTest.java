@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,6 +25,9 @@ public class AuthenticationServiceTest {
     @Mock
     private JwtUtils jwtUtils;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private AuthenticationService authService;
 
@@ -32,9 +36,10 @@ public class AuthenticationServiceTest {
     {
         User mockUser = new User();
         mockUser.setUsername("testuser");
-        mockUser.setPassword("password123");
+        mockUser.setPassword("encodedPassword123");
 
         when(userRepository.findUserByUsername("testuser")).thenReturn(mockUser);
+        when(passwordEncoder.encode("password123")).thenReturn("encodedPassword123");
         when(jwtUtils.generateToken(mockUser.getUsername())).thenReturn("mockToken");
 
         String token = authService.authenticate("testuser", "password123");
@@ -44,6 +49,5 @@ public class AuthenticationServiceTest {
 
         verify(userRepository).findUserByUsername("testuser");
         verify(jwtUtils).generateToken(mockUser.getUsername());
-
     }
 }
