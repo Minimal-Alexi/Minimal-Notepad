@@ -14,6 +14,12 @@ public class AuthenticationService {
     private UserRepository userRepository;
     private JwtUtils jwtUtils;
     private PasswordEncoder passwordEncoder;
+    public AuthenticationService(UserRepository userRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder)
+    {
+        this.userRepository = userRepository;
+        this.jwtUtils = jwtUtils;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public String authenticate(String username, String password) {
         String encodedPassword = passwordEncoder.encode(password);
