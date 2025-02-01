@@ -3,6 +3,7 @@ package org.metropolia.minimalnotepad.controller;
 import org.junit.jupiter.api.BeforeEach;
 import org.metropolia.minimalnotepad.dto.AuthenticationResponse;
 import org.metropolia.minimalnotepad.dto.LoginRequest;
+import org.metropolia.minimalnotepad.dto.RegisterRequest;
 import org.metropolia.minimalnotepad.model.User;
 
 import org.junit.jupiter.api.Test;
@@ -78,7 +79,17 @@ public class AuthenticationControllerTest {
     @Test
     public void testRegisterValidUser()
     {
+        User userMock = new User();
+        userMock.setUsername("username");
+        userMock.setPassword(passwordEncoder.encode("password"));
+        userMock.setEmail("email@email.com");
 
+        ResponseEntity<?> responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password"));
+        AuthenticationResponse authenticationResponse = (AuthenticationResponse) responseEntity.getBody();
+
+        assertEquals(200,responseEntity.getStatusCode().value());
+        assertEquals("username",authenticationResponse.getUsername());
+        assertEquals(jwtUtils.generateToken(userMock.getUsername()), authenticationResponse.getToken());
     }
     @Test
     public void testRegisterTakenEmail()

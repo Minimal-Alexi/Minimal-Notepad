@@ -47,7 +47,7 @@ public class AuthenticationController {
         try
         {
             User registeredUser = userService.registerUser(registerRequest.getUsername(),registerRequest.getEmail(),registerRequest.getPassword());
-            String jwt = authenticationService.authenticate(registeredUser.getUsername(), registeredUser.getPassword());
+            String jwt = authenticationService.authenticate(registeredUser.getUsername(),registerRequest.getPassword());
             return ResponseEntity.ok(new AuthenticationResponse(jwt, registerRequest.getUsername()));
         }catch (Exception e)
         {
