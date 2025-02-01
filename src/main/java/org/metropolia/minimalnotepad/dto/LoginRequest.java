@@ -1,14 +1,14 @@
 package org.metropolia.minimalnotepad.dto;
 
 public class LoginRequest {
-    private String email;
+    private String username;
     private String password;
-    public LoginRequest(String email, String password) {
-        this.email = email;
+    public LoginRequest(String username, String password) {
+        this.username = username;
         this.password = password;
     }
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
     public String getPassword() {
         return password;
