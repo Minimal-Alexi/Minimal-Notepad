@@ -1,9 +1,8 @@
-package org.metropolia.minimalnotepad;
+package org.metropolia.minimalnotepad.service;
 
 import org.metropolia.minimalnotepad.exception.UserAlreadyExistsException;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.UserRepository;
-import org.metropolia.minimalnotepad.service.UserService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

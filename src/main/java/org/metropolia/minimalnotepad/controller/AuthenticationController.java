@@ -4,8 +4,10 @@ import org.metropolia.minimalnotepad.dto.AuthenticationResponse;
 import org.metropolia.minimalnotepad.dto.ErrorResponse;
 import org.metropolia.minimalnotepad.dto.LoginRequest;
 import org.metropolia.minimalnotepad.dto.RegisterRequest;
+import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.service.AuthenticationService;
 import org.metropolia.minimalnotepad.service.UserService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +39,15 @@ public class AuthenticationController {
     @GetMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest)
     {
-
+        try
+        {
+            User registeredUser = userService.registerUser(registerRequest.getUsername(),registerRequest.getEmail(),registerRequest.getPassword());
+            String jwt = authenticationService.authenticate(registeredUser.getUsername(), registeredUser.getPassword());
+            return ResponseEntity.ok(new AuthenticationResponse(jwt, registerRequest.getUsername()));
+        }catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
+        }
     }
 
 }

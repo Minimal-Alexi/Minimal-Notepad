@@ -1,8 +1,7 @@
-package org.metropolia.minimalnotepad;
+package org.metropolia.minimalnotepad.service;
 
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.UserRepository;
-import org.metropolia.minimalnotepad.service.AuthenticationService;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
 
 import org.junit.jupiter.api.Test;
