@@ -94,12 +94,28 @@ public class AuthenticationControllerTest {
     @Test
     public void testRegisterTakenEmail()
     {
+        User userMock = new User();
+        userMock.setUsername("username");
+        userMock.setPassword(passwordEncoder.encode("password"));
+        userMock.setEmail("email@email.com");
 
+        userRepository.save(userMock);
+        ResponseEntity responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password"));
+        assertNotNull(responseEntity);
+        assertEquals(409,responseEntity.getStatusCode().value());
     }
     @Test
     public void testRegisterTakenUsername()
     {
+        User userMock = new User();
+        userMock.setUsername("username");
+        userMock.setPassword(passwordEncoder.encode("password"));
+        userMock.setEmail("email@email.com");
 
+        userRepository.save(userMock);
+        ResponseEntity responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password"));
+        assertNotNull(responseEntity);
+        assertEquals(409,responseEntity.getStatusCode().value());
     }
 
 }

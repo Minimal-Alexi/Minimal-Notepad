@@ -51,7 +51,7 @@ public class AuthenticationController {
             return ResponseEntity.ok(new AuthenticationResponse(jwt, registerRequest.getUsername()));
         }catch (Exception e)
         {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(409, e.getMessage()));
         }
     }
 
