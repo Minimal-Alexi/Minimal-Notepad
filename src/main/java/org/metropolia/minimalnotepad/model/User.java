@@ -3,7 +3,7 @@ package org.metropolia.minimalnotepad.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Users")
+@Table(name="users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,8 @@ public class User {
     }
     public void setUsername(String username) {
         this.username = username;
-    public String getEmail() {
+    }
+    public String getEmail(){
         return email;
     }
     public void setEmail(String email) {

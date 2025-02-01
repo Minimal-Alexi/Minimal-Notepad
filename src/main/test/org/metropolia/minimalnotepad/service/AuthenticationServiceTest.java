@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.service;
 
+import org.metropolia.minimalnotepad.config.H2TestConfig;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
@@ -9,13 +10,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ActiveProfiles("test")
+@Import(H2TestConfig.class)
 @ExtendWith(MockitoExtension.class)
 public class AuthenticationServiceTest {
     @Mock
