@@ -7,6 +7,7 @@ import org.metropolia.minimalnotepad.model.User;
 
 import org.junit.jupiter.api.Test;
 import org.metropolia.minimalnotepad.repository.UserRepository;
+import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,8 @@ public class AuthenticationControllerTest {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @BeforeEach
     public void setUp() {
@@ -46,17 +49,30 @@ public class AuthenticationControllerTest {
         assertEquals(200,responseEntity.getStatusCode().value());
         AuthenticationResponse authenticationResponse = (AuthenticationResponse) responseEntity.getBody();
         assertEquals("username", authenticationResponse.getUsername());
-        assertNotNull(authenticationResponse.getToken());
+        assertEquals(jwtUtils.generateToken(userMock.getUsername()), authenticationResponse.getToken());
     }
     @Test
     public void testLoginInvalidPassword()
     {
+        User userMock = new User();
+        userMock.setUsername("username");
+        userMock.setPassword(passwordEncoder.encode("password"));
+        userMock.setEmail("email@email.com");
 
+        userRepository.save(userMock);
+
+        ResponseEntity<?> responseEntity = authenticationController.login(new LoginRequest(userMock.getUsername(), "badPassword"));
+        assertNotNull(responseEntity);
+        assertEquals(401,responseEntity.getStatusCode().value());
 
     }
     @Test
     public void testLoginInvalidUser()
     {
+        ResponseEntity<?> responseEntity = authenticationController.login(new LoginRequest("username", "badPassword"));
+
+        assertNotNull(responseEntity);
+        assertEquals(404,responseEntity.getStatusCode().value());
 
     }
     @Test
