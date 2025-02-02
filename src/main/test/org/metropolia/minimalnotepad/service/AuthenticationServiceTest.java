@@ -34,14 +34,14 @@ public class AuthenticationServiceTest {
     private AuthenticationService authService;
 
     @Test
-    public void testAuthenticate()
+    public void testAuthenticateValidAttempt()
     {
         User mockUser = new User();
         mockUser.setUsername("testuser");
         mockUser.setPassword("encodedPassword123");
 
         when(userRepository.findUserByUsername("testuser")).thenReturn(mockUser);
-        when(passwordEncoder.encode("password123")).thenReturn("encodedPassword123");
+        when(passwordEncoder.matches("password123","encodedPassword123")).thenReturn(true);
         when(jwtUtils.generateToken(mockUser.getUsername())).thenReturn("mockToken");
 
         String token = authService.authenticate("testuser", "password123");
