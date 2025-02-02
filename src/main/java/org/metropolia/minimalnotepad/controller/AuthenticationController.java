@@ -25,10 +25,8 @@ public class AuthenticationController {
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        System.out.println("Logging in");
         try
         {
-            System.out.println("Logging in");
             String jwt = authenticationService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
             return ResponseEntity.ok(new AuthenticationResponse(jwt, loginRequest.getUsername()));
         }catch (Exception e)
@@ -43,10 +41,8 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest)
     {
-        System.out.println("Registering");
         try
         {
-            System.out.println("Registering");
             User registeredUser = userService.registerUser(registerRequest.getUsername(),registerRequest.getEmail(),registerRequest.getPassword());
             String jwt = authenticationService.authenticate(registeredUser.getUsername(),registerRequest.getPassword());
             return ResponseEntity.ok(new AuthenticationResponse(jwt, registerRequest.getUsername()));
