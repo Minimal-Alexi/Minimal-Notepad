@@ -10,11 +10,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -51,5 +51,14 @@ public class AuthenticationServiceTest {
 
         verify(userRepository).findUserByUsername("testuser");
         verify(jwtUtils).generateToken(mockUser.getUsername());
+    }
+    @Test
+    public void testAuthenticateUserNotFound()
+    {
+        User mockUser = new User();
+        mockUser.setUsername("testuser");
+        mockUser.setPassword("encodedPassword123");
+        when(userRepository.findUserByUsername("testuser")).thenReturn(null);
+        assertThrows(UsernameNotFoundException.class, () -> authService.authenticate("testuser", "password123"));
     }
 }
