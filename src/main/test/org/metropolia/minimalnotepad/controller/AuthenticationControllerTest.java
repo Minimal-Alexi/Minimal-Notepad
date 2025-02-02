@@ -1,7 +1,6 @@
 package org.metropolia.minimalnotepad.controller;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.metropolia.minimalnotepad.config.H2TestConfig;
 import org.metropolia.minimalnotepad.dto.AuthenticationResponse;
 import org.metropolia.minimalnotepad.dto.LoginRequest;
 import org.metropolia.minimalnotepad.dto.RegisterRequest;
@@ -24,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Import(H2TestConfig.class)
 public class AuthenticationControllerTest {
     @Autowired
     private AuthenticationController authenticationController;

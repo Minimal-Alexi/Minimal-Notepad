@@ -1,6 +1,5 @@
 package org.metropolia.minimalnotepad.service;
 
-import org.metropolia.minimalnotepad.config.H2TestConfig;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
@@ -20,7 +19,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
-@Import(H2TestConfig.class)
 @ExtendWith(MockitoExtension.class)
 public class AuthenticationServiceTest {
     @Mock
