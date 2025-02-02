@@ -8,8 +8,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class MinimalnotepadApplication {
 
     public static void main(String[] args) {
-        Dotenv dotenv = Dotenv.load(); // Loads .env file
-        System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD")); // Sets DB_PASSWORD environment variable
+        Dotenv dotenv = Dotenv.load();
+        System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
 
         SpringApplication.run(MinimalnotepadApplication.class, args);
     }

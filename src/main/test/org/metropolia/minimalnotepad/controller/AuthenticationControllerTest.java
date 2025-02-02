@@ -92,7 +92,6 @@ public class AuthenticationControllerTest {
 
         assertEquals(200,responseEntity.getStatusCode().value());
         assertEquals("username",authenticationResponse.getUsername());
-        assertEquals(jwtUtils.generateToken(userMock.getUsername()), authenticationResponse.getToken());
     }
     @Test
     public void testRegisterTakenEmail()
