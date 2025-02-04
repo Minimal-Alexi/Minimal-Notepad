@@ -13,9 +13,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
@@ -42,9 +45,6 @@ public class NoteServiceTest {
         userMock2.setPassword("password2");
         userMock2.setEmail("user2@email.com");
 
-        userRepository.save(userMock1);
-        userRepository.save(userMock2);
-
         Note note1 = new Note(),note2 = new Note(),note3 = new Note();
         note1.setId(1);
         note1.setTitle("title1");
@@ -55,9 +55,9 @@ public class NoteServiceTest {
         note3.setId(3);
         note3.setTitle("title3");
         note3.setUser(userMock1);
-        noteRepository.save(note1);
-        noteRepository.save(note2);
-        noteRepository.save(note3);
+
+        when(noteRepository.getNotesByUserId(userMock1.getId())).thenReturn(Arrays.asList(note1, note2, note3));
+        when(noteRepository.getNotesByUserId(userMock2.getId())).thenReturn(new ArrayList<>());
 
         List<Note> result = noteService.getNoteListsByUser(userMock1), resultEmpty = noteService.getNoteListsByUser(userMock2);
         assertNotNull(result);
@@ -75,13 +75,12 @@ public class NoteServiceTest {
         userMock.setEmail("user1@email.com");
         userRepository.save(userMock);
 
-        Note note1 = new Note(),note2 = new Note();
+        Note note1 = new Note();
         note1.setId(1);
         note1.setTitle("title1");
         note1.setUser(userMock);
 
         noteRepository.save(note1);
-        noteRepository.save(note2);
 
         Note resultNote = noteService.getNoteById(userMock, note1.getId());
         assertNotNull(resultNote);
