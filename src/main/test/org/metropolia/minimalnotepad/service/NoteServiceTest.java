@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.service;
 
+import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.exception.UserDoesntOwnResourceException;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
@@ -73,14 +74,13 @@ public class NoteServiceTest {
         userMock.setUsername("user1");
         userMock.setPassword("password1");
         userMock.setEmail("user1@email.com");
-        userRepository.save(userMock);
 
         Note note1 = new Note();
         note1.setId(1);
         note1.setTitle("title1");
         note1.setUser(userMock);
 
-        noteRepository.save(note1);
+        when(noteRepository.getNoteById(note1.getId())).thenReturn(note1);
 
         Note resultNote = noteService.getNoteById(userMock, note1.getId());
         assertNotNull(resultNote);
@@ -94,13 +94,13 @@ public class NoteServiceTest {
         userMock.setUsername("user1");
         userMock.setPassword("password1");
         userMock.setEmail("user1@email.com");
-        userRepository.save(userMock);
 
         Note note = new Note();
         note.setId(1);
         note.setTitle("title1");
         note.setUser(userMock);
-        noteRepository.save(note);
+
+        when(noteRepository.getNoteById(note.getId())).thenReturn(note);
 
         assertThrows(UserDoesntOwnResourceException.class, () -> {
             noteService.getNoteById(null, note.getId());
@@ -113,9 +113,8 @@ public class NoteServiceTest {
         userMock.setUsername("user1");
         userMock.setPassword("password1");
         userMock.setEmail("user1@email.com");
-        userRepository.save(userMock);
 
-        assertThrows(UserDoesntOwnResourceException.class , () -> {
+        assertThrows(ResourceDoesntExistException.class , () -> {
             noteService.getNoteById(userMock, 1);
         });
     }

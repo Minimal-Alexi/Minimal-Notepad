@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.service;
 
+import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.exception.UserDoesntOwnResourceException;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
@@ -21,7 +22,10 @@ public class NoteService {
     }
     public Note getNoteById(User user, long id) {
         Note note = noteRepository.getNoteById(id);
-        if (note.getUser().getId() != user.getId()) {
+        if(note == null) {
+            throw new ResourceDoesntExistException("This note doesn't exist");
+        }
+        if (user == null || note.getUser().getId() != user.getId()) {
             throw new UserDoesntOwnResourceException("You do not own this note.");
         }
         return note;
