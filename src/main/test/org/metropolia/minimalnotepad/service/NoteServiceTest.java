@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.service;
 
+import org.metropolia.minimalnotepad.exception.UserDoesntOwnResource;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.NoteRepository;
@@ -102,7 +103,7 @@ public class NoteServiceTest {
         note.setUser(userMock);
         noteRepository.save(note);
 
-        assertThrows(, () -> {
+        assertThrows(UserDoesntOwnResource.class, () -> {
             noteService.getNoteById(null, note.getId());
         });
     }
@@ -115,7 +116,7 @@ public class NoteServiceTest {
         userMock.setEmail("user1@email.com");
         userRepository.save(userMock);
 
-        assertThrows( , () -> {
+        assertThrows(UserDoesntOwnResource.class , () -> {
             noteService.getNoteById(userMock, 1);
         });
     }
