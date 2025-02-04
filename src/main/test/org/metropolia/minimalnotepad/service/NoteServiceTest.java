@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
@@ -132,7 +132,11 @@ public class NoteServiceTest {
         note.setTitle("title1");
         note.setUser(userMock);
 
-        assertTrue(noteService.createNote(userMock, note));
+        when(noteRepository.getNoteById(note.getId())).thenReturn(note);
+
+        noteService.createNote(userMock, note);
+        verify(noteRepository, times(1)).save(note);
+
         Note result = noteService.getNoteById(userMock, note.getId());
         assertNotNull(result);
         assertEquals("title1", result.getTitle());
@@ -145,7 +149,7 @@ public class NoteServiceTest {
         note.setTitle("title1");
         note.setUser(null);
 
-        assertFalse(noteService.createNote(note.getUser(), note));
+        assertThrows(UserDoesntOwnResourceException.class,() ->noteService.createNote(note.getUser(), note));
     }
     @Test
     public void testDeleteNoteSuccess() {

@@ -30,8 +30,15 @@ public class NoteService {
         }
         return note;
     }
-    public boolean createNote(User user,Note note) {
-        return false;
+    public void createNote(User user,Note note) {
+        if(note == null)
+        {
+            throw new ResourceDoesntExistException("You do not have a note");
+        }
+        if (user == null || note.getUser().getId() != user.getId()) {
+            throw new UserDoesntOwnResourceException("You do not own this note.");
+        }
+        noteRepository.save(note);
     }
     public boolean updateNote(User user,Note note) {
         return false;
