@@ -23,6 +23,7 @@ public class AuthenticationController {
         this.userService = userService;
         this.authenticationService = authenticationService;
     }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try
@@ -38,6 +39,7 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
     }
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest)
     {

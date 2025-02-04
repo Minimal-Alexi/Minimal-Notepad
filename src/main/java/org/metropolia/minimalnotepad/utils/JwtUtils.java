@@ -3,7 +3,7 @@ package org.metropolia.minimalnotepad.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.metropolia.minimalnotepad.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -50,8 +50,8 @@ public class JwtUtils {
         return extractExpirationDate(token).before(new Date());
     }
 
-    public boolean validateToken(String token, User user) {
-        return (user.getUsername().equals(extractUsername(token)) && !isTokenExpired(token));
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        return (userDetails.getUsername().equals(extractUsername(token)) && !isTokenExpired(token));
     }
 
 }
