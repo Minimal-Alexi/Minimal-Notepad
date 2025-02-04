@@ -13,12 +13,12 @@ public class Note {
     private String title;
     private String text;
     private String colour;
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false, insertable = false)
     private Timestamp createdAt;
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", insertable = false)
     private Timestamp updatedAt;
     @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     public Note() {
 
