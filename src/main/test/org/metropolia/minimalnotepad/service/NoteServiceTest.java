@@ -29,8 +29,7 @@ public class NoteServiceTest {
     private NoteService noteService;
 
     @Test
-    public void testGetNotesListByUsersSuccess()
-    {
+    public void testGetNotesListByUsersSuccess() {
         User userMock1 = new User(), userMock2 = new User();
         userMock1.setId(1);
         userMock1.setUsername("user1");
@@ -67,9 +66,125 @@ public class NoteServiceTest {
         assertTrue(resultEmpty.isEmpty());
     }
     @Test
-    public void testGetNoteByIdByUserSuccess()
-    {
+    public void testGetNoteByIdSuccess() {
+        User userMock = new User();
+        userMock.setId(1);
+        userMock.setUsername("user1");
+        userMock.setPassword("password1");
+        userMock.setEmail("user1@email.com");
+        userRepository.save(userMock);
 
+        Note note1 = new Note(),note2 = new Note();
+        note1.setId(1);
+        note1.setTitle("title1");
+        note1.setUser(userMock);
 
+        noteRepository.save(note1);
+        noteRepository.save(note2);
+
+        Note resultNote = noteService.getNoteById(userMock, note1.getId());
+        assertNotNull(resultNote);
+        assertEquals("title1", resultNote.getTitle());
+        assertEquals(userMock, resultNote.getUser());
     }
+    @Test
+    public void testGetNotesByIdNoAuth() {
+        User userMock = new User();
+        userMock.setId(1);
+        userMock.setUsername("user1");
+        userMock.setPassword("password1");
+        userMock.setEmail("user1@email.com");
+        userRepository.save(userMock);
+
+        Note note = new Note();
+        note.setId(1);
+        note.setTitle("title1");
+        note.setUser(userMock);
+        noteRepository.save(note);
+
+        assertThrows(, () -> {
+            noteService.getNoteById(null, note.getId());
+        });
+    }
+    @Test
+    public void testGetNotesByIdFailure() {
+        User userMock = new User();
+        userMock.setId(1);
+        userMock.setUsername("user1");
+        userMock.setPassword("password1");
+        userMock.setEmail("user1@email.com");
+        userRepository.save(userMock);
+
+        assertThrows( , () -> {
+            noteService.getNoteById(userMock, 1);
+        });
+    }
+    @Test
+    public void testCreateNoteSuccess() {
+        User userMock = new User();
+        userMock.setId(1);
+        userMock.setUsername("user1");
+        userMock.setPassword("password1");
+        userMock.setEmail("user1@email.com");
+        userRepository.save(userMock);
+
+        Note note = new Note();
+        note.setId(1);
+        note.setTitle("title1");
+        note.setUser(userMock);
+
+        assertTrue(noteService.createNote(userMock, note));
+        Note result = noteService.getNoteById(userMock, note.getId());
+        assertNotNull(result);
+        assertEquals("title1", result.getTitle());
+        assertEquals(userMock, result.getUser());
+    }
+    @Test
+    public void testCreateNoteFailure(){
+        Note note = new Note();
+        note.setId(1);
+        note.setTitle("title1");
+        note.setUser(null);
+
+        assertFalse(noteService.createNote(note.getUser(), note));
+    }
+    @Test
+    public void testDeleteNoteSuccess() {
+        User userMock = new User();
+        userMock.setId(1);
+        userMock.setUsername("user1");
+        userMock.setPassword("password1");
+        userMock.setEmail("user1@email.com");
+        userRepository.save(userMock);
+
+        Note note = new Note();
+        note.setId(1);
+        note.setTitle("title1");
+        note.setUser(userMock);
+        noteRepository.save(note);
+
+        assertTrue(noteService.deleteNote(userMock, note));
+    }
+    @Test
+    public void testDeleteNoteNoAuth(){
+        Note note = new Note();
+        note.setId(1);
+        note.setTitle("title1");
+        note.setUser(null);
+        assertFalse(noteService.deleteNote(null,note));
+    }
+    @Test
+    public void testDeleteNoteFailure(){
+        User userMock = new User();
+        userMock.setId(1);
+        userMock.setUsername("user1");
+        userMock.setPassword("password1");
+        userMock.setEmail("user1@email.com");
+        Note note = new Note();
+        note.setId(1);
+        note.setTitle("title1");
+        note.setUser(userMock);
+        assertFalse(noteService.deleteNote(null, note));
+    }
+
 }

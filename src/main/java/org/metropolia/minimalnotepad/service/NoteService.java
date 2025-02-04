@@ -20,13 +20,13 @@ public class NoteService {
     public Note getNoteById(User user, long id) {
         return null;
     }
-    public Note createNote(User user,Note note) {
-        return null;
+    public boolean createNote(User user,Note note) {
+        return false;
     }
-    public Note updateNote(User user,Note note) {
-        return null;
+    public boolean updateNote(User user,Note note) {
+        return false;
     }
-    public void deleteNote(User user,Note note) {
-
+    public boolean deleteNote(User user,Note note) {
+        return false;
     }
 }
