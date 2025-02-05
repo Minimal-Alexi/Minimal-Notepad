@@ -6,9 +6,11 @@ import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.NoteRepository;
 import org.metropolia.minimalnotepad.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class NoteService {
     private final UserRepository userRepository;
     private final NoteRepository noteRepository;
