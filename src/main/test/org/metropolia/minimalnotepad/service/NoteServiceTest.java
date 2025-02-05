@@ -125,7 +125,6 @@ public class NoteServiceTest {
         userMock.setUsername("user1");
         userMock.setPassword("password1");
         userMock.setEmail("user1@email.com");
-        userRepository.save(userMock);
 
         Note note = new Note();
         note.setId(1);
@@ -158,15 +157,14 @@ public class NoteServiceTest {
         userMock.setUsername("user1");
         userMock.setPassword("password1");
         userMock.setEmail("user1@email.com");
-        userRepository.save(userMock);
 
         Note note = new Note();
         note.setId(1);
         note.setTitle("title1");
         note.setUser(userMock);
-        noteRepository.save(note);
 
-        assertTrue(noteService.deleteNote(userMock, note));
+        noteService.deleteNote(userMock, note);
+        verify(noteRepository, times(1)).delete(note);
     }
     @Test
     public void testDeleteNoteNoAuth(){
@@ -174,7 +172,7 @@ public class NoteServiceTest {
         note.setId(1);
         note.setTitle("title1");
         note.setUser(null);
-        assertFalse(noteService.deleteNote(null,note));
+        assertThrows(UserDoesntOwnResourceException.class,() -> noteService.deleteNote(null,note));
     }
     @Test
     public void testDeleteNoteFailure(){
@@ -183,11 +181,7 @@ public class NoteServiceTest {
         userMock.setUsername("user1");
         userMock.setPassword("password1");
         userMock.setEmail("user1@email.com");
-        Note note = new Note();
-        note.setId(1);
-        note.setTitle("title1");
-        note.setUser(userMock);
-        assertFalse(noteService.deleteNote(null, note));
+        assertThrows(ResourceDoesntExistException.class,() -> noteService.deleteNote(userMock,null));
     }
 
 }
