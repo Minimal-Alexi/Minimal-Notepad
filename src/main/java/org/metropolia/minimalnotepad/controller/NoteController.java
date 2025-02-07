@@ -26,13 +26,45 @@ public class NoteController {
         this.jwtUtils = jwtUtils;
     }
     @GetMapping("/")
-    public ResponseEntity<?> getAllNotesFromUser(@RequestHeader String token) {
-        User user = getUserFromToken(token);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+    public ResponseEntity<?> getAllNotesFromUser(@RequestHeader("Authorization") String authorizationHeader) {
+        try {
+            String token = getTokenFromHeader(authorizationHeader);
+            User user = getUserFromToken(token);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+            }
+            List<Note> noteList = noteService.getNoteListsByUser(user);
+            return ResponseEntity.ok(noteList);
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
-        List<Note> noteList =  noteService.getNoteListsByUser(user);
-        return ResponseEntity.ok(noteList);
+    }
+    @GetMapping("/{noteId}")
+    public ResponseEntity<?> getNoteFromUser(@RequestHeader("Authorization") String authorizationHeader, @PathVariable long noteId) {
+        try {
+
+        }catch (Exception e) {
+        }
+    }
+    @PostMapping("/")
+    public ResponseEntity<?> createNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody Note note) {
+        try {
+        }catch (Exception e) {
+        }
+    }
+    @DeleteMapping("/{noteId}")
+    public ResponseEntity<?> deleteNote(@RequestHeader("Authorization") String authorizationHeader, @PathVariable long noteId) {
+        try {
+
+        }catch (Exception e) {
+
+        }
+    }
+    private String getTokenFromHeader(String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Authorization header is invalid");
+        }
+        return authorizationHeader.substring(7);
     }
     private User getUserFromToken(String token) {
         String username = jwtUtils.extractUsername(token);
