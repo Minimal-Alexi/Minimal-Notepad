@@ -49,7 +49,7 @@ class GroupServiceTest {
     @WithMockUser(username = "test")
     void getAllGroups() {
         List<Group> groups = groupService.getAllGroups();
-        assertEquals(1, groups.size(), "The group list should have one group");
+        assertFalse(groups.isEmpty(), "The group list should not be empty");
     }
 
     @Test

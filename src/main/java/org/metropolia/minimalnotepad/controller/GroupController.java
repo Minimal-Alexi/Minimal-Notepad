@@ -3,7 +3,10 @@ package org.metropolia.minimalnotepad.controller;
 import org.metropolia.minimalnotepad.model.Group;
 import org.metropolia.minimalnotepad.service.GroupService;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -27,8 +30,11 @@ public class GroupController {
     }
 
     @PostMapping
-    public Group createGroup(@RequestBody Group group) {
-        return groupService.createGroup(group);
+    public ResponseEntity<Group> createGroup(@RequestBody Group group) {
+        Group createdGroup = groupService.createGroup(group);
+        return ResponseEntity
+                .created(URI.create("/api/groups/" + createdGroup.getId()))
+                .body(createdGroup);
     }
 
     @PutMapping("/{id}")
@@ -37,8 +43,9 @@ public class GroupController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteGroup(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteGroup(@PathVariable Long id) {
         groupService.deleteGroup(id);
+        return ResponseEntity.noContent().build();
     }
 }
 
