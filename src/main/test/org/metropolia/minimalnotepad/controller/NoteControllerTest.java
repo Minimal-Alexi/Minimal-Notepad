@@ -161,7 +161,7 @@ public class NoteControllerTest {
         assertTrue(body instanceof ErrorResponse);
         ErrorResponse error = (ErrorResponse) body;
         assertEquals(404, error.getStatus());
-        assertEquals("Note not found", error.getMessage());
+        assertEquals("This note doesn't exist", error.getMessage());
     }
 
     @Test
@@ -200,7 +200,7 @@ public class NoteControllerTest {
 
         ResponseEntity<?> responseEntity = noteController.createNote(authHeader, note);
         assertNotNull(responseEntity);
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 
         Object body = responseEntity.getBody();
         assertNotNull(body);
@@ -271,7 +271,7 @@ public class NoteControllerTest {
 
         ResponseEntity<?> responseEntity = noteController.deleteNote(authHeader, note.getId());
         assertNotNull(responseEntity);
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
 
         Optional<Note> deletedNote = noteRepository.findById(note.getId());
         assertFalse(deletedNote.isPresent());
@@ -298,7 +298,7 @@ public class NoteControllerTest {
         assertTrue(body instanceof ErrorResponse);
         ErrorResponse error = (ErrorResponse) body;
         assertEquals(404, error.getStatus());
-        assertEquals("Note not found", error.getMessage());
+        assertEquals("This note doesn't exist", error.getMessage());
     }
 
     @Test

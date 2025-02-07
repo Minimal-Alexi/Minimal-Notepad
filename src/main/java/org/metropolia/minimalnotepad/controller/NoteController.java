@@ -2,6 +2,7 @@ package org.metropolia.minimalnotepad.controller;
 
 
 import org.metropolia.minimalnotepad.dto.ErrorResponse;
+import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.service.NoteService;
@@ -42,22 +43,47 @@ public class NoteController {
     @GetMapping("/{noteId}")
     public ResponseEntity<?> getNoteFromUser(@RequestHeader("Authorization") String authorizationHeader, @PathVariable long noteId) {
         try {
-
+            String token = getTokenFromHeader(authorizationHeader);
+            User user = getUserFromToken(token);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+            }
+            Note note = noteService.getNoteById(user, noteId);
+            return ResponseEntity.ok(note);
         }catch (Exception e) {
+            if(e instanceof ResourceDoesntExistException) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
     }
     @PostMapping("/")
     public ResponseEntity<?> createNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody Note note) {
         try {
+            String token = getTokenFromHeader(authorizationHeader);
+            User user = getUserFromToken(token);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+            }
+            note.setUser(user);
+            noteService.createNote(user,note);
+            return ResponseEntity.status(HttpStatus.CREATED).body(note);
         }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
     }
     @DeleteMapping("/{noteId}")
     public ResponseEntity<?> deleteNote(@RequestHeader("Authorization") String authorizationHeader, @PathVariable long noteId) {
         try {
-
+            String token = getTokenFromHeader(authorizationHeader);
+            User user = getUserFromToken(token);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+            }
+            Note note = noteService.getNoteById(user, noteId);
+            noteService.deleteNote(user,note);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(note);
         }catch (Exception e) {
-
+            if(e instanceof ResourceDoesntExistException) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
     }
     private String getTokenFromHeader(String authorizationHeader) {
