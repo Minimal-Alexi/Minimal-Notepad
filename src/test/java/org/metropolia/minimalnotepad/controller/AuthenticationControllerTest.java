@@ -1,18 +1,16 @@
 package org.metropolia.minimalnotepad.controller;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.metropolia.minimalnotepad.dto.AuthenticationResponse;
 import org.metropolia.minimalnotepad.dto.LoginRequest;
 import org.metropolia.minimalnotepad.dto.RegisterRequest;
 import org.metropolia.minimalnotepad.model.User;
-
-import org.junit.jupiter.api.Test;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
