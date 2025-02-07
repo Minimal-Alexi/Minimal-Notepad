@@ -63,3 +63,5 @@ CREATE TABLE figures (
                         note_id INT,
                         FOREIGN KEY (note_id) REFERENCES notes(id)
 );
+
+INSERT INTO users (username, email, password) VALUES ('admin', 'admin@example.com', 'admin');
