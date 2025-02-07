@@ -61,22 +61,24 @@ INSERT INTO users (username, email, password) VALUES ('admin', 'admin@example.co
 
 -- Users
 INSERT INTO users (id, username, email, password) VALUES
-                                                 (1, 'John', 'john1@example.com', 'admin'),
-                                                 (2, 'Jane', 'jane@gmail.com', 'password'),
-                                                 (3, 'Charlie', 'charlie@example.com', 'test123');
+                                                 (2, 'John', 'john1@example.com', 'admin'),
+                                                 (3, 'Jane', 'jane@gmail.com', 'password'),
+                                                 (4, 'Charlie', 'charlie@example.com', 'test123');
 
--- Notes
-INSERT INTO notes (id, title, text, colour, created_at, updated_at, user_id, group_id) VALUES
-                                                                                          (1, 'Meeting Notes', 'Discussed project roadmap.', '#FFD700', '2025-01-31 10:30:00', '2025-01-31 12:00:00', 1, 1),
-                                                                                          (2, 'Team Meeting', 'Discuss project updates.', '#1E90FF', '2025-01-30 08:15:00', '2025-01-31 09:00:00', 2, 3),
-                                                                                          (3, 'Research Task', 'Read articles on market trends.', '#32CD32', '2025-01-29 07:00:00', '2025-01-30 07:30:00', 3, 1),
-                                                                                          (4, 'AI Presentation', 'Work on introduction section.', '#FF4500', '2025-01-28 21:45:00', '2025-01-30 22:10:00', 1, 2);
 
 -- Groups
 INSERT INTO groups (id, name, description) VALUES
                                               (1, 'ICT23-SW', 'Notes for SEP1 class.'),
                                               (2, 'IT Team', 'Work-related discussions and updates.'),
                                               (3, 'Teacher Group', 'Discussion group for teachers.');
+
+-- Notes
+INSERT INTO notes (id, title, text, colour, created_at, updated_at, user_id, group_id) VALUES
+                                                                                           (1, 'Meeting Notes', 'Discussed project roadmap.', '#FFD700', '2025-01-31 10:30:00', '2025-01-31 12:00:00', 1, 1),
+                                                                                           (2, 'Team Meeting', 'Discuss project updates.', '#1E90FF', '2025-01-30 08:15:00', '2025-01-31 09:00:00', 2, 3),
+                                                                                           (3, 'Research Task', 'Read articles on market trends.', '#32CD32', '2025-01-29 07:00:00', '2025-01-30 07:30:00', 3, 1),
+                                                                                           (4, 'AI Presentation', 'Work on introduction section.', '#FF4500', '2025-01-28 21:45:00', '2025-01-30 22:10:00', 1, 2);
+
 
 -- Is Part Of (User-Group Relationship)
 INSERT INTO user_groups (user_id, group_id) VALUES
