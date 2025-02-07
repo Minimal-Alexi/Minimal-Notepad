@@ -19,6 +19,7 @@ CREATE TABLE groups (
 CREATE TABLE user_groups (
                              user_id INT,
                              group_id INT,
+                             is_owner BOOLEAN,
                              PRIMARY KEY (user_id, group_id),
                              FOREIGN KEY (user_id) REFERENCES users(id),
                              FOREIGN KEY (group_id) REFERENCES groups(id)
@@ -32,7 +33,7 @@ CREATE TABLE notes (
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                        user_id INT NOT NULL,
-                       group_id INT NOT NULL,
+                       group_id INT,
                        FOREIGN KEY (user_id) REFERENCES users(id),
                        FOREIGN KEY (group_id) REFERENCES groups(id)
 );
@@ -81,11 +82,11 @@ INSERT INTO notes (id, title, text, colour, created_at, updated_at, user_id, gro
 
 
 -- Is Part Of (User-Group Relationship)
-INSERT INTO user_groups (user_id, group_id) VALUES
-                                             (1, 1),
-                                             (1, 2),
-                                             (2, 3),
-                                             (3, 1);
+INSERT INTO user_groups (user_id, group_id, is_owner) VALUES
+                                             (1, 1, true),
+                                             (1, 2, false),
+                                             (2, 3, false),
+                                             (3, 1, false);
 
 -- Figures
 INSERT INTO figures (id, link, note_id) VALUES
