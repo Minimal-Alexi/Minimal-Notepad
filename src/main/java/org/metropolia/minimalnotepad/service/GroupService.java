@@ -20,7 +20,7 @@ public class GroupService {
     }
 
     public Group getGroupById(Long id) {
-        return groupRepository.findById(id).orElseThrow(() -> new RuntimeException("Group not found"));
+        return groupRepository.findById(id).orElse(null); // Using orElse on Optional<Group>
     }
 
     public Group createGroup(Group group) {
@@ -30,6 +30,7 @@ public class GroupService {
     public Group updateGroup(Long id, Group updatedGroup) {
         Group group = getGroupById(id);
         group.setName(updatedGroup.getName());
+        group.setDescription(updatedGroup.getDescription());
         return groupRepository.save(group);
     }
 
