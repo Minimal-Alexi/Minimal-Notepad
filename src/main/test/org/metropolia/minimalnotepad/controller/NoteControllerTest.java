@@ -43,21 +43,18 @@ public class NoteControllerTest {
 
     @BeforeEach
     public void setUp() {
-        // Clean both user and note repositories before each test
         noteRepository.deleteAll();
         userRepository.deleteAll();
     }
 
     @Test
     public void testGetAllNotesFromUserValidUser() {
-        // Create and save a user
         User user = new User();
         user.setUsername("testuser");
         user.setPassword(passwordEncoder.encode("password"));
         user.setEmail("testuser@example.com");
         userRepository.save(user);
 
-        // Create and save a note associated with the user
         Note note = new Note();
         note.setTitle("Test Note");
         note.setText("This is a test note.");
@@ -84,7 +81,6 @@ public class NoteControllerTest {
 
     @Test
     public void testGetAllNotesFromUserInvalidHeader() {
-        // Missing the "Bearer " prefix leads to an exception being caught and a 401 response
         String invalidHeader = "InvalidHeader";
         ResponseEntity<?> responseEntity = noteController.getAllNotesFromUser(invalidHeader);
         assertNotNull(responseEntity);
@@ -100,7 +96,6 @@ public class NoteControllerTest {
 
     @Test
     public void testGetAllNotesFromUserUserNotFound() {
-        // Generate a token for a username that does not exist in the database
         String token = jwtUtils.generateToken("nonexistent");
         String authHeader = "Bearer " + token;
 
@@ -214,7 +209,6 @@ public class NoteControllerTest {
         assertNotNull(createdNote.getId());
         assertEquals("New Note", createdNote.getTitle());
         assertEquals("New note content", createdNote.getText());
-        // Verify the note is associated with the correct user
         assertEquals(user.getUsername(), createdNote.getUser().getUsername());
     }
 
@@ -239,7 +233,6 @@ public class NoteControllerTest {
 
     @Test
     public void testCreateNoteUserNotFound() {
-        // Generate a token for a non-existent user
         String token = jwtUtils.generateToken("nonexistentUser");
         String authHeader = "Bearer " + token;
 
@@ -261,21 +254,18 @@ public class NoteControllerTest {
 
     @Test
     public void testDeleteNoteValid() {
-        // Create and save a user
         User user = new User();
         user.setUsername("testuser5");
         user.setPassword(passwordEncoder.encode("password"));
         user.setEmail("testuser5@example.com");
         userRepository.save(user);
 
-        // Create and save a note for deletion
         Note note = new Note();
         note.setTitle("Note to Delete");
         note.setText("This note will be deleted.");
         note.setUser(user);
         noteRepository.save(note);
 
-        // Build the authorization header
         String token = jwtUtils.generateToken(user.getUsername());
         String authHeader = "Bearer " + token;
 
@@ -283,25 +273,21 @@ public class NoteControllerTest {
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        // Verify that the note no longer exists in the repository
         Optional<Note> deletedNote = noteRepository.findById(note.getId());
         assertFalse(deletedNote.isPresent());
     }
 
     @Test
     public void testDeleteNoteNoteNotFound() {
-        // Create and save a user
         User user = new User();
         user.setUsername("testuser6");
         user.setPassword(passwordEncoder.encode("password"));
         user.setEmail("testuser6@example.com");
         userRepository.save(user);
 
-        // Build the authorization header
         String token = jwtUtils.generateToken(user.getUsername());
         String authHeader = "Bearer " + token;
 
-        // Use a non-existent note ID
         long nonExistentNoteId = 12345L;
         ResponseEntity<?> responseEntity = noteController.deleteNote(authHeader, nonExistentNoteId);
         assertNotNull(responseEntity);
