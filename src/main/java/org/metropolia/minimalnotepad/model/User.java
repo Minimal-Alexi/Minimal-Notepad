@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+import java.util.List;
+
 @Entity
 @Table(name="users")
 public class User implements UserDetails {
@@ -16,6 +18,8 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Note> notes;
 
     public long getId() {
         return id;

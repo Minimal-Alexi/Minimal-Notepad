@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.service;
 
+import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.exception.UserAlreadyExistsException;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.UserRepository;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -79,5 +79,18 @@ public class UserServiceTest {
         });
 
         verify(userRepository, never()).save(any(User.class));
+    }
+    @Test
+    public void testGetUserByUsername(){
+        User user = new User();
+        user.setUsername("username");
+        user.setEmail("email@email.com");
+
+        when(userRepository.findUserByUsername("username")).thenReturn(user);
+
+        User result = userService.getUserByUsername("username");
+        assertEquals(user,result);
+        assertEquals("username",result.getUsername());
+        assertEquals("email@email.com",result.getEmail());
     }
 }
