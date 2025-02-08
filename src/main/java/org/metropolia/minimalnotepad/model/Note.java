@@ -3,6 +3,7 @@ package org.metropolia.minimalnotepad.model;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "notes")
@@ -17,6 +18,8 @@ public class Note {
     private Timestamp createdAt;
     @Column(name = "updated_at", insertable = false)
     private Timestamp updatedAt;
+    @OneToMany(mappedBy = "figure", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Figure> figures;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -64,5 +67,11 @@ public class Note {
     }
     public User getUser() {
         return user;
+    }
+    public void setFigures(List<Figure> figures) {
+        this.figures = figures;
+    }
+    public List<Figure> getFigures() {
+        return figures;
     }
 }
