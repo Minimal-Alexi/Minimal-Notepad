@@ -14,6 +14,8 @@ public class Group {
     private String description;
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Note> notes;
+    @OneToMany(mappedBy = "group",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserGroupParticipation> userGroupParticipationsList;
 
     public long getId() {
         return id;
@@ -38,5 +40,8 @@ public class Group {
     }
     public void setNotes(List<Note> notes){
         this.notes = notes;
+    }
+    public List<UserGroupParticipation> getUserGroupParticipationsList(){
+        return userGroupParticipationsList;
     }
 }
