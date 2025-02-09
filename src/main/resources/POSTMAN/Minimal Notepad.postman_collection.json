@@ -1,0 +1,677 @@
+{
+	"info": {
+		"_postman_id": "c6b774bc-f5e9-4c35-8ca5-548c05543ddf",
+		"name": "Minimal Notepad",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29851757"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Login Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"FakeAccount\",\r\n    \"password\":\"min\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/users-authentication/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users-authentication",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Request",
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"FakeAccount\",\r\n    \"email\": \"Fake@email.com\",\r\n    \"password\": \"min\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/users-authentication/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users-authentication",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Note",
+			"item": [
+				{
+					"name": "Get User Notes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczODkxNDU1MSwiZXhwIjoxNzM5MDAwOTUxfQ.bRS3wpqfiHlxn3B6EqoNfyv24Bi-jsI0ONGFhp-6OXQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/note/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"note",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Note By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczODkxNDU1MSwiZXhwIjoxNzM5MDAwOTUxfQ.bRS3wpqfiHlxn3B6EqoNfyv24Bi-jsI0ONGFhp-6OXQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/note/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"note",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Note",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczODkxNDU1MSwiZXhwIjoxNzM5MDAwOTUxfQ.bRS3wpqfiHlxn3B6EqoNfyv24Bi-jsI0ONGFhp-6OXQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"Bananas\",\r\n    \"text\":\"Lorem ipsum dorime\"\r\n    \"group_id\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/note/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"note",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Note",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczODkxNDU1MSwiZXhwIjoxNzM5MDAwOTUxfQ.bRS3wpqfiHlxn3B6EqoNfyv24Bi-jsI0ONGFhp-6OXQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/note/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"note",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Group",
+			"item": [
+				{
+					"name": "Get all groups",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/groups",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0IiwiaWF0IjoxNzM4NTgyMTE1LCJleHAiOjE3Mzg2Njg1MTV9.Z3-VmoNnVK1sDbzvJuYACdksbFEOVbP5Fc2CurW645I",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get group by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/groups/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Test group 2\",\n    \"description\": \"This is a test description 2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/groups",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"groups"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Update group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test\",\n    \"description\": \"Updated description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/groups/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"3"
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful DELETE request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/groups/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"3"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Get all categories",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/groups",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0IiwiaWF0IjoxNzM4NTgyMTE1LCJleHAiOjE3Mzg2Njg1MTV9.Z3-VmoNnVK1sDbzvJuYACdksbFEOVbP5Fc2CurW645I",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get category by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/groups/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Test group 2\",\n    \"description\": \"This is a test description 2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/groups",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"groups"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Update category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test\",\n    \"description\": \"Updated description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/groups/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"3"
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful DELETE request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/groups/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"3"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:8093"
+		}
+	]
+}

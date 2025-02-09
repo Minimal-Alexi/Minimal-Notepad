@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,10 +11,12 @@ public class UserGroupParticipation {
     @ManyToOne
     @MapsId("user_id")
     @JoinColumn(name="user_id")
+    @JsonBackReference
     public User user;
     @ManyToOne
     @MapsId("group_id")
     @JoinColumn(name = "group_id")
+    @JsonBackReference
     public Group group;
     public boolean is_owner;
     public UserGroupParticipation() {

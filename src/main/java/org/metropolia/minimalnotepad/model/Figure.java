@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ public class Figure {
     private String link;
     @ManyToOne
     @JoinColumn(name = "note_id", nullable = false)
+    @JsonBackReference
     private Note note;
     public Figure() {}
     public void setNote(Note note) {
