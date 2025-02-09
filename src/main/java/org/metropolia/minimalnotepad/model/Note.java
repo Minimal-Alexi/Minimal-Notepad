@@ -18,7 +18,7 @@ public class Note {
     private Timestamp createdAt;
     @Column(name = "updated_at", insertable = false)
     private Timestamp updatedAt;
-    @OneToMany(mappedBy = "figure", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Figure> figures;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
