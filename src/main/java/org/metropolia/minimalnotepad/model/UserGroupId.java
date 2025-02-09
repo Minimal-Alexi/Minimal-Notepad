@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
@@ -7,10 +8,11 @@ import java.util.Objects;
 
 @Embeddable
 public class UserGroupId implements Serializable {
+    @Column(name = "user_id")
     private Long userId;
+    @Column(name = "group_id")
     private Long groupId;
 
-    // Default constructor
     public UserGroupId() {}
 
     public UserGroupId(Long userId, Long groupId) {
@@ -18,7 +20,6 @@ public class UserGroupId implements Serializable {
         this.groupId = groupId;
     }
 
-    // Getters and Setters
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
 
