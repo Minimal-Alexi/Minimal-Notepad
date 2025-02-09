@@ -23,6 +23,9 @@ public class Note {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
     public Note() {
 
     }
@@ -73,5 +76,11 @@ public class Note {
     }
     public List<Figure> getFigures() {
         return figures;
+    }
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+    public Group getGroup() {
+        return group;
     }
 }

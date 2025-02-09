@@ -2,6 +2,8 @@ package org.metropolia.minimalnotepad.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="groups")
 public class Group {
@@ -10,6 +12,8 @@ public class Group {
     private long id;
     private String name;
     private String description;
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Note> notes;
 
     public long getId() {
         return id;
@@ -29,5 +33,10 @@ public class Group {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    public List<Note> getNotes(){
+        return notes;
+    }
+    public void setNotes(List<Note> notes){
+        this.notes = notes;
+    }
 }
