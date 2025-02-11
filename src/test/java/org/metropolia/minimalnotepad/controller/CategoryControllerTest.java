@@ -1,6 +1,8 @@
 package org.metropolia.minimalnotepad.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.cdimascio.dotenv.Dotenv;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.metropolia.minimalnotepad.model.Category;
@@ -33,6 +35,12 @@ class CategoryControllerTest {
     private ObjectMapper objectMapper; // Used for JSON conversion
 
     private Category testCategory;
+
+    @BeforeAll
+    public static void setup() {
+        Dotenv dotenv = Dotenv.load();
+        System.setProperty("SECRET_KEY", dotenv.get("SECRET_KEY"));
+    }
 
     @BeforeEach
     public void setUp() {
