@@ -12,7 +12,7 @@ public class Figure {
     private String link;
     @ManyToOne
     @JoinColumn(name = "note_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("figure-reference")
     private Note note;
     public Figure() {}
     public void setNote(Note note) {

@@ -11,12 +11,12 @@ public class UserGroupParticipation {
     @ManyToOne
     @MapsId("user_id")
     @JoinColumn(name="user_id")
-    @JsonBackReference
+    @JsonBackReference("participation-user")
     public User user;
     @ManyToOne
     @MapsId("group_id")
     @JoinColumn(name = "group_id")
-    @JsonBackReference
+    @JsonBackReference("participation-group")
     public Group group;
     public boolean is_owner;
     public UserGroupParticipation() {

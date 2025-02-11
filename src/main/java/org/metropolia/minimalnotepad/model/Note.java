@@ -21,15 +21,15 @@ public class Note {
     @Column(name = "updated_at", insertable = false)
     private Timestamp updatedAt;
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("figure-reference")
     private List<Figure> figures;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("user-reference")
     private User user;
     @ManyToOne
     @JoinColumn(name = "group_id")
-    @JsonBackReference
+    @JsonBackReference("group-reference")
     private Group group;
     public Note() {
 
