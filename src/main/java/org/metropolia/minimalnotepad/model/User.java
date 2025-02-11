@@ -1,5 +1,7 @@
 package org.metropolia.minimalnotepad.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +22,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference("user-reference")
+    @JsonIgnoreProperties({"users"})
     private List<Note> notes;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("participation-user")

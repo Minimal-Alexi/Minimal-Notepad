@@ -1,6 +1,7 @@
 package org.metropolia.minimalnotepad.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -25,7 +26,7 @@ public class Note {
     private List<Figure> figures;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference("user-reference")
+    @JsonIgnoreProperties({"id", "email", "notes", "password", "groupParticipationsList"})
     private User user;
     @ManyToOne
     @JoinColumn(name = "group_id")
