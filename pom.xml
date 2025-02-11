@@ -10,7 +10,7 @@
     </parent>
     <groupId>org.metropolia</groupId>
     <artifactId>minimalnotepad</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
     <name>minimalnotepad</name>
     <description>minimalnotepad</description>
     <url/>

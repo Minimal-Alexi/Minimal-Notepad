@@ -1,19 +1,24 @@
 package org.metropolia.minimalnotepad.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
-@Table(name="groups")
-public class Group {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
-    private String description;
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Note> notes;
+    @Entity
+    @Table(name="groups")
+    public class Group {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private long id;
+        private String name;
+        private String description;
+        @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @JsonManagedReference("group-reference")
+        private List<Note> notes;
+        @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @JsonManagedReference("participation-group")
+        private List<UserGroupParticipation> userGroupParticipationsList;
 
     public long getId() {
         return id;
@@ -38,5 +43,8 @@ public class Group {
     }
     public void setNotes(List<Note> notes){
         this.notes = notes;
+    }
+    public List<UserGroupParticipation> getUserGroupParticipationsList(){
+        return userGroupParticipationsList;
     }
 }

@@ -1,5 +1,7 @@
 package org.metropolia.minimalnotepad.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -19,12 +21,15 @@ public class Note {
     @Column(name = "updated_at", insertable = false)
     private Timestamp updatedAt;
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("figure-reference")
     private List<Figure> figures;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference("user-reference")
     private User user;
     @ManyToOne
     @JoinColumn(name = "group_id")
+    @JsonBackReference("group-reference")
     private Group group;
     public Note() {
 
