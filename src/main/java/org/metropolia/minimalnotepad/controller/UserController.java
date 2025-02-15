@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.metropolia.minimalnotepad.dto.ErrorResponse;
 import org.metropolia.minimalnotepad.dto.PasswordChangeRequest;
 import org.metropolia.minimalnotepad.model.User;
@@ -7,8 +8,12 @@ import org.metropolia.minimalnotepad.service.UserService;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -32,7 +37,8 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
             }
 
-            return ResponseEntity.ok(currentUser);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(currentUser);
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
@@ -77,9 +83,25 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Email is required"));
             }
 
+            if (updatedUser.getUsername().equals(currentUser.getUsername()) && updatedUser.getEmail().equals(currentUser.getEmail())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "No changes detected"));
+            }
+
+            boolean isUsernameChanged = !currentUser.getUsername().equals(updatedUser.getUsername());
+
             User updated = userService.updateUser(currentUser.getId(), updatedUser.getUsername(), updatedUser.getEmail());
 
-            return ResponseEntity.ok(updated);
+            Map<String, Object> response = new HashMap<>();
+            response.putAll(new ObjectMapper().convertValue(updated, Map.class));
+
+            // ✅ Only generate and include a new token if the username was changed
+            if (isUsernameChanged) {
+                String newToken = jwtUtils.generateToken(updated.getUsername());
+                response.put("token", newToken);
+            }
+
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, e.getMessage()));
         }
