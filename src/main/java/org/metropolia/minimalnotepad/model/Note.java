@@ -33,7 +33,7 @@ public class Note {
     @JsonBackReference("group-reference")
     private Group group;
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference("category-note")
+    @JsonManagedReference("note-tags")
     private List<NoteCategories> categories;
     public Note() {
 

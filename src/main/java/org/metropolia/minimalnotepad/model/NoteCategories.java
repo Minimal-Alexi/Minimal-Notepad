@@ -11,7 +11,7 @@ public class NoteCategories {
     @ManyToOne
     @MapsId("note_id")
     @JoinColumn(name = "note_id")
-    @JsonBackReference("category-note")
+    @JsonBackReference("note-tags")
     private Note note;
     @ManyToOne
     @MapsId("category_id")
