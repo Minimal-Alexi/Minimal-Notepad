@@ -34,7 +34,7 @@ public class Note {
     private Group group;
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("note-tags")
-    private List<NoteCategories> categories;
+    private List<NoteCategories> noteCategoriesList;
     public Note() {
 
     }
@@ -93,9 +93,9 @@ public class Note {
         return group;
     }
     public void setCategories(List<NoteCategories> categories) {
-        this.categories = categories;
+        this.noteCategoriesList = categories;
     }
     public List<NoteCategories> getCategories() {
-        return categories;
+        return noteCategoriesList;
     }
 }
