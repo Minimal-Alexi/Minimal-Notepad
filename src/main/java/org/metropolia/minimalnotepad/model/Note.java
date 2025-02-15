@@ -32,6 +32,9 @@ public class Note {
     @JoinColumn(name = "group_id")
     @JsonBackReference("group-reference")
     private Group group;
+    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("category-note")
+    private List<NoteCategories> categories;
     public Note() {
 
     }
@@ -88,5 +91,11 @@ public class Note {
     }
     public Group getGroup() {
         return group;
+    }
+    public void setCategories(List<NoteCategories> categories) {
+        this.categories = categories;
+    }
+    public List<NoteCategories> getCategories() {
+        return categories;
     }
 }
