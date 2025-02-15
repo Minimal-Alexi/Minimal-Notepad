@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c6b774bc-f5e9-4c35-8ca5-548c05543ddf",
+		"_postman_id": "002475b5-4689-47ae-9eae-233258f6b32b",
 		"name": "Minimal Notepad",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29851757"
@@ -67,6 +67,140 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get User Account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU0OTk1MywiZXhwIjoxNzM5NjM2MzUzfQ.dHBZl0wD_msRmxYdm3NkDZdYpPiWsdVudmHQQaCZ8Xs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/user/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU0NjM5OCwiZXhwIjoxNzM5NjMyNzk4fQ.gfHQnQDQDQOXxfc8X3GeZzOsWyqVndl6GBr1REt47DQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"FakeAccount\",\r\n    \"email\": \"Fake5@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/user/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change User Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU0Mjc3MSwiZXhwIjoxNzM5NjI5MTcxfQ.e04N4PPGN_dFRZE7mhaG5Ap2JKHUgnmVNBtixq0i8ok",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\": \"min\",\r\n    \"newPassword\": \"max\",\r\n    \"confirmPassword\": \"max\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/user/change-password",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User Account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU1MDU1OCwiZXhwIjoxNzM5NjM2OTU4fQ.Onkur3IQHaWzZepjGx-2xF_okWGOFND8109jMpY6hfg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/user/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -81,7 +215,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczODkxNDU1MSwiZXhwIjoxNzM5MDAwOTUxfQ.bRS3wpqfiHlxn3B6EqoNfyv24Bi-jsI0ONGFhp-6OXQ",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTUzOTY2NCwiZXhwIjoxNzM5NjI2MDY0fQ.HblQaeCHqEMf6apt9q3drunT4IS0yCrk8N4RQmDhKQ0",
 									"type": "string"
 								}
 							]
@@ -146,7 +280,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczODkxNDU1MSwiZXhwIjoxNzM5MDAwOTUxfQ.bRS3wpqfiHlxn3B6EqoNfyv24Bi-jsI0ONGFhp-6OXQ",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU1MDU1OCwiZXhwIjoxNzM5NjM2OTU4fQ.Onkur3IQHaWzZepjGx-2xF_okWGOFND8109jMpY6hfg",
 									"type": "string"
 								}
 							]
@@ -155,7 +289,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\":\"Bananas\",\r\n    \"text\":\"Lorem ipsum dorime\"\r\n    \"group_id\"\r\n}",
+							"raw": "{\r\n    \"title\": \"Bananas\",\r\n    \"text\": \"Lorem ipsum dorime\",\r\n    \"colour\": \"test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -226,9 +360,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/groups",
+							"raw": "{{host}}/api/groups",
 							"host": [
-								"{{base_url}}"
+								"{{host}}"
 							],
 							"path": [
 								"api",
@@ -261,9 +395,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/groups/2",
+							"raw": "{{host}}/api/groups/2",
 							"host": [
-								"{{base_url}}"
+								"{{host}}"
 							],
 							"path": [
 								"api",
@@ -297,7 +431,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU1MDU1OCwiZXhwIjoxNzM5NjM2OTU4fQ.Onkur3IQHaWzZepjGx-2xF_okWGOFND8109jMpY6hfg",
 									"type": "string"
 								}
 							]
@@ -306,7 +440,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Test group 2\",\n    \"description\": \"This is a test description 2\"\n}",
+							"raw": "{\n\t\"name\": \"My test group\",\n    \"description\": \"This is a test description 2\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -314,9 +448,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/groups",
+							"raw": "{{host}}/api/groups",
 							"host": [
-								"{{base_url}}"
+								"{{host}}"
 							],
 							"path": [
 								"api",
@@ -367,9 +501,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/groups/3",
+							"raw": "{{host}}/api/groups/3",
 							"host": [
-								"{{base_url}}"
+								"{{host}}"
 							],
 							"path": [
 								"api",
@@ -421,9 +555,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/groups/3",
+							"raw": "{{host}}/api/groups/3",
 							"host": [
-								"{{base_url}}"
+								"{{host}}"
 							],
 							"path": [
 								"api",
