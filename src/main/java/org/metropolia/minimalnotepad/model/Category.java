@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -14,6 +15,7 @@ public class Category {
     private String name;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference("category-note")
+    @JsonIgnore
     private List<NoteCategories> noteCategories;
 
     public long getId() {
