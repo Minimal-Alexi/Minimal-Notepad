@@ -44,7 +44,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"FakeAccount\",\r\n    \"email\": \"Fake@email.com\",\r\n    \"password\": \"min\"\r\n}",
+							"raw": "{\"username\":\"sjackes0\",\"email\":\"tsherebrooke0@weebly.com\",\"password\":\"oC1|w9%+3G\"}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -216,7 +216,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"My love for bananas\",\r\n    \"text\": \"Lorem ipsum dorime\",\r\n    \"colour\": \"test\",\r\n    \"categoriesList\": [\r\n        {\r\n            \"id\": 1\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"title\": \"Dr\",\r\n    \"text\": \"Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh.\\n\\nIn quis justo. Maecenas rhoncus aliquam lacus. Morbi quis tortor id nulla ultrices aliquet.\\n\\nMaecenas leo odio, condimentum id, luctus nec, molestie sed, justo. Pellentesque viverra pede ac diam. Cras pellentesque volutpat dui.\",\r\n    \"colour\": \"Yellow\",\r\n    \"figures\": [],\r\n    \"categoriesList\": [\r\n        {\r\n            \"id\": 2\r\n        },\r\n        {\r\n            \"id\": 1\r\n        },\r\n        {\r\n            \"id\": 3\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -327,7 +327,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"My test group\",\n    \"description\": \"This is a test description 2\"\n}",
+							"raw": "{\n    \"name\": \"Linkbuzz\",\n    \"description\": \"nulla nunc purus phasellus in felis donec semper sapien a libero nam\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -443,9 +443,21 @@
 			"item": [
 				{
 					"name": "Get all categories",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{host}}/api/categories",
 							"host": [
@@ -507,7 +519,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Test group 2\",\n    \"description\": \"This is a test description 2\"\n}",
+							"raw": "{\"name\":\"imperdiet\"}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -515,13 +527,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/groups",
+							"raw": "{{host}}/api/categories",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"groups"
+								"categories"
 							]
 						},
 						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
@@ -558,13 +570,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/groups/3",
+							"raw": "{{host}}/api/categories/3",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"groups",
+								"categories",
 								"3"
 							]
 						},
@@ -602,13 +614,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/groups/3",
+							"raw": "{{host}}/api/categories/3",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"groups",
+								"categories",
 								"3"
 							]
 						},
