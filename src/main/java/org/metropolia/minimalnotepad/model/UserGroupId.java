@@ -26,7 +26,6 @@ public class UserGroupId implements Serializable {
     public Long getGroupId() { return groupId; }
     public void setGroupId(Long groupId) { this.groupId = groupId; }
 
-    // hashCode and equals (Required for composite keys)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

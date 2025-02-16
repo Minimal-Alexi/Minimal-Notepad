@@ -32,6 +32,12 @@ public class Note {
     @JoinColumn(name = "group_id")
     @JsonBackReference("group-reference")
     private Group group;
+    @ManyToMany
+    @JoinTable(name = "note_categories",
+    joinColumns = @JoinColumn(name = "note_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_id"))
+    List<Category> categoriesList;
+
     public Note() {
 
     }
@@ -88,5 +94,11 @@ public class Note {
     }
     public Group getGroup() {
         return group;
+    }
+    public void setCategoriesList(List<Category> categoriesList) {
+        this.categoriesList = categoriesList;
+    }
+    public List<Category> getCategoriesList() {
+        return categoriesList;
     }
 }
