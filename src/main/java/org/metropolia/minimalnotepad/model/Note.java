@@ -26,7 +26,7 @@ public class Note {
     private List<Figure> figures;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnoreProperties({"id", "email", "notes", "password", "groupParticipationsList"})
+    @JsonIgnoreProperties({"email", "notes", "password", "groupParticipationsList"})
     private User user;
     @ManyToOne
     @JoinColumn(name = "group_id")
