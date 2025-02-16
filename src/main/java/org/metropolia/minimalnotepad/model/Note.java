@@ -32,9 +32,12 @@ public class Note {
     @JoinColumn(name = "group_id")
     @JsonBackReference("group-reference")
     private Group group;
-    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference("note-tags")
-    private List<NoteCategories> noteCategoriesList;
+    @ManyToMany
+    @JoinTable(name = "note_categories",
+    joinColumns = @JoinColumn(name = "note_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_id"))
+    List<Category> categoriesList;
+
     public Note() {
 
     }
@@ -92,10 +95,10 @@ public class Note {
     public Group getGroup() {
         return group;
     }
-    public void setCategories(List<NoteCategories> categories) {
-        this.noteCategoriesList = categories;
+    public void setCategoriesList(List<Category> categoriesList) {
+        this.categoriesList = categoriesList;
     }
-    public List<NoteCategories> getCategories() {
-        return noteCategoriesList;
+    public List<Category> getCategoriesList() {
+        return categoriesList;
     }
 }

@@ -13,10 +13,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "categoriesList")
     @JsonManagedReference("category-note")
     @JsonIgnore
-    private List<NoteCategories> noteCategories;
+    List<Note> noteList;
 
     public long getId() {
         return id;
@@ -30,10 +30,10 @@ public class Category {
     public void setName(String name) {
         this.name = name;
     }
-    public List<NoteCategories> getNoteCategories() {
-        return noteCategories;
+    public List<Note> getNoteList() {
+        return noteList;
     }
-    public void setNoteCategories(List<NoteCategories> noteCategories) {
-        this.noteCategories = noteCategories;
+    public void setNoteList(List<Note> noteList) {
+        this.noteList = noteList;
     }
 }
