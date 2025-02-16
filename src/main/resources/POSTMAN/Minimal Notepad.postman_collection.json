@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "002475b5-4689-47ae-9eae-233258f6b32b",
+		"_postman_id": "6f8c4648-d357-4353-a1f9-f857aa76e96d",
 		"name": "Minimal Notepad",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29851757"
+		"_exporter_id": "37897491"
 	},
 	"item": [
 		{
@@ -40,9 +40,6 @@
 				{
 					"name": "Register Request",
 					"request": {
-						"auth": {
-							"type": "bearer"
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -71,16 +68,6 @@
 				{
 					"name": "Get User Account",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU0OTk1MywiZXhwIjoxNzM5NjM2MzUzfQ.dHBZl0wD_msRmxYdm3NkDZdYpPiWsdVudmHQQaCZ8Xs",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -100,16 +87,6 @@
 				{
 					"name": "Update User Account",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU0NjM5OCwiZXhwIjoxNzM5NjMyNzk4fQ.gfHQnQDQDQOXxfc8X3GeZzOsWyqVndl6GBr1REt47DQ",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -138,16 +115,6 @@
 				{
 					"name": "Change User Password",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU0Mjc3MSwiZXhwIjoxNzM5NjI5MTcxfQ.e04N4PPGN_dFRZE7mhaG5Ap2JKHUgnmVNBtixq0i8ok",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -176,16 +143,6 @@
 				{
 					"name": "Delete User Account",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU1MDU1OCwiZXhwIjoxNzM5NjM2OTU4fQ.Onkur3IQHaWzZepjGx-2xF_okWGOFND8109jMpY6hfg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -210,16 +167,6 @@
 				{
 					"name": "Get User Notes",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTUzOTY2NCwiZXhwIjoxNzM5NjI2MDY0fQ.HblQaeCHqEMf6apt9q3drunT4IS0yCrk8N4RQmDhKQ0",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -239,16 +186,6 @@
 				{
 					"name": "Get User Note By Id",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczODkxNDU1MSwiZXhwIjoxNzM5MDAwOTUxfQ.bRS3wpqfiHlxn3B6EqoNfyv24Bi-jsI0ONGFhp-6OXQ",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -275,21 +212,11 @@
 				{
 					"name": "Create Note",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU1MDU1OCwiZXhwIjoxNzM5NjM2OTU4fQ.Onkur3IQHaWzZepjGx-2xF_okWGOFND8109jMpY6hfg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Bananas\",\r\n    \"text\": \"Lorem ipsum dorime\",\r\n    \"colour\": \"test\"\r\n}",
+							"raw": "{\r\n    \"title\": \"My love for bananas\",\r\n    \"text\": \"Lorem ipsum dorime\",\r\n    \"colour\": \"test\",\r\n    \"categoriesList\": [\r\n        {\r\n            \"id\": 1\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -313,16 +240,6 @@
 				{
 					"name": "Delete Note",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczODkxNDU1MSwiZXhwIjoxNzM5MDAwOTUxfQ.bRS3wpqfiHlxn3B6EqoNfyv24Bi-jsI0ONGFhp-6OXQ",
-									"type": "string"
-								}
-							]
-						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -347,16 +264,6 @@
 				{
 					"name": "Get all groups",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -382,16 +289,6 @@
 				{
 					"name": "Get group by ID",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -426,16 +323,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTU1MDU1OCwiZXhwIjoxNzM5NjM2OTU4fQ.Onkur3IQHaWzZepjGx-2xF_okWGOFND8109jMpY6hfg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -479,16 +366,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -533,16 +410,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
-									"type": "string"
-								}
-							]
-						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -577,26 +444,16 @@
 				{
 					"name": "Get all categories",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/groups",
+							"raw": "{{host}}/api/categories",
 							"host": [
-								"{{base_url}}"
+								"{{host}}"
 							],
 							"path": [
 								"api",
-								"groups"
+								"categories"
 							],
 							"query": [
 								{
@@ -612,22 +469,12 @@
 				{
 					"name": "Get category by ID",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/groups/2",
+							"raw": "{{host}}/api/groups/2",
 							"host": [
-								"{{base_url}}"
+								"{{host}}"
 							],
 							"path": [
 								"api",
@@ -656,16 +503,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -678,9 +515,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/groups",
+							"raw": "{{host}}/api/groups",
 							"host": [
-								"{{base_url}}"
+								"{{host}}"
 							],
 							"path": [
 								"api",
@@ -709,16 +546,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -731,9 +558,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/groups/3",
+							"raw": "{{host}}/api/groups/3",
 							"host": [
-								"{{base_url}}"
+								"{{host}}"
 							],
 							"path": [
 								"api",
@@ -763,16 +590,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMYXVyaSIsImlhdCI6MTczODc3NDQyNiwiZXhwIjoxNzM4ODYwODI2fQ.n5loHOAxOlqSewdTsrEyvLp99v1Ih4Q6xMhlch0I80Q",
-									"type": "string"
-								}
-							]
-						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -785,9 +602,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/groups/3",
+							"raw": "{{host}}/api/groups/3",
 							"host": [
-								"{{base_url}}"
+								"{{host}}"
 							],
 							"path": [
 								"api",
@@ -800,6 +617,38 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTcwNzg3NywiZXhwIjoxNzM5Nzk0Mjc3fQ.NpU5t61upGyrrsDan8R4u5E-iYP1SAUmKjdCGP5rEu0",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
