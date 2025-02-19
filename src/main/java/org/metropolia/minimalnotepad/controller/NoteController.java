@@ -64,6 +64,7 @@ public class NoteController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
             }
             note.setUser(user);
+            System.out.println(note.getColour());
             noteService.createNote(user,note);
             return ResponseEntity.status(HttpStatus.CREATED).body(note);
         }catch (Exception e) {

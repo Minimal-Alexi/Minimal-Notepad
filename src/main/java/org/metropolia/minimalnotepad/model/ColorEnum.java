@@ -1,7 +1,7 @@
 package org.metropolia.minimalnotepad.model;
 
 public enum ColorEnum {
-    WHITE("#FFFFFF"),YELLOW("fede57"),BLUE("a2e7fb"),RED("f56765");
+    WHITE("#FFFFFF"),YELLOW("FEDE57"),BLUE("A2E7FB"),RED("F56765");
 
     private final String hexCode;
     private ColorEnum(String hexCode) {
