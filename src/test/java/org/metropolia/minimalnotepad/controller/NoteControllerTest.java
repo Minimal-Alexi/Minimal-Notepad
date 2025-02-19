@@ -324,4 +324,41 @@ public class NoteControllerTest {
         assertEquals(401, error.getStatus());
         assertEquals("Authorization header is invalid", error.getMessage());
     }
+
+    @Test
+    public void testUpdateNoteValid() {
+        User user = new User();
+        user.setUsername("testuser7");
+        user.setPassword(passwordEncoder.encode("password"));
+        user.setEmail("testuser@example.com");
+        userRepository.save(user);
+
+        Note note = new Note();
+        note.setTitle("Original Title");
+        note.setText("Original text.");
+        note.setUser(user);
+        noteRepository.save(note);
+
+        String token = jwtUtils.generateToken(user.getUsername());
+        String authHeader = "Bearer " + token;
+
+        Note updatedNote = new Note();
+        updatedNote.setUser(user);
+        updatedNote.setTitle("Updated Title");
+        updatedNote.setText("Updated text.");
+
+
+
+        ResponseEntity<?> responseEntity = noteController.updateNote(authHeader, note.getId(), updatedNote);
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        Object body = responseEntity.getBody();
+        assertNotNull(body);
+        assertTrue(body instanceof Note);
+        Note returnedNote = (Note) body;
+        assertEquals("Updated Title", returnedNote.getTitle());
+        assertEquals("Updated text.", returnedNote.getText());
+    }
 }
+

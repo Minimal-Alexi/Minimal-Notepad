@@ -43,10 +43,21 @@ public class NoteService {
         noteRepository.save(note);
     }
     public Note updateNote(User user, long noteId, Note updatedNote) {
+        //System.out.println("Updating Note ID: " + noteId);
+        //System.out.println("User making request: " + user.getUsername());
+        //System.out.println("Updated Note: " + updatedNote);
+
         Note existingNote = noteRepository.findById(noteId)
                 .orElseThrow(() -> new ResourceDoesntExistException("This note doesn't exist"));
 
-        if (!existingNote.getUser().equals(user)) {
+        //System.out.println("Existing Note Found: " + existingNote.getTitle());
+        //System.out.println("Existing Note belongs to: " + existingNote.getUser());
+        //System.out.println("User: " + user);
+        //System.out.println(noteRepository.findAll());
+        //System.out.println(userRepository.findAll());
+
+
+        if (existingNote.getUser().getId() != user.getId()) {
             throw new UserDoesntOwnResourceException("You do not own this note.");
         }
 
