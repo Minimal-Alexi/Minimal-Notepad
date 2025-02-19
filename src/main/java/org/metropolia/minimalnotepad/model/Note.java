@@ -17,7 +17,7 @@ public class Note {
     private String title;
     private String text;
     @Enumerated(EnumType.STRING)
-    private Colour colour;
+    private ColorEnum colorEnum;
     @Column(name = "created_at", updatable = false, insertable = false)
     private Timestamp createdAt;
     @Column(name = "updated_at", insertable = false)
@@ -60,11 +60,11 @@ public class Note {
     public String getText() {
         return text;
     }
-    public void setColour(Colour colour) {
-        this.colour = colour;
+    public void setColour(ColorEnum colorEnum) {
+        this.colorEnum = colorEnum;
     }
-    public Colour getColour() {
-        return colour;
+    public ColorEnum getColour() {
+        return colorEnum;
     }
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
