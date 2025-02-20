@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.exception.UserDoesntOwnResourceException;
+import org.metropolia.minimalnotepad.model.Category;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.NoteRepository;
@@ -181,6 +182,89 @@ public class NoteServiceTest {
         userMock.setPassword("password1");
         userMock.setEmail("user1@email.com");
         assertThrows(ResourceDoesntExistException.class,() -> noteService.deleteNote(userMock,null));
+    }
+    @Test
+   public void testFilterNotesSuccess(){
+        Category category1 = new Category(), category2 = new Category();
+        category1.setId(1);
+        category1.setName("category1");
+        category2.setId(2);
+        category2.setName("category2");
+        Note note1 = new Note();
+        Note note2 = new Note();
+        Note note3 = new Note();
+        note1.setId(1);
+        note1.setTitle("title1");
+        note2.setId(2);
+        note2.setTitle("title2");
+        note3.setId(3);
+        note3.setTitle("title3");
+
+        ArrayList<Category> note1Categories = new ArrayList<>(),note2Categories = new ArrayList<>(),note3Categories = new ArrayList<>();
+        note1Categories.add(category1);
+        note1Categories.add(category2);
+        note2Categories.add(category2);
+
+        note1.setCategoriesList(note1Categories);
+        note2.setCategoriesList(note2Categories);
+        note3.setCategoriesList(note3Categories);
+
+        ArrayList<Note> notes = new ArrayList<>();
+        notes.add(note1);
+        notes.add(note2);
+        notes.add(note3);
+
+        ArrayList<Note> category1Notes = noteService.filterNotes(notes,category1);
+        assertTrue(category1Notes.get(0).getCategoriesList().contains(category1));
+        assertEquals("title1", category1Notes.get(0).getTitle());
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            category1Notes.get(1);
+        });
+
+        ArrayList<Note> category2Notes = noteService.filterNotes(notes,category2);
+        assertTrue(category2Notes.get(0).getCategoriesList().contains(category2));
+        assertEquals("title1", category2Notes.get(0).getTitle());
+        assertTrue(category2Notes.get(1).getCategoriesList().contains(category2));
+        assertEquals("title2", category2Notes.get(1).getTitle());
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            category2Notes.get(2);
+        });
+
+        ArrayList<Note> noCategoryNotes = noteService.filterNotes(notes,null);
+        assertTrue(noCategoryNotes.get(0).getCategoriesList().isEmpty());
+        assertEquals("title3", noCategoryNotes.get(0).getTitle());
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            noCategoryNotes.get(1);
+        });
+
+    }
+    @Test
+    public void testFilterNotesNoneFound(){
+        Category category1 = new Category(), category2 = new Category();
+        category1.setId(1);
+        category1.setName("category1");
+        category2.setId(2);
+        category2.setName("category2");
+        Note note1 = new Note();
+        Note note2 = new Note();
+        note1.setId(1);
+        note1.setTitle("title1");
+        note2.setId(2);
+        note2.setTitle("title2");
+
+        ArrayList<Category> note1Categories = new ArrayList<>(),note2Categories = new ArrayList<>();
+        note1Categories.add(category1);
+        note2Categories.add(category2);
+
+        note1.setCategoriesList(note1Categories);
+        note2.setCategoriesList(note2Categories);
+
+        ArrayList<Note> notes = new ArrayList<>();
+        notes.add(note1);
+        notes.add(note2);
+
+        ArrayList<Note> none = noteService.filterNotes(notes,null);
+        assertTrue(none.isEmpty());
     }
 
 }
