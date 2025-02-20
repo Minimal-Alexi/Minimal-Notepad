@@ -2,12 +2,14 @@ package org.metropolia.minimalnotepad.service;
 
 import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.exception.UserDoesntOwnResourceException;
+import org.metropolia.minimalnotepad.model.Category;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.NoteRepository;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -71,5 +73,27 @@ public class NoteService {
             throw new UserDoesntOwnResourceException("You do not own this note.");
         }
         noteRepository.delete(note);
+    }
+    public ArrayList<Note> filterNotes(ArrayList<Note> unfilteredNotes, Category filterCategory){
+        ArrayList<Note> filteredNotes = new ArrayList<>();
+        if(filterCategory != null) {
+            for(Note note : unfilteredNotes){
+                ArrayList<Category> categoryList = (ArrayList<Category>) note.getCategoriesList();
+                if(categoryList.stream().anyMatch(category -> category.getId() == filterCategory.getId()))
+                {
+                    filteredNotes.add(note);
+                }
+            }
+        }
+        else
+        {
+            for(Note note : unfilteredNotes){
+                if(note.getCategoriesList().isEmpty())
+                {
+                    filteredNotes.add(note);
+                }
+            }
+        }
+        return filteredNotes;
     }
 }
