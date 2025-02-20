@@ -70,6 +70,33 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
     }
+
+    @PatchMapping("/{noteId}")
+    public ResponseEntity<?> updateNote(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable long noteId,
+            @RequestBody Note updatedNote) {
+        try {
+            String token = getTokenFromHeader(authorizationHeader);
+            User user = getUserFromToken(token);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ErrorResponse(404, "User not found"));
+            }
+
+            Note savedNote = noteService.updateNote(user, noteId, updatedNote);
+            return ResponseEntity.ok(savedNote);
+
+        } catch (ResourceDoesntExistException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse(500, "An unexpected error occurred"));
+        }
+    }
+
+
     @DeleteMapping("/{noteId}")
     public ResponseEntity<?> deleteNote(@RequestHeader("Authorization") String authorizationHeader, @PathVariable long noteId) {
         try {
