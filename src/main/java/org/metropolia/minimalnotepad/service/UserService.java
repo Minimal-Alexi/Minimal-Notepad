@@ -5,6 +5,7 @@ import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.metropolia.minimalnotepad.exception.UserNotFoundException;
 
+import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,12 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
     }
     public User registerUser(String username, String email, String password) {
         if(userRepository.findUserByEmail(email) != null)
@@ -84,5 +87,10 @@ public class UserService {
         }
 
         userRepository.deleteById(userId);
+    }
+
+    public User getUserFromToken(String token) {
+        String username = jwtUtils.extractUsername(token);
+        return this.getUserByUsername(username);
     }
 }

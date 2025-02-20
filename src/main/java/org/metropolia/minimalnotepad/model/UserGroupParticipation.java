@@ -18,21 +18,18 @@ public class UserGroupParticipation {
     @JoinColumn(name = "group_id")
     @JsonBackReference("participation-group")
     public Group group;
-    public boolean is_owner;
+
     public UserGroupParticipation() {
 
     }
+
+    public UserGroupId getId() { return id; }
+    public void setId(UserGroupId id) { this.id = id; }
     public void setUser(User user) {
         this.user = user;
     }
     public void setGroup(Group group) {
         this.group = group;
-    }
-    public boolean is_owner() {
-        return is_owner;
-    }
-    public void set_owner(boolean owner) {
-        is_owner = owner;
     }
     public User getUser() {
         return user;

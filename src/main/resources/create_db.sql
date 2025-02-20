@@ -12,14 +12,15 @@ CREATE TABLE users (
 
 CREATE TABLE groups (
                         id INT AUTO_INCREMENT PRIMARY KEY,
-                        name VARCHAR(50) NOT NULL,
-                        description VARCHAR(255)
+                        name VARCHAR(50) NOT NULL UNIQUE,
+                        description VARCHAR(255),
+                        user_id INT NOT NULL,
+                        FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE user_groups (
                              user_id INT,
                              group_id INT,
-                             is_owner BOOLEAN,
                              PRIMARY KEY (user_id, group_id),
                              FOREIGN KEY (user_id) REFERENCES users(id),
                              FOREIGN KEY (group_id) REFERENCES groups(id)
@@ -68,10 +69,10 @@ INSERT INTO users (id, username, email, password) VALUES
 
 
 -- Groups
-INSERT INTO groups (id, name, description) VALUES
-                                              (1, 'ICT23-SW', 'Notes for SEP1 class.'),
-                                              (2, 'IT Team', 'Work-related discussions and updates.'),
-                                              (3, 'Teacher Group', 'Discussion group for teachers.');
+INSERT INTO groups (id, name, description, user_id) VALUES
+                                              (1, 'ICT23-SW', 'Notes for SEP1 class.', 1),
+                                              (2, 'IT Team', 'Work-related discussions and updates.', 2),
+                                              (3, 'Teacher Group', 'Discussion group for teachers.', 3);
 
 -- Notes
 INSERT INTO notes (id, title, text, colour, created_at, updated_at, user_id, group_id) VALUES
@@ -82,11 +83,11 @@ INSERT INTO notes (id, title, text, colour, created_at, updated_at, user_id, gro
 
 
 -- Is Part Of (User-Group Relationship)
-INSERT INTO user_groups (user_id, group_id, is_owner) VALUES
-                                             (1, 1, true),
-                                             (1, 2, false),
-                                             (2, 3, false),
-                                             (3, 1, false);
+INSERT INTO user_groups (user_id, group_id) VALUES
+                                             (1, 1),
+                                             (1, 2),
+                                             (2, 3),
+                                             (3, 1);
 
 -- Figures
 INSERT INTO figures (id, link, note_id) VALUES

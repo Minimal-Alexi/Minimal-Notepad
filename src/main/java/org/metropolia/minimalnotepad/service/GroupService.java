@@ -37,4 +37,12 @@ public class GroupService {
     public void deleteGroup(Long id) {
         groupRepository.deleteById(id);
     }
+
+    public List<Group> getGroupsByUserId(long userId) {
+        return groupRepository.getGroupsByUserId(userId);
+    }
+
+    public boolean isGroupNameTaken(String name) {
+        return groupRepository.existsByName(name);
+    }
 }
