@@ -76,10 +76,10 @@ INSERT INTO groups (id, name, description, user_id) VALUES
 
 -- Notes
 INSERT INTO notes (id, title, text, colour, created_at, updated_at, user_id, group_id) VALUES
-                                                                                           (1, 'Meeting Notes', 'Discussed project roadmap.', 'RED', '2025-01-31 10:30:00', '2025-01-31 12:00:00', 1, 1),
-                                                                                           (2, 'Team Meeting', 'Discuss project updates.', 'WHITE', '2025-01-30 08:15:00', '2025-01-31 09:00:00', 2, 3),
-                                                                                           (3, 'Research Task', 'Read articles on market trends.', 'WHITE', '2025-01-29 07:00:00', '2025-01-30 07:30:00', 3, 1),
-                                                                                           (4, 'AI Presentation', 'Work on introduction section.', 'WHITE', '2025-01-28 21:45:00', '2025-01-30 22:10:00', 1, 2);
+                                                                                           (1, 'Meeting Notes', 'Discussed project roadmap.', '#FFFFFF', '2025-01-31 10:30:00', '2025-01-31 12:00:00', 1, 1),
+                                                                                           (2, 'Team Meeting', 'Discuss project updates.', '#FFFFFF', '2025-01-30 08:15:00', '2025-01-31 09:00:00', 2, 3),
+                                                                                           (3, 'Research Task', 'Read articles on market trends.', '#FFFFFF', '2025-01-29 07:00:00', '2025-01-30 07:30:00', 3, 1),
+                                                                                           (4, 'AI Presentation', 'Work on introduction section.', '#FFFFFF', '2025-01-28 21:45:00', '2025-01-30 22:10:00', 1, 2);
 
 
 -- Is Part Of (User-Group Relationship)
