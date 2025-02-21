@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
@@ -8,9 +9,10 @@ import org.metropolia.minimalnotepad.model.Category;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.NoteRepository;
-import org.metropolia.minimalnotepad.repository.UserRepository;
+import org.metropolia.minimalnotepad.utils.SearchUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -24,14 +26,21 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 public class NoteServiceTest {
-    @Mock
-    private UserRepository userRepository;
+
+    private SearchUtils searchUtils = new SearchUtils();
 
     @Mock
     private NoteRepository noteRepository;
 
     @InjectMocks
     private NoteService noteService;
+
+    @BeforeEach
+    public void setUp() {
+        noteRepository.deleteAll();
+        noteService = new NoteService(noteRepository, searchUtils);
+    }
+
 
     @Test
     public void testGetNotesListByUsersSuccess() {
@@ -265,6 +274,44 @@ public class NoteServiceTest {
 
         ArrayList<Note> none = noteService.filterNotes(notes,null);
         assertTrue(none.isEmpty());
+    }
+    @Test
+    public void testFindNotesSuccess(){
+        Note note1 = new Note(), note2 = new Note(), note3 = new Note();
+        note1.setTitle("titleCool");
+        note2.setTitle("I love min");
+        note3.setTitle("I love milk");
+        ArrayList<Note> notes = new ArrayList<>();
+        notes.add(note1);
+        notes.add(note2);
+        notes.add(note3);
+
+        ArrayList<Note> foundNotes = noteService.findNotes(notes,"titleCool");
+
+        assertNotNull(foundNotes);
+        assertEquals(1, foundNotes.size());
+        assertEquals("titleCool", foundNotes.get(0).getTitle());
+
+        foundNotes = noteService.findNotes(notes,"I love mi");
+        assertNotNull(foundNotes);
+        assertEquals(2, foundNotes.size());
+        assertEquals("I love min", foundNotes.get(0).getTitle());
+        assertEquals("I love milk", foundNotes.get(1).getTitle());
+
+    }
+    @Test
+    public void testFindNotesFailure(){
+        Note note1 = new Note(), note2 = new Note(), note3 = new Note();
+        note1.setTitle("titleCool");
+        note2.setTitle("I love min");
+        note3.setTitle("I love milk");
+        ArrayList<Note> notes = new ArrayList<>();
+        notes.add(note1);
+        notes.add(note2);
+        notes.add(note3);
+        ArrayList<Note> foundNotes = noteService.findNotes(notes,"non applicable");
+        assertNotNull(foundNotes);
+        assertTrue(foundNotes.isEmpty());
     }
 
 }

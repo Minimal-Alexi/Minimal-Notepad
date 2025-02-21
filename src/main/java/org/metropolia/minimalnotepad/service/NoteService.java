@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Service
 public class NoteService {
     private final NoteRepository noteRepository;
-    private final SearchUtils searchUtils;
+    private SearchUtils searchUtils;
     public NoteService(NoteRepository noteRepository,SearchUtils searchUtils) {
         this.noteRepository = noteRepository;
         this.searchUtils = searchUtils;
