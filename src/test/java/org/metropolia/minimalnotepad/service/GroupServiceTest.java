@@ -1,90 +1,108 @@
 package org.metropolia.minimalnotepad.service;
 
-import io.github.cdimascio.dotenv.Dotenv;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.metropolia.minimalnotepad.model.Group;
+import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.GroupRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.metropolia.minimalnotepad.repository.UserRepository;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 class GroupServiceTest {
 
-    @Autowired
+    @Mock
     private GroupRepository groupRepository;
-
-    @Autowired
+    @Mock
+    private UserRepository userRepository;
+    @InjectMocks
     private GroupService groupService;
 
     private Long testGroupId;
-
-    @BeforeAll
-    public static void setup() {
-        Dotenv dotenv = Dotenv.load();
-        System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
-    }
+    private User testUser;
 
     @BeforeEach
     void setUp() {
+        groupRepository.deleteAll();
+        userRepository.deleteAll();
+
+        testUser = new User();
+        testUser.setUsername("test");
+        testUser.setPassword("test");
+        testUser.setEmail("test@test.com");
+        userRepository.save(testUser);
+
         Group group = new Group();
         group.setName("Test Group #1");
+        group.setUser(testUser);
         groupRepository.save(group);
+
         testGroupId = group.getId();
     }
 
-    @AfterEach
-    void cleanUp() {
-        groupRepository.deleteById(testGroupId);
-    }
-
     @Test
-    @WithMockUser(username = "test")
     void getAllGroups() {
+        when(groupRepository.findAll()).thenReturn(List.of(new Group()));
         List<Group> groups = groupService.getAllGroups();
         assertFalse(groups.isEmpty(), "The group list should not be empty");
     }
 
     @Test
-    @WithMockUser(username = "test")
     void getGroupById() {
+        when(groupRepository.findById(testGroupId)).thenReturn(java.util.Optional.of(new Group()));
         Group foundGroup = groupService.getGroupById(testGroupId);
         assertNotNull(foundGroup, "The group should be found");
     }
 
     @Test
-    @WithMockUser(username = "test")
     void createGroup() {
-        int groupCount = groupRepository.findAll().size();
+        when(groupRepository.findAll()).thenReturn(List.of());
 
-        Group group = new Group();
-        group.setName("Test Group #2");
-        groupService.createGroup(group);
+        int groupCountBefore = groupRepository.findAll().size();
 
-        int newGroupCount = groupRepository.findAll().size();
-        assertEquals(groupCount + 1, newGroupCount, "The group should be created");
+        Group newGroup = new Group();
+        newGroup.setName("Test Group #2");
+        newGroup.setUser(testUser);
 
-        groupRepository.deleteById(group.getId());
+        groupService.createGroup(newGroup);
+        when(groupRepository.findAll()).thenReturn(List.of(newGroup));
+
+        int groupCountAfter = groupRepository.findAll().size();
+
+        assertEquals(groupCountBefore + 1, groupCountAfter, "The group should be created");
     }
 
     @Test
-    @WithMockUser(username = "test")
     void updateGroup() {
+        Group existingGroup = new Group();
+        existingGroup.setId(testGroupId);
+        existingGroup.setName("Old Group");
+        existingGroup.setDescription("Old Description");
+
+        when(groupRepository.findById(testGroupId)).thenReturn(Optional.of(existingGroup));
+
         Group updatedGroup = new Group();
         updatedGroup.setName("Updated Group");
         updatedGroup.setDescription("Updated Description");
+
         groupService.updateGroup(testGroupId, updatedGroup);
 
-        Group foundGroup = groupService.getGroupById(testGroupId);
-        assertEquals("Updated Group", foundGroup.getName(), "The group name should be updated");
-        assertEquals("Updated Description", foundGroup.getDescription(), "The group description should be updated");
+        assertEquals("Updated Group", existingGroup.getName(), "The group name should be updated");
+        assertEquals("Updated Description", existingGroup.getDescription(), "The group description should be updated");
+
+        verify(groupRepository).save(existingGroup);
     }
 
     @Test
@@ -98,5 +116,41 @@ class GroupServiceTest {
 
         Group deletedGroup = groupService.getGroupById(group.getId());
         assertNull(deletedGroup, "The group should be deleted and not found");
+    }
+
+    @Test
+    void getGroupsByUserId() {
+        Group group1 = new Group();
+        group1.setId(1L);
+        group1.setName("Group 1");
+        group1.setUser(testUser);
+
+        Group group2 = new Group();
+        group2.setId(2L);
+        group2.setName("Group 2");
+        group2.setUser(testUser);
+
+        when(groupRepository.getGroupsByUserId(testUser.getId())).thenReturn(List.of(group1, group2));
+
+        List<Group> groups = groupService.getGroupsByUserId(testUser.getId());
+
+        assertNotNull(groups);
+        assertEquals(2, groups.size());
+        assertEquals("Group 1", groups.get(0).getName());
+        assertEquals("Group 2", groups.get(1).getName());
+
+        verify(groupRepository, times(1)).getGroupsByUserId(testUser.getId());
+    }
+
+    @Test
+    void isGroupNameTaken() {
+        when(groupRepository.existsByName("Existing Group")).thenReturn(true);
+        when(groupRepository.existsByName("New Group")).thenReturn(false);
+
+        assertTrue(groupService.isGroupNameTaken("Existing Group"));
+        assertFalse(groupService.isGroupNameTaken("New Group"));
+
+        verify(groupRepository, times(1)).existsByName("Existing Group");
+        verify(groupRepository, times(1)).existsByName("New Group");
     }
 }

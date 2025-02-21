@@ -1,5 +1,6 @@
 package org.metropolia.minimalnotepad.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -13,6 +14,10 @@ import java.util.List;
         private long id;
         private String name;
         private String description;
+        @ManyToOne
+        @JoinColumn(name = "user_id", nullable = false)
+        @JsonIgnoreProperties({"email", "notes", "password", "groupParticipationsList", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
+        private User user;
         @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JsonManagedReference("group-reference")
         private List<Note> notes;
@@ -37,6 +42,12 @@ import java.util.List;
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
     public List<Note> getNotes(){
         return notes;
