@@ -113,6 +113,11 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
     }
+//    @GetMapping("/filter")
+    // The request body is going to have the ArrayList<Note> that needs to be filtered, and a category to filter it with. Create the Request body using a DTO
+//    public ResponseEntity<?> filterNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody) {
+//          implement logic
+//    }
     private String getTokenFromHeader(String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Authorization header is invalid");
