@@ -78,6 +78,7 @@ public class NoteController {
             @RequestBody Note updatedNote) {
         try {
             String token = getTokenFromHeader(authorizationHeader);
+
             User user = getUserFromToken(token);
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -87,15 +88,18 @@ public class NoteController {
             Note savedNote = noteService.updateNote(user, noteId, updatedNote);
             return ResponseEntity.ok(savedNote);
 
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse(401, "Authorization header is invalid"));
         } catch (ResourceDoesntExistException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorResponse(404, e.getMessage()));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorResponse(500, "An unexpected error occurred"));
         }
     }
-
 
     @DeleteMapping("/{noteId}")
     public ResponseEntity<?> deleteNote(@RequestHeader("Authorization") String authorizationHeader, @PathVariable long noteId) {

@@ -43,10 +43,8 @@ public class NoteService {
         noteRepository.save(note);
     }
     public Note updateNote(User user, long noteId, Note updatedNote) {
-
         Note existingNote = noteRepository.findById(noteId)
                 .orElseThrow(() -> new ResourceDoesntExistException("This note doesn't exist"));
-
 
         if (existingNote.getUser().getId() != user.getId()) {
             throw new UserDoesntOwnResourceException("You do not own this note.");
@@ -58,7 +56,6 @@ public class NoteService {
         if (updatedNote.getText() != null) {
             existingNote.setText(updatedNote.getText());
         }
-
         return noteRepository.save(existingNote);
     }
 
