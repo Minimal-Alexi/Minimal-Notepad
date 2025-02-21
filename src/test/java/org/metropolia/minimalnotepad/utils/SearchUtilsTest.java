@@ -37,10 +37,13 @@ public class SearchUtilsTest {
     }
     @Test
     public void testSearchFunctionFailure(){
+        ArrayList<String> searchList = new ArrayList<>();
+        searchList.add("My Summer Car");
+        searchList.add("Summer Car");
+        searchList.add("I love bananas");
 
-    }
-    @Test
-    public void testSearchFunctionLevenshteinDistance(){
-
+        ArrayList<Integer> foundResults = searchUtils.searchText(searchList, "Coca cola espuma");
+        assertNotNull(foundResults);
+        assertTrue(foundResults.isEmpty());
     }
 }
