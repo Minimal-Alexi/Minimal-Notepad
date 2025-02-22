@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.metropolia.minimalnotepad.dto.ErrorResponse;
+import org.metropolia.minimalnotepad.dto.SearchRequest;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.NoteRepository;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -360,5 +362,57 @@ public class NoteControllerTest {
         assertEquals("Updated Title", returnedNote.getTitle());
         assertEquals("Updated text.", returnedNote.getText());
     }
+    @Test
+    public void testGetSearchedNotesSuccess(){
+        Note note1 = new Note(), note2 = new Note(), note3 = new Note();
+        note1.setTitle("titleCool");
+        note2.setTitle("I love min");
+        note3.setTitle("I love milk");
+        ArrayList<Note> notes = new ArrayList<>();
+        notes.add(note1);
+        notes.add(note2);
+        notes.add(note3);
+        String query1 = "titleCool", query2 = "I love mi";
+        ResponseEntity<?> responseEntity = noteController.searchNote("non-applicable",new SearchRequest(query1,notes));
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Object body = responseEntity.getBody();
+        assertNotNull(body);
+        assertTrue(body instanceof ArrayList<?>);
+        ArrayList<Note> returnedNotes = (ArrayList<Note>) body;
+        assertEquals(returnedNotes.size(), 1);
+
+        responseEntity = noteController.searchNote("non-applicable",new SearchRequest(query2,notes));
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        body = responseEntity.getBody();
+        assertNotNull(body);
+        assertTrue(body instanceof ArrayList<?>);
+        returnedNotes = (ArrayList<Note>) body;
+        assertEquals(returnedNotes.size(), 2);
+
+    }
+    @Test
+    public void testGetSearchedNotesNoneFound(){
+        Note note1 = new Note(), note2 = new Note(), note3 = new Note();
+        note1.setTitle("titleCool");
+        note2.setTitle("I love min");
+        note3.setTitle("I love milk");
+        ArrayList<Note> notes = new ArrayList<>();
+        notes.add(note1);
+        notes.add(note2);
+        notes.add(note3);
+
+        ResponseEntity<?> responseEntity = noteController.searchNote("non-applicable",new SearchRequest("non-applicable",notes));
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testGetSearchedNotesBadQuery(){
+        ResponseEntity<?> responseEntity = noteController.searchNote("non-applicable",new SearchRequest(null,null));
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+    }
+
 }
 
