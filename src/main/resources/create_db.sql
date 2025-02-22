@@ -84,7 +84,7 @@ INSERT INTO notes (id, title, text, colour, created_at, updated_at, user_id, gro
 
 -- Is Part Of (User-Group Relationship)
 INSERT INTO user_groups (user_id, group_id) VALUES
-                                             (1, 1),
+                                             (1, 3),
                                              (1, 2),
                                              (2, 3),
                                              (3, 1);

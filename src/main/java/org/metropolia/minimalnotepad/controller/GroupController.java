@@ -42,36 +42,28 @@ public class GroupController {
     public ResponseEntity<?> getUserGroups(@RequestHeader("Authorization") String authorizationHeader) {
         String token = jwtUtils.getTokenFromHeader(authorizationHeader);
         User user = userService.getUserFromToken(token);
-        Long userId = user.getId();
-        List<Group> userCreatedGroups = user.getGroups();
-        List<Group> userJoinedGroups = new ArrayList<>();
-        List<UserGroupParticipation> userParticipations= user.getGroupParticipationsList();
-        for(UserGroupParticipation userGroupParticipation : userParticipations){
-            userJoinedGroups.add(userGroupParticipation.getGroup());
-        }
-        userCreatedGroups.addAll(userJoinedGroups);
 
-        //List<Group> groups = groupService.getUserGroups(userId);
+        List<Group> userGroups = groupService.getUserGroups(user);
 
-        if (userCreatedGroups.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userCreatedGroups);
+        if (userGroups.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User is not an owner or a member of any groups."));
         }
-        return ResponseEntity.ok(userCreatedGroups);
+        return ResponseEntity.ok(userGroups);
     }
 
-    /*/ Get all groups that the user is not a member of (all groups - user's groups)
+    // Get all groups that the user can join (all groups - user's groups)
     @GetMapping("/available")
     public ResponseEntity<?> getAvailableGroups(@RequestHeader("Authorization") String authorizationHeader) {
         String token = jwtUtils.getTokenFromHeader(authorizationHeader);
         User user = userService.getUserFromToken(token);
 
-        List<Group> groups = groupService.getAvailableGroups(user.getId());
+        List<Group> groups = groupService.getAvailableGroups(user);
 
         if (groups.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(groups);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "No groups available to join."));
         }
         return ResponseEntity.ok(groups);
-    }*/
+    }
 
     @GetMapping("/{id}")
     public Group getGroupById(@PathVariable Long id) {
@@ -85,7 +77,7 @@ public class GroupController {
 
         // Check if the group name is unique
         if (groupService.isGroupNameTaken(group.getName())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Group name is already taken"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Group name is already taken."));
         }
 
         group.setUser(user);

@@ -1,9 +1,13 @@
 package org.metropolia.minimalnotepad.service;
 
+import org.metropolia.minimalnotepad.model.User;
+import org.metropolia.minimalnotepad.model.UserGroupParticipation;
 import org.metropolia.minimalnotepad.repository.GroupRepository;
 import org.metropolia.minimalnotepad.model.Group;
 
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,13 +23,25 @@ public class GroupService {
         return groupRepository.findAll();
     }
 
-    public List<Group> getUserGroups(Long userId) {
-        return groupRepository.findOwnAndJoinedGroupsByUserId(userId);
+    public List<Group> getUserGroups(User user) {
+        List<Group> userCreatedGroups = user.getGroups();
+        List<Group> userJoinedGroups = new ArrayList<>();
+        List<UserGroupParticipation> userParticipations = user.getGroupParticipationsList();
+        for(UserGroupParticipation userGroupParticipation : userParticipations){
+            userJoinedGroups.add(userGroupParticipation.getGroup());
+        }
+        userCreatedGroups.addAll(userJoinedGroups);
+
+        return userCreatedGroups;
     }
 
-    /*public List<Group> getAvailableGroups(long userId) {
-        return groupRepository.getAvailableGroups(userId);
-    }*/
+    public List<Group> getAvailableGroups(User user) {
+        List<Group> allGroups = groupRepository.findAll();
+        List<Group> userGroups = getUserGroups(user);
+        allGroups.removeAll(userGroups);
+
+        return allGroups;
+    }
 
     public Group getGroupById(Long id) {
         return groupRepository.findById(id).orElse(null); // Using orElse on Optional<Group>

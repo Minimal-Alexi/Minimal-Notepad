@@ -267,13 +267,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/groups",
+							"raw": "{{host}}/api/groups/all",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"groups"
+								"groups",
+								"all"
 							],
 							"query": [
 								{
@@ -281,6 +282,44 @@
 									"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0IiwiaWF0IjoxNzM4NTgyMTE1LCJleHAiOjE3Mzg2Njg1MTV9.Z3-VmoNnVK1sDbzvJuYACdksbFEOVbP5Fc2CurW645I",
 									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get own+joined groups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/groups/my-groups",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"my-groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get available to join groups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/groups/available",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"available"
 							]
 						}
 					},
@@ -327,7 +366,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Linkbuzz\",\n    \"description\": \"nulla nunc purus phasellus in felis donec semper sapien a libero nam\"\n}",
+							"raw": "{\n    \"name\": \"Friends\",\n    \"description\": \"Private group for friends' activities.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -433,25 +472,6 @@
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
-					},
-					"response": []
-				},
-				{
-					"name": "Get groups by User ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/groups/user",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"groups",
-								"user"
-							]
-						}
 					},
 					"response": []
 				},
@@ -695,7 +715,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzamFja2VzMCIsImlhdCI6MTc0MDA3MTkxMSwiZXhwIjoxNzQwMTU4MzExfQ.L3msZDb2FhKUnBOMyksWPv31lvfhd7eKnGaj0-PoXGU",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzamFja2VzMCIsImlhdCI6MTc0MDI1MDI0NCwiZXhwIjoxNzQwMzM2NjQ0fQ.3R2voBcJ0tua-2Bw2J8s1hAae0drScK_ENyXxa2275s",
 				"type": "string"
 			}
 		]
