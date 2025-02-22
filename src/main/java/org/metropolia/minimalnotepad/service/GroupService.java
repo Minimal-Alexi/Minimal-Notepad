@@ -19,6 +19,14 @@ public class GroupService {
         return groupRepository.findAll();
     }
 
+    public List<Group> getUserGroups(Long userId) {
+        return groupRepository.findOwnAndJoinedGroupsByUserId(userId);
+    }
+
+    /*public List<Group> getAvailableGroups(long userId) {
+        return groupRepository.getAvailableGroups(userId);
+    }*/
+
     public Group getGroupById(Long id) {
         return groupRepository.findById(id).orElse(null); // Using orElse on Optional<Group>
     }
@@ -36,10 +44,6 @@ public class GroupService {
 
     public void deleteGroup(Long id) {
         groupRepository.deleteById(id);
-    }
-
-    public List<Group> getGroupsByUserId(long userId) {
-        return groupRepository.getGroupsByUserId(userId);
     }
 
     public boolean isGroupNameTaken(String name) {

@@ -68,6 +68,7 @@ class GroupControllerTest {
         testUser = userRepository.save(testUser);
 
         testGroup = new Group();
+        testGroup.setId(1L);
         testGroup.setName("Test Group");
         testGroup.setUser(testUser);
 
@@ -96,6 +97,7 @@ class GroupControllerTest {
     @WithMockUser(username = "test")
     void createGroup() throws Exception {
         Group newGroup = new Group();
+        newGroup.setId(2L);
         newGroup.setName("New Group");
         newGroup.setUser(testUser);
 

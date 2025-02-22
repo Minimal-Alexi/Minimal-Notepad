@@ -31,10 +31,39 @@ public class GroupController {
         this.userGroupParticipationService = userGroupParticipationService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Group> getAllGroups() {
         return groupService.getAllGroups();
     }
+
+    // Get all groups that the user is a member of (created + joined)
+    @GetMapping("/my-groups")
+    public ResponseEntity<?> getUserGroups(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = jwtUtils.getTokenFromHeader(authorizationHeader);
+        User user = userService.getUserFromToken(token);
+        Long userId = user.getId();
+
+        List<Group> groups = groupService.getUserGroups(userId);
+
+        if (groups.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(groups);
+        }
+        return ResponseEntity.ok(groups);
+    }
+
+    /*/ Get all groups that the user is not a member of (all groups - user's groups)
+    @GetMapping("/available")
+    public ResponseEntity<?> getAvailableGroups(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = jwtUtils.getTokenFromHeader(authorizationHeader);
+        User user = userService.getUserFromToken(token);
+
+        List<Group> groups = groupService.getAvailableGroups(user.getId());
+
+        if (groups.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(groups);
+        }
+        return ResponseEntity.ok(groups);
+    }*/
 
     @GetMapping("/{id}")
     public Group getGroupById(@PathVariable Long id) {
@@ -67,20 +96,6 @@ public class GroupController {
     public ResponseEntity<Void> deleteGroup(@PathVariable Long id) {
         groupService.deleteGroup(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/user")
-    public ResponseEntity<?> getGroupsByUserId(@RequestHeader("Authorization") String authorizationHeader) {
-        String token = jwtUtils.getTokenFromHeader(authorizationHeader);
-        User user = userService.getUserFromToken(token);
-
-        List<Group> groups = groupService.getGroupsByUserId(user.getId());
-
-        if (groups.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(groups);
-        }
-
-        return ResponseEntity.ok(groups);
     }
 
     // User joins a group

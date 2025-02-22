@@ -6,24 +6,24 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-    @Entity
-    @Table(name="groups")
-    public class Group {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private long id;
-        private String name;
-        private String description;
-        @ManyToOne
-        @JoinColumn(name = "user_id", nullable = false)
-        @JsonIgnoreProperties({"email", "notes", "password", "groupParticipationsList", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
-        private User user;
-        @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-        @JsonManagedReference("group-reference")
-        private List<Note> notes;
-        @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-        @JsonManagedReference("participation-group")
-        private List<UserGroupParticipation> userGroupParticipationsList;
+@Entity
+@Table(name="groups")
+public class Group {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String description;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"email", "notes", "password", "groupParticipationsList", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
+    private User user;
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("group-reference")
+    private List<Note> notes;
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("participation-group")
+    private List<UserGroupParticipation> userGroupParticipationsList;
 
     public long getId() {
         return id;
