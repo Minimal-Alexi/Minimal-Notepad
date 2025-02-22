@@ -2,6 +2,7 @@ package org.metropolia.minimalnotepad.controller;
 
 
 import org.metropolia.minimalnotepad.dto.ErrorResponse;
+import org.metropolia.minimalnotepad.dto.NoteFilter;
 import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/note")
@@ -113,11 +115,42 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
     }
-//    @GetMapping("/filter")
-    // The request body is going to have the ArrayList<Note> that needs to be filtered, and a category to filter it with. Create the Request body using a DTO
-//    public ResponseEntity<?> filterNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody) {
-//          implement logic
-//    }
+    @GetMapping("/filter")
+        // The request body is going to have the ArrayList<Note> that needs to be filtered, and a category to filter it with. Create the Request body using a DTO
+    //    public ResponseEntity<?> filterNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody) {
+    //          implement logic
+    //    }
+
+    public ResponseEntity<?> filterNote(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody NoteFilter filterDTO) {
+        try {
+            String token = getTokenFromHeader(authorizationHeader);
+            User user = getUserFromToken(token);
+
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ErrorResponse(404, "User not found"));
+            }
+
+            if (filterDTO == null || filterDTO.getNotes() == null || filterDTO.getCategory() == null) {
+                return ResponseEntity.badRequest()
+                        .body(new ErrorResponse(400, "Invalid request body"));
+            }
+
+            List<Note> filteredNotes = filterDTO.getNotes().stream()
+                    .filter(note -> note.getCategory() != null)
+                    .filter(note -> note.getCategory().equalsIgnoreCase(filterDTO.getCategory()))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(filteredNotes);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse(500, "An error occurred: " + e.getMessage()));
+        }
+    }
+
     private String getTokenFromHeader(String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Authorization header is invalid");
