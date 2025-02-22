@@ -55,6 +55,12 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+    public List<Group> getGroups(){
+        return groups;
+    }
+    public List<UserGroupParticipation> getGroupParticipationsList() {
+        return groupParticipationsList;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

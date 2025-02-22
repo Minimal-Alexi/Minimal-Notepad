@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,13 +43,20 @@ public class GroupController {
         String token = jwtUtils.getTokenFromHeader(authorizationHeader);
         User user = userService.getUserFromToken(token);
         Long userId = user.getId();
-
-        List<Group> groups = groupService.getUserGroups(userId);
-
-        if (groups.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(groups);
+        List<Group> userCreatedGroups = user.getGroups();
+        List<Group> userJoinedGroups = new ArrayList<>();
+        List<UserGroupParticipation> userParticipations= user.getGroupParticipationsList();
+        for(UserGroupParticipation userGroupParticipation : userParticipations){
+            userJoinedGroups.add(userGroupParticipation.getGroup());
         }
-        return ResponseEntity.ok(groups);
+        userCreatedGroups.addAll(userJoinedGroups);
+
+        //List<Group> groups = groupService.getUserGroups(userId);
+
+        if (userCreatedGroups.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userCreatedGroups);
+        }
+        return ResponseEntity.ok(userCreatedGroups);
     }
 
     /*/ Get all groups that the user is not a member of (all groups - user's groups)
