@@ -1,34 +1,35 @@
 package org.metropolia.minimalnotepad.dto;
 
+import org.metropolia.minimalnotepad.model.Category;
 import org.metropolia.minimalnotepad.model.Note;
-import java.util.List;
+import java.util.ArrayList;
 
 public class NoteFilter {
-    private List<Note> notes;
-    private String category;
+    private ArrayList<Note> notes;
+    private Category category;
 
     // Constructors
     public NoteFilter() {}
 
-    public NoteFilter(List<Note> notes, String category) {
+    public NoteFilter(ArrayList<Note> notes, Category category) {
         this.notes = notes;
         this.category = category;
     }
 
     // Getters and setters
-    public List<Note> getNotes() {
+    public ArrayList<Note> getNotes() {
         return notes;
     }
 
-    public void setNotes(List<Note> notes) {
+    public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 }

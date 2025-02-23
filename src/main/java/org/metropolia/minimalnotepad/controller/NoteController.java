@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -116,11 +117,6 @@ public class NoteController {
         }
     }
     @GetMapping("/filter")
-        // The request body is going to have the ArrayList<Note> that needs to be filtered, and a category to filter it with. Create the Request body using a DTO
-    //    public ResponseEntity<?> filterNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody) {
-    //          implement logic
-    //    }
-
     public ResponseEntity<?> filterNote(
             @RequestHeader("Authorization") String authorizationHeader,
             @RequestBody NoteFilter filterDTO) {
@@ -133,16 +129,12 @@ public class NoteController {
                         .body(new ErrorResponse(404, "User not found"));
             }
 
-            if (filterDTO == null || filterDTO.getNotes() == null || filterDTO.getCategory() == null) {
+            if (filterDTO == null || filterDTO.getNotes() == null) {
                 return ResponseEntity.badRequest()
                         .body(new ErrorResponse(400, "Invalid request body"));
             }
 
-            List<Note> filteredNotes = filterDTO.getNotes().stream()
-                    .filter(note -> note.getCategory() != null)
-                    .filter(note -> note.getCategory().equalsIgnoreCase(filterDTO.getCategory()))
-                    .collect(Collectors.toList());
-
+            ArrayList<Note> filteredNotes = noteService.filterNotes(filterDTO.getNotes(), filterDTO.getCategory());
             return ResponseEntity.ok(filteredNotes);
 
         } catch (Exception e) {
