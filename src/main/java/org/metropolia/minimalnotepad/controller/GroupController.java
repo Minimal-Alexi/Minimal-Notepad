@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,9 +32,37 @@ public class GroupController {
         this.userGroupParticipationService = userGroupParticipationService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Group> getAllGroups() {
         return groupService.getAllGroups();
+    }
+
+    // Get all groups that the user is a member of (created + joined)
+    @GetMapping("/my-groups")
+    public ResponseEntity<?> getUserGroups(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = jwtUtils.getTokenFromHeader(authorizationHeader);
+        User user = userService.getUserFromToken(token);
+
+        List<Group> userGroups = groupService.getUserGroups(user);
+
+        if (userGroups.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User is not an owner or a member of any groups."));
+        }
+        return ResponseEntity.ok(userGroups);
+    }
+
+    // Get all groups that the user can join (all groups - user's groups)
+    @GetMapping("/available")
+    public ResponseEntity<?> getAvailableGroups(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = jwtUtils.getTokenFromHeader(authorizationHeader);
+        User user = userService.getUserFromToken(token);
+
+        List<Group> groups = groupService.getAvailableGroups(user);
+
+        if (groups.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "No groups available to join."));
+        }
+        return ResponseEntity.ok(groups);
     }
 
     @GetMapping("/{id}")
@@ -48,7 +77,7 @@ public class GroupController {
 
         // Check if the group name is unique
         if (groupService.isGroupNameTaken(group.getName())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Group name is already taken"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Group name is already taken."));
         }
 
         group.setUser(user);
@@ -67,20 +96,6 @@ public class GroupController {
     public ResponseEntity<Void> deleteGroup(@PathVariable Long id) {
         groupService.deleteGroup(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/user")
-    public ResponseEntity<?> getGroupsByUserId(@RequestHeader("Authorization") String authorizationHeader) {
-        String token = jwtUtils.getTokenFromHeader(authorizationHeader);
-        User user = userService.getUserFromToken(token);
-
-        List<Group> groups = groupService.getGroupsByUserId(user.getId());
-
-        if (groups.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(groups);
-        }
-
-        return ResponseEntity.ok(groups);
     }
 
     // User joins a group

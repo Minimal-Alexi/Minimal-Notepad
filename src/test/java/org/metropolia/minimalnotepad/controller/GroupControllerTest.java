@@ -12,6 +12,7 @@ import org.metropolia.minimalnotepad.repository.GroupRepository;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.metropolia.minimalnotepad.service.GroupService;
 import org.metropolia.minimalnotepad.service.UserGroupParticipationService;
+import org.metropolia.minimalnotepad.service.UserService;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -50,6 +51,8 @@ class GroupControllerTest {
     private GroupService groupService;
     @Autowired
     private UserGroupParticipationService userGroupParticipationService;
+    @Autowired
+    private UserService userService;
 
     @BeforeAll
     public static void setup() {
@@ -68,6 +71,7 @@ class GroupControllerTest {
         testUser = userRepository.save(testUser);
 
         testGroup = new Group();
+        testGroup.setId(1L);
         testGroup.setName("Test Group");
         testGroup.setUser(testUser);
 
@@ -78,7 +82,7 @@ class GroupControllerTest {
     @Test
     @WithMockUser(username = "test")
     void getAllGroups() throws Exception {
-        mockMvc.perform(get("/api/groups"))
+        mockMvc.perform(get("/api/groups/all"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].name").value("Test Group"));
@@ -96,6 +100,7 @@ class GroupControllerTest {
     @WithMockUser(username = "test")
     void createGroup() throws Exception {
         Group newGroup = new Group();
+        newGroup.setId(2L);
         newGroup.setName("New Group");
         newGroup.setUser(testUser);
 
@@ -131,48 +136,80 @@ class GroupControllerTest {
     }
 
     @Test
-    void testGetGroupsByUserId() throws Exception {
-        Group group1 = new Group();
-        group1.setId(1L);
-        group1.setName("New group 1");
-        group1.setUser(testUser);
+    @WithMockUser(username = "test")
+    void testGetUserGroups() throws Exception {
+        User newUser = new User();
+        newUser.setUsername("newUser");
+        userRepository.save(newUser);
 
-        Group group2 = new Group();
-        group2.setId(2L);
-        group2.setName("New group 2");
-        group2.setUser(testUser);
+        Group group1 = new Group();
+        group1.setName("New group 1");
+        group1.setUser(newUser);
 
         groupRepository.save(group1);
-        groupRepository.save(group2);
 
-        String token = jwtUtils.generateToken(testUser.getUsername());
+        userGroupParticipationService.joinGroup(newUser.getId(), testGroup.getId());
 
-        mockMvc.perform(get("/api/groups/user")
-                        .header("Authorization", "Bearer " + token)) // ✅ Ensure a valid token is passed
+        String token = jwtUtils.generateToken(newUser.getUsername());
+
+        mockMvc.perform(get("/api/groups/my-groups")
+                        .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].name").value("New group 2"))
-                .andExpect(jsonPath("$[1].name").value("New group 1"));
+                .andExpect(jsonPath("$[0].name").value("New group 1"))
+                .andExpect(jsonPath("$[1].name").value("Test Group"));
     }
 
     @Test
-    void testGetGroupsByUserId_EmptyList() throws Exception {
-        groupRepository.deleteAll();
-        String token = jwtUtils.generateToken(testUser.getUsername());
+    void testGetUserGroups_EmptyList() throws Exception {
+        User newUser = new User();
+        newUser.setUsername("newUser");
+        userRepository.save(newUser);
 
-        mockMvc.perform(get("/api/groups/user")
+        String token = jwtUtils.generateToken(newUser.getUsername());
+
+        mockMvc.perform(get("/api/groups/my-groups")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.length()").value(0));
+                .andExpect(jsonPath("$.message").value("User is not an owner or a member of any groups."));
+    }
+
+    @Test
+    void testGetAvailableGroups() throws Exception {
+        User newUser = new User();
+        newUser.setUsername("newUser");
+        userRepository.save(newUser);
+
+        String token = jwtUtils.generateToken(newUser.getUsername());
+
+        mockMvc.perform(get("/api/groups/available")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].name").value("Test Group"));
+    }
+
+    @Test
+    void testGetAvailableGroups_EmptyList() throws Exception {
+        userGroupParticipationService.joinGroup(testUser.getId(), testGroup.getId());
+
+        String token = jwtUtils.generateToken(testUser.getUsername());
+
+        mockMvc.perform(get("/api/groups/available")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("No groups available to join."));
     }
 
     @Test
     void testCreateGroupWithDuplicateName() throws Exception {
         Group group1 = new Group();
+        group1.setId(1L);
         group1.setName("Test Group 1");
         group1.setUser(testUser);
 
         Group group2 = new Group();
+        group2.setId(2L);
         group2.setName("Test Group 1"); // Same name as group1
         group2.setUser(testUser);
 
@@ -191,7 +228,7 @@ class GroupControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(group2)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Group name is already taken"));
+                .andExpect(jsonPath("$.message").value("Group name is already taken."));
     }
 
     @Test
@@ -224,5 +261,4 @@ class GroupControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNoContent());
     }
-
 }
