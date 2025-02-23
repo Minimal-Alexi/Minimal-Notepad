@@ -3,6 +3,7 @@ package org.metropolia.minimalnotepad.controller;
 
 import org.metropolia.minimalnotepad.dto.ErrorResponse;
 import org.metropolia.minimalnotepad.dto.NoteFilter;
+import org.metropolia.minimalnotepad.dto.SearchRequest;
 import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
@@ -116,6 +117,7 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
     }
+
     @GetMapping("/filter")
     public ResponseEntity<?> filterNote(
             @RequestHeader("Authorization") String authorizationHeader,
@@ -140,6 +142,24 @@ public class NoteController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorResponse(500, "An error occurred: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody SearchRequest searchRequest) {
+        try{
+            ArrayList<Note> unfilteredNotes = searchRequest.getNotes();
+            String query = searchRequest.getQuery();
+            if(query == null || unfilteredNotes.isEmpty()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Nothing to search"));
+            }
+            ArrayList<Note> filteredNotes = noteService.findNotes(unfilteredNotes, query);
+            if(filteredNotes.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "No results found"));
+            }
+            return ResponseEntity.ok(filteredNotes);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(500, "An unexpected error occurred"));
         }
     }
 
