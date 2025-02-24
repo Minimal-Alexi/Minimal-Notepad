@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "notes")
@@ -102,4 +103,14 @@ public class Note {
     public List<Category> getCategoriesList() {
         return categoriesList;
     }
+
+    public String getCategory() {
+        if (categoriesList != null && !categoriesList.isEmpty()) {
+            return categoriesList.stream()
+                    .map(Category::getName) // Assuming Category has a getName() method
+                    .collect(Collectors.joining(", "));
+        }
+        return "Uncategorized";
+    }
+
 }

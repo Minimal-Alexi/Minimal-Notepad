@@ -2,6 +2,7 @@ package org.metropolia.minimalnotepad.controller;
 
 
 import org.metropolia.minimalnotepad.dto.ErrorResponse;
+import org.metropolia.minimalnotepad.dto.NoteFilter;
 import org.metropolia.minimalnotepad.dto.SearchRequest;
 import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.model.Note;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/note")
@@ -115,11 +117,34 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
     }
-//    @GetMapping("/filter")
-    // The request body is going to have the ArrayList<Note> that needs to be filtered, and a category to filter it with. Create the Request body using a DTO
-//    public ResponseEntity<?> filterNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody) {
-//          implement logic
-//    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<?> filterNote(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody NoteFilter filterDTO) {
+        try {
+            String token = getTokenFromHeader(authorizationHeader);
+            User user = getUserFromToken(token);
+
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ErrorResponse(404, "User not found"));
+            }
+
+            if (filterDTO == null || filterDTO.getNotes() == null) {
+                return ResponseEntity.badRequest()
+                        .body(new ErrorResponse(400, "Invalid request body"));
+            }
+
+            ArrayList<Note> filteredNotes = noteService.filterNotes(filterDTO.getNotes(), filterDTO.getCategory());
+            return ResponseEntity.ok(filteredNotes);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse(500, "An error occurred: " + e.getMessage()));
+        }
+    }
+
     @GetMapping("/search")
     public ResponseEntity<?> searchNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody SearchRequest searchRequest) {
         try{
@@ -137,6 +162,7 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(500, "An unexpected error occurred"));
         }
     }
+
     private String getTokenFromHeader(String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Authorization header is invalid");
