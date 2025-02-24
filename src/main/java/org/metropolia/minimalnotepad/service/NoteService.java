@@ -8,6 +8,7 @@ import org.metropolia.minimalnotepad.repository.NoteRepository;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -49,14 +50,11 @@ public class NoteService {
         if (existingNote.getUser().getId() != user.getId()) {
             throw new UserDoesntOwnResourceException("You do not own this note.");
         }
-
-        if (updatedNote.getTitle() != null) {
-            existingNote.setTitle(updatedNote.getTitle());
-        }
-        if (updatedNote.getText() != null) {
-            existingNote.setText(updatedNote.getText());
-        }
-        return noteRepository.save(existingNote);
+        updatedNote.setId(noteId);
+        updatedNote.setUser(user);
+        updatedNote.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        updatedNote.setCreatedAt(existingNote.getCreatedAt());
+        return noteRepository.save(updatedNote);
     }
 
     public void deleteNote(User user,Note note) {
