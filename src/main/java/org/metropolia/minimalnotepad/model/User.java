@@ -27,6 +27,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("participation-user")
     private List<UserGroupParticipation> groupParticipationsList;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"groups"})
+    private List<Group> groups;
 
     public long getId() {
         return id;
@@ -51,6 +54,12 @@ public class User implements UserDetails {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public List<Group> getGroups(){
+        return groups;
+    }
+    public List<UserGroupParticipation> getGroupParticipationsList() {
+        return groupParticipationsList;
     }
 
     @Override

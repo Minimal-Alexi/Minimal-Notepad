@@ -7,6 +7,7 @@ import org.metropolia.minimalnotepad.exception.UserAlreadyExistsException;
 import org.metropolia.minimalnotepad.exception.UserNotFoundException;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.UserRepository;
+import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,12 +29,15 @@ public class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private JwtUtils jwtUtils;
+
     @InjectMocks
     private UserService userService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository, passwordEncoder);
+        userService = new UserService(userRepository, passwordEncoder, jwtUtils);
     }
 
     @Test

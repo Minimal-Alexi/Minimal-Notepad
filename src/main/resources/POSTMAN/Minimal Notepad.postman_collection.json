@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "6f8c4648-d357-4353-a1f9-f857aa76e96d",
+		"_postman_id": "93ebf417-c166-4a79-beff-dd350cf60844",
 		"name": "Minimal Notepad",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "37897491"
+		"_exporter_id": "29851757"
 	},
 	"item": [
 		{
@@ -267,13 +267,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/groups",
+							"raw": "{{host}}/api/groups/all",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"groups"
+								"groups",
+								"all"
 							],
 							"query": [
 								{
@@ -281,6 +282,44 @@
 									"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0IiwiaWF0IjoxNzM4NTgyMTE1LCJleHAiOjE3Mzg2Njg1MTV9.Z3-VmoNnVK1sDbzvJuYACdksbFEOVbP5Fc2CurW645I",
 									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get own+joined groups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/groups/my-groups",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"my-groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get available to join groups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/groups/available",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"available"
 							]
 						}
 					},
@@ -327,7 +366,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Linkbuzz\",\n    \"description\": \"nulla nunc purus phasellus in felis donec semper sapien a libero nam\"\n}",
+							"raw": "{\n    \"name\": \"Friends\",\n    \"description\": \"Private group for friends' activities.\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -422,17 +461,57 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/groups/3",
+							"raw": "{{host}}/api/groups/4",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"groups",
-								"3"
+								"4"
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Join group",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/groups/8/join",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"8",
+								"join"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leave group",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/groups/2/leave",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"2",
+								"leave"
+							]
+						}
 					},
 					"response": []
 				}
@@ -636,7 +715,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGYWtlQWNjb3VudCIsImlhdCI6MTczOTcwNzg3NywiZXhwIjoxNzM5Nzk0Mjc3fQ.NpU5t61upGyrrsDan8R4u5E-iYP1SAUmKjdCGP5rEu0",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzamFja2VzMCIsImlhdCI6MTc0MDI1MDI0NCwiZXhwIjoxNzQwMzM2NjQ0fQ.3R2voBcJ0tua-2Bw2J8s1hAae0drScK_ENyXxa2275s",
 				"type": "string"
 			}
 		]

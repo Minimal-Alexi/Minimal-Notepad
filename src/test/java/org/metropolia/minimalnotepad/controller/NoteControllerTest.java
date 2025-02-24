@@ -362,6 +362,76 @@ public class NoteControllerTest {
         assertEquals("Updated Title", returnedNote.getTitle());
         assertEquals("Updated text.", returnedNote.getText());
     }
+
+    @Test
+    public void testUpdateNoteUserNotFound() {
+        String token = jwtUtils.generateToken("nonexistent");
+        String authHeader = "Bearer " + token;
+
+        Note updatedNote = new Note();
+        updatedNote.setTitle("New Title");
+        updatedNote.setText("New text.");
+
+        ResponseEntity<?> responseEntity = noteController.updateNote(authHeader, 1L, updatedNote);
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+
+        Object body = responseEntity.getBody();
+        assertNotNull(body);
+        assertTrue(body instanceof ErrorResponse);
+        ErrorResponse error = (ErrorResponse) body;
+        assertEquals(404, error.getStatus());
+        assertEquals("User not found", error.getMessage());
+    }
+
+    @Test
+    public void testUpdateNoteNoteNotFound() {
+        User user = new User();
+        user.setUsername("testuser2");
+        user.setPassword(passwordEncoder.encode("password"));
+        user.setEmail("testuser2@example.com");
+        userRepository.save(user);
+
+        String token = jwtUtils.generateToken(user.getUsername());
+        String authHeader = "Bearer " + token;
+
+        Note updatedNote = new Note();
+        updatedNote.setTitle("Updated Title");
+        updatedNote.setText("Updated text.");
+
+        long nonExistentNoteId = 999L;
+        ResponseEntity<?> responseEntity = noteController.updateNote(authHeader, nonExistentNoteId, updatedNote);
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+
+        Object body = responseEntity.getBody();
+        assertNotNull(body);
+        assertTrue(body instanceof ErrorResponse);
+        ErrorResponse error = (ErrorResponse) body;
+        assertEquals(404, error.getStatus());
+        assertEquals("This note doesn't exist", error.getMessage());
+    }
+
+    @Test
+    public void testUpdateNoteInvalidHeader() {
+        long dummyNoteId = 1L;
+        String invalidHeader = "InvalidToken";
+        Note updatedNote = new Note();
+        updatedNote.setTitle("Updated Title");
+        updatedNote.setText("Updated text.");
+
+        ResponseEntity<?> responseEntity = noteController.updateNote(invalidHeader, dummyNoteId, updatedNote);
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+
+        Object body = responseEntity.getBody();
+        assertNotNull(body);
+        assertTrue(body instanceof ErrorResponse);
+        ErrorResponse error = (ErrorResponse) body;
+        assertEquals(401, error.getStatus());
+        assertEquals("Authorization header is invalid", error.getMessage());
+    }
+  
     @Test
     public void testGetSearchedNotesSuccess(){
         Note note1 = new Note(), note2 = new Note(), note3 = new Note();
@@ -390,7 +460,6 @@ public class NoteControllerTest {
         assertTrue(body instanceof ArrayList<?>);
         returnedNotes = (ArrayList<Note>) body;
         assertEquals(returnedNotes.size(), 2);
-
     }
     @Test
     public void testGetSearchedNotesNoneFound(){

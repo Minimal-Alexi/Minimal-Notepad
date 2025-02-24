@@ -16,7 +16,6 @@ public class JwtUtils {
     private final int timeValidity = 1000 * 60 * 60 * 24;
     @Value("${myapp.secret-key}")
     private String secretKey;
-    
 
     public String generateToken(String username) {
         System.out.println(secretKey);
@@ -57,4 +56,10 @@ public class JwtUtils {
         return (userDetails.getUsername().equals(extractUsername(token)) && !isTokenExpired(token));
     }
 
+    public String getTokenFromHeader(String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Authorization header is invalid");
+        }
+        return authorizationHeader.substring(7);
+    }
 }

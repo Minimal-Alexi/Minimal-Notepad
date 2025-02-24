@@ -10,6 +10,7 @@ import org.metropolia.minimalnotepad.utils.SearchUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,23 +47,17 @@ public class NoteService {
         noteRepository.save(note);
     }
     public Note updateNote(User user, long noteId, Note updatedNote) {
-
         Note existingNote = noteRepository.findById(noteId)
                 .orElseThrow(() -> new ResourceDoesntExistException("This note doesn't exist"));
-
 
         if (existingNote.getUser().getId() != user.getId()) {
             throw new UserDoesntOwnResourceException("You do not own this note.");
         }
-
-        if (updatedNote.getTitle() != null) {
-            existingNote.setTitle(updatedNote.getTitle());
-        }
-        if (updatedNote.getText() != null) {
-            existingNote.setText(updatedNote.getText());
-        }
-
-        return noteRepository.save(existingNote);
+        updatedNote.setId(noteId);
+        updatedNote.setUser(user);
+        updatedNote.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        updatedNote.setCreatedAt(existingNote.getCreatedAt());
+        return noteRepository.save(updatedNote);
     }
 
     public void deleteNote(User user,Note note) {
