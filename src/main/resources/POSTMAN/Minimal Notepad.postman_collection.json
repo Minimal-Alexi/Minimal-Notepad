@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "93ebf417-c166-4a79-beff-dd350cf60844",
+		"_postman_id": "dfe167dd-612b-4c6a-a18f-f545da6d25c7",
 		"name": "Minimal Notepad",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29851757"
+		"_exporter_id": "37897491"
 	},
 	"item": [
 		{
@@ -12,11 +12,14 @@
 				{
 					"name": "Login Request",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"FakeAccount\",\r\n    \"password\":\"min\"\r\n}",
+							"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\":\"test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -40,6 +43,9 @@
 				{
 					"name": "Register Request",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -251,6 +257,87 @@
 								"api",
 								"note",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Note",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/note/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"note",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Search",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"query\": \"quis turpis sed \",\r\n    \"notes\": [\r\n        {\r\n            \"title\": \"quis turpis sed ante\",\r\n            \"text\": \"Phasellus in felis. Donec semper sapien a libero. Nam dui.\\n\\nProin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.\\n\\nInteger ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.\",\r\n            \"colour\": \"#f7474f\",\r\n            \"figures\": [\r\n                {\r\n                    \"link\": \"http://dummyimage.com/202x164.png/ff4444/ffffff\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/103x152.png/cc0000/ffffff\"\r\n                }\r\n            ],\r\n            \"categoriesList\": [\r\n                {\r\n                    \"id\": 1\r\n                },\r\n                {\r\n                    \"id\": 2\r\n                },\r\n                {\r\n                    \"id\": 3\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"title\": \"quis turpis sed 2\",\r\n            \"text\": \"Fusce consequat. Nulla nisl. Nunc nisl.\\n\\nDuis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.\",\r\n            \"colour\": \"#cd83c5\",\r\n            \"figures\": [\r\n                {\r\n                    \"link\": \"http://dummyimage.com/230x219.png/dddddd/000000\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/144x108.png/ff4444/ffffff\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/194x164.png/ff4444/ffffff\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/134x136.png/dddddd/000000\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/101x115.png/dddddd/000000\"\r\n                }\r\n            ],\r\n            \"categoriesList\": []\r\n        },\r\n        {\r\n            \"title\": \"a ipsum integer a\",\r\n            \"text\": \"Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.\",\r\n            \"colour\": \"#577e60\",\r\n            \"figures\": [\r\n                {\r\n                    \"link\": \"http://dummyimage.com/106x174.png/dddddd/000000\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/153x141.png/5fa2dd/ffffff\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/130x191.png/cc0000/ffffff\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/161x250.png/dddddd/000000\"\r\n                }\r\n            ],\r\n            \"categoriesList\": [\r\n                {\r\n                    \"id\": 1\r\n                },\r\n                {\r\n                    \"id\": 2\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"title\": \"lectus vestibulum\",\r\n            \"text\": \"Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum.\\n\\nCurabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.\",\r\n            \"colour\": \"#6debc9\",\r\n            \"figures\": [\r\n                {\r\n                    \"link\": \"http://dummyimage.com/112x135.png/dddddd/000000\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/175x216.png/5fa2dd/ffffff\"\r\n                }\r\n            ],\r\n            \"categoriesList\": []\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/note/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"note",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Filter",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category\": {\"id\":1},\r\n    \"notes\": [\r\n        {\r\n            \"title\": \"quis turpis sed ante\",\r\n            \"text\": \"Phasellus in felis. Donec semper sapien a libero. Nam dui.\\n\\nProin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.\\n\\nInteger ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.\",\r\n            \"colour\": \"#f7474f\",\r\n            \"figures\": [\r\n                {\r\n                    \"link\": \"http://dummyimage.com/202x164.png/ff4444/ffffff\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/103x152.png/cc0000/ffffff\"\r\n                }\r\n            ],\r\n            \"categoriesList\": [\r\n                {\r\n                    \"id\": 1\r\n                },\r\n                {\r\n                    \"id\": 2\r\n                },\r\n                {\r\n                    \"id\": 3\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"title\": \"quis turpis sed 2\",\r\n            \"text\": \"Fusce consequat. Nulla nisl. Nunc nisl.\\n\\nDuis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.\",\r\n            \"colour\": \"#cd83c5\",\r\n            \"figures\": [\r\n                {\r\n                    \"link\": \"http://dummyimage.com/230x219.png/dddddd/000000\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/144x108.png/ff4444/ffffff\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/194x164.png/ff4444/ffffff\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/134x136.png/dddddd/000000\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/101x115.png/dddddd/000000\"\r\n                }\r\n            ],\r\n            \"categoriesList\": []\r\n        },\r\n        {\r\n            \"title\": \"a ipsum integer a\",\r\n            \"text\": \"Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.\",\r\n            \"colour\": \"#577e60\",\r\n            \"figures\": [\r\n                {\r\n                    \"link\": \"http://dummyimage.com/106x174.png/dddddd/000000\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/153x141.png/5fa2dd/ffffff\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/130x191.png/cc0000/ffffff\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/161x250.png/dddddd/000000\"\r\n                }\r\n            ],\r\n            \"categoriesList\": [\r\n                {\r\n                    \"id\": 1\r\n                },\r\n                {\r\n                    \"id\": 2\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"title\": \"lectus vestibulum\",\r\n            \"text\": \"Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum.\\n\\nCurabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.\",\r\n            \"colour\": \"#6debc9\",\r\n            \"figures\": [\r\n                {\r\n                    \"link\": \"http://dummyimage.com/112x135.png/dddddd/000000\"\r\n                },\r\n                {\r\n                    \"link\": \"http://dummyimage.com/175x216.png/5fa2dd/ffffff\"\r\n                }\r\n            ],\r\n            \"categoriesList\": []\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/note/filter",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"note",
+								"filter"
 							]
 						}
 					},
@@ -715,7 +802,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzamFja2VzMCIsImlhdCI6MTc0MDI1MDI0NCwiZXhwIjoxNzQwMzM2NjQ0fQ.3R2voBcJ0tua-2Bw2J8s1hAae0drScK_ENyXxa2275s",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzQwMzk2NDIwLCJleHAiOjE3NDA0ODI4MjB9.V7hbJBkLDBlUkg3cUkW12OdIzyyLWDcCl79S1Mgdvp8",
 				"type": "string"
 			}
 		]
