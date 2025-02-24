@@ -2,6 +2,8 @@ package org.metropolia.minimalnotepad.controller;
 
 
 import org.metropolia.minimalnotepad.dto.ErrorResponse;
+import org.metropolia.minimalnotepad.dto.NoteFilter;
+import org.metropolia.minimalnotepad.dto.SearchRequest;
 import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
@@ -13,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/note")
@@ -117,6 +121,52 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<?> filterNote(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody NoteFilter filterDTO) {
+        try {
+            String token = getTokenFromHeader(authorizationHeader);
+            User user = getUserFromToken(token);
+
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ErrorResponse(404, "User not found"));
+            }
+
+            if (filterDTO == null || filterDTO.getNotes() == null) {
+                return ResponseEntity.badRequest()
+                        .body(new ErrorResponse(400, "Invalid request body"));
+            }
+
+            ArrayList<Note> filteredNotes = noteService.filterNotes(filterDTO.getNotes(), filterDTO.getCategory());
+            return ResponseEntity.ok(filteredNotes);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse(500, "An error occurred: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody SearchRequest searchRequest) {
+        try{
+            ArrayList<Note> unfilteredNotes = searchRequest.getNotes();
+            String query = searchRequest.getQuery();
+            if(query == null || unfilteredNotes.isEmpty()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Nothing to search"));
+            }
+            ArrayList<Note> filteredNotes = noteService.findNotes(unfilteredNotes, query);
+            if(filteredNotes.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "No results found"));
+            }
+            return ResponseEntity.ok(filteredNotes);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(500, "An unexpected error occurred"));
+        }
+    }
+
     private String getTokenFromHeader(String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Authorization header is invalid");
