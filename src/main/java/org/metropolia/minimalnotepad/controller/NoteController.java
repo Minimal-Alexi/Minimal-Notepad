@@ -122,7 +122,7 @@ public class NoteController {
         }
     }
 
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     public ResponseEntity<?> filterNote(
             @RequestHeader("Authorization") String authorizationHeader,
             @RequestBody NoteFilter filterDTO) {
@@ -149,7 +149,7 @@ public class NoteController {
         }
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<?> searchNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody SearchRequest searchRequest) {
         try{
             ArrayList<Note> unfilteredNotes = searchRequest.getNotes();
