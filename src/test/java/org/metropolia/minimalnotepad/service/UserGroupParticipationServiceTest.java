@@ -38,6 +38,7 @@ class UserGroupParticipationServiceTest {
         testUser.setId(1L);
         testGroup = new Group();
         testGroup.setId(1L);
+        testGroup.setUser(testUser);
     }
 
     @Test
@@ -146,5 +147,119 @@ class UserGroupParticipationServiceTest {
         });
 
         assertEquals("User is not a member of this group.", exception.getMessage());
+    }
+
+    @Test
+    void testRemoveUserFromGroup() {
+        User newUser = new User();
+        newUser.setId(2L);
+
+        UserGroupParticipation participation = new UserGroupParticipation();
+        participation.setUser(newUser);
+        participation.setGroup(testGroup);
+
+        when(userRepository.findById(newUser.getId())).thenReturn(java.util.Optional.of(newUser));
+        when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
+        when(groupRepository.findById(testGroup.getId())).thenReturn(java.util.Optional.of(testGroup));
+        when(userGroupParticipationRepository.findByUserAndGroup(newUser, testGroup)).thenReturn(java.util.Optional.of(participation));
+
+        userGroupParticipationService.removeUserFromGroup(testUser.getId(), testGroup.getId(), newUser.getId());
+
+        verify(userGroupParticipationRepository, times(1)).delete(participation);
+    }
+
+    @Test
+    void testRemoveUserFromGroup_UserNotFound() {
+        when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userGroupParticipationService.removeUserFromGroup(testUser.getId(), testGroup.getId(), 2L);
+        });
+
+        assertEquals("User not found.", exception.getMessage());
+    }
+
+    @Test
+    void testRemoveUserFromGroup_GroupNotFound() {
+        when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
+        when(groupRepository.findById(testGroup.getId())).thenReturn(java.util.Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userGroupParticipationService.removeUserFromGroup(testUser.getId(), testGroup.getId(), 2L);
+        });
+
+        assertEquals("Group not found.", exception.getMessage());
+    }
+
+    @Test
+    void testRemoveUserFromGroup_UserNotMember() {
+        User newUser = new User();
+        newUser.setId(2L);
+
+        when(userRepository.findById(newUser.getId())).thenReturn(java.util.Optional.of(newUser));
+        when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
+        when(groupRepository.findById(testGroup.getId())).thenReturn(java.util.Optional.of(testGroup));
+        when(userGroupParticipationRepository.findByUserAndGroup(newUser, testGroup)).thenReturn(java.util.Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userGroupParticipationService.removeUserFromGroup(testUser.getId(), testGroup.getId(), newUser.getId());
+        });
+
+        assertEquals("Target user is not a member of this group.", exception.getMessage());
+    }
+
+    @Test
+    void testRemoveUserFromGroup_TargetUserNotFound() {
+        when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
+        when(groupRepository.findById(testGroup.getId())).thenReturn(java.util.Optional.of(testGroup));
+        when(userRepository.findById(2L)).thenReturn(java.util.Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userGroupParticipationService.removeUserFromGroup(testUser.getId(), testGroup.getId(), 2L);
+        });
+
+        assertEquals("Target user not found.", exception.getMessage());
+    }
+
+    @Test
+    void testRemoveUserFromGroup_NotOwner() {
+        User newUser = new User();
+        newUser.setId(2L);
+
+        UserGroupParticipation participation = new UserGroupParticipation();
+        participation.setUser(newUser);
+        participation.setGroup(testGroup);
+
+        when(userRepository.findById(newUser.getId())).thenReturn(java.util.Optional.of(newUser));
+        when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
+        when(groupRepository.findById(testGroup.getId())).thenReturn(java.util.Optional.of(testGroup));
+        when(userGroupParticipationRepository.findByUserAndGroup(newUser, testGroup)).thenReturn(java.util.Optional.of(participation));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userGroupParticipationService.removeUserFromGroup(newUser.getId(), testGroup.getId(), testUser.getId());
+        });
+
+        assertEquals("Only the owner of the group can remove members.", exception.getMessage());
+    }
+
+    @Test
+    void testRemoveUserFromGroup_RemoveSelf() {
+        User newUser = new User();
+        newUser.setId(2L);
+
+        UserGroupParticipation participation = new UserGroupParticipation();
+        participation.setUser(newUser);
+        participation.setGroup(testGroup);
+
+        when(userRepository.findById(newUser.getId())).thenReturn(java.util.Optional.of(newUser));
+        when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
+        when(groupRepository.findById(testGroup.getId())).thenReturn(java.util.Optional.of(testGroup));
+        when(userGroupParticipationRepository.findByUserAndGroup(newUser, testGroup)).thenReturn(java.util.Optional.of(participation));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userGroupParticipationService.removeUserFromGroup(testUser.getId(), testGroup.getId(), testUser.getId());
+        });
+
+        assertEquals("Cannot remove yourself from the group.", exception.getMessage());
     }
 }

@@ -1,6 +1,7 @@
 package org.metropolia.minimalnotepad.controller;
 
 import org.metropolia.minimalnotepad.dto.ErrorResponse;
+import org.metropolia.minimalnotepad.dto.GroupDetailedDTO;
 import org.metropolia.minimalnotepad.model.Group;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.model.UserGroupParticipation;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -66,8 +66,8 @@ public class GroupController {
     }
 
     @GetMapping("/{id}")
-    public Group getGroupById(@PathVariable Long id) {
-        return groupService.getGroupById(id);
+    public GroupDetailedDTO getGroupById(@PathVariable Long id) {
+        return new GroupDetailedDTO(groupService.getGroupById(id));
     }
 
     @PostMapping
@@ -117,6 +117,17 @@ public class GroupController {
         User user = userService.getUserFromToken(token);
 
         userGroupParticipationService.leaveGroup(user.getId(), groupId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Remove user from group
+    @DeleteMapping("/{groupId}/remove/{userId}")
+    public ResponseEntity<?> removeUserFromGroup(@RequestHeader("Authorization") String authorizationHeader,
+                                                 @PathVariable Long groupId, @PathVariable Long userId) {
+        String token = jwtUtils.getTokenFromHeader(authorizationHeader);
+        User user = userService.getUserFromToken(token);
+
+        userGroupParticipationService.removeUserFromGroup(user.getId(), groupId, userId);
         return ResponseEntity.noContent().build();
     }
 }

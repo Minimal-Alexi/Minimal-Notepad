@@ -1,5 +1,8 @@
 package org.metropolia.minimalnotepad.service;
 
+import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
+import org.metropolia.minimalnotepad.exception.UserDoesntOwnResourceException;
+import org.metropolia.minimalnotepad.exception.UserNotFoundException;
 import org.metropolia.minimalnotepad.model.Group;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.model.UserGroupId;
@@ -57,5 +60,32 @@ public class UserGroupParticipationService {
                 .orElseThrow(() -> new RuntimeException("User is not a member of this group."));
 
         userGroupParticipationRepository.delete(membership);
+    }
+
+    // Remove user from group
+    public void removeUserFromGroup(Long ownerId, Long groupId, Long targetUserId) {
+        if (userRepository.findById(ownerId).isEmpty()) {
+            throw new UserNotFoundException("User not found.");
+        }
+
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new ResourceDoesntExistException("Group not found."));
+
+        User targetUser = userRepository.findById(targetUserId)
+                .orElseThrow(() -> new UserNotFoundException("Target user not found."));
+
+        // Check if the requester is the owner of the group
+        if (group.getUser().getId() != ownerId) {
+            throw new UserDoesntOwnResourceException("Only the owner of the group can remove members.");
+        }
+
+        if (group.getUser().getId() == targetUser.getId()) {
+            throw new RuntimeException("Cannot remove yourself from the group.");
+        }
+
+        UserGroupParticipation targetMembership = userGroupParticipationRepository.findByUserAndGroup(targetUser, group)
+                .orElseThrow(() -> new ResourceDoesntExistException("Target user is not a member of this group."));
+
+        userGroupParticipationRepository.delete(targetMembership);
     }
 }

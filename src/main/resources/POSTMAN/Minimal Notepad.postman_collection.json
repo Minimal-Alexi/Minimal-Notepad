@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "dfe167dd-612b-4c6a-a18f-f545da6d25c7",
+		"_postman_id": "063e7f74-b652-4915-a16e-94178f909c92",
 		"name": "Minimal Notepad",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "37897491"
+		"_exporter_id": "29851757"
 	},
 	"item": [
 		{
@@ -50,7 +50,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"username\":\"sjackes0\",\"email\":\"tsherebrooke0@weebly.com\",\"password\":\"oC1|w9%+3G\"}",
+							"raw": "{\"username\":\"test\",\"email\":\"test@examle.com\",\"password\":\"test\"}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -595,6 +595,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Remove user from group",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/groups/6/remove/2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								"6",
+								"remove",
+								"2"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -796,7 +817,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzQwMzk2NDIwLCJleHAiOjE3NDA0ODI4MjB9.V7hbJBkLDBlUkg3cUkW12OdIzyyLWDcCl79S1Mgdvp8",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzQwNTE1MjAxLCJleHAiOjE3NDA2MDE2MDF9.5dKUUfcPAO6Pe_sFWLFj14iNoK54WRhDCEVE1k3p4-0",
 				"type": "string"
 			}
 		]
