@@ -261,4 +261,19 @@ class GroupControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    void testRemoveUserFromGroup() throws Exception {
+        User newUser = new User();
+        newUser.setUsername("newUser");
+        userRepository.save(newUser);
+
+        userGroupParticipationService.joinGroup(newUser.getId(), testGroup.getId());
+
+        String token = jwtUtils.generateToken(testUser.getUsername());
+
+        mockMvc.perform(delete("/api/groups/{groupId}/remove/{userId}", testGroup.getId(), newUser.getId())
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isNoContent());
+    }
 }
