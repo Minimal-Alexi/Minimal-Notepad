@@ -33,8 +33,9 @@ public class GroupController {
     }
 
     @GetMapping("/all")
-    public List<Group> getAllGroups() {
-        return groupService.getAllGroups();
+    public List<GroupDetailedDTO> getAllGroups() {
+        List<Group> groups = groupService.getAllGroups();
+        return GroupDetailedDTO.fromGroups(groups);
     }
 
     // Get all groups that the user is a member of (created + joined)

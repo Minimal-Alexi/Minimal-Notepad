@@ -27,6 +27,14 @@ public class GroupDetailedDTO {
         }
     }
 
+    public static List<GroupDetailedDTO> fromGroups(List<Group> groups) {
+        List<GroupDetailedDTO> groupDetailedDTOList = new ArrayList<>();
+        for (Group group : groups) {
+            groupDetailedDTOList.add(new GroupDetailedDTO(group));
+        }
+        return groupDetailedDTOList;
+    }
+
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getDescription() { return description; }
