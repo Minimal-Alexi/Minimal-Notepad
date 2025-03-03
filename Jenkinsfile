@@ -1,19 +1,16 @@
 pipeline {
     agent any
     stages {
-        stage('Create .env File') {
-            steps {
-                script {
-                    writeFile file: '.env', text: """
-                    DB_PASSWORD=${env.DB_PASSWORD}
-                    SECRET_KEY=${env.SECRET_KEY}
-                    """
-                }
-            }
-        }
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/Minimal-Alexi/Minimal-Notepad.git'
+            }
+        }
+        stage('Inject .env') {
+            steps {
+                withCredentials([file(credentialsId: 'minimal-notepad-env-file', variable: 'ENV_FILE')]) {
+                    bat "copy %ENV_FILE% .env"
+                }
             }
         }
         stage('Build') {
