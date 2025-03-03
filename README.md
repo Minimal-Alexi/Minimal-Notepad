@@ -19,3 +19,4 @@ This project was created as part of SEP1 (Software Engineering Project 1).
 ## Development Documentation
 1. [Project Structure](./docs/SpringBoot_Folder_Structure.md)
 2. [Postman JSON Import settings](./src/main/resources/POSTMAN)
+3. [Docker documentation](./docs/Docker_Setup.md)
