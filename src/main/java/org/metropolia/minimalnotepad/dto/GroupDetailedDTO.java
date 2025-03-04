@@ -12,7 +12,7 @@ public class GroupDetailedDTO {
     private Long id;
     private String name;
     private String description;
-    @JsonIgnoreProperties({"email", "notes", "password", "groupParticipationsList", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired","groups"})
+    @JsonIgnoreProperties({"notes", "password", "groupParticipationsList", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired","groups"})
     private User owner;
     private List<UserGroupParticipationDTO> userGroupParticipationsList;
 
