@@ -78,7 +78,6 @@ public class NoteController {
             }
 
             List<Note> notesFromGroups = noteService.getNotesFromGroups(userGroups);
-            System.out.println(notesFromGroups);
             return ResponseEntity.ok(notesFromGroups);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
