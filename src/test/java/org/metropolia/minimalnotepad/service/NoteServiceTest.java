@@ -34,11 +34,13 @@ public class NoteServiceTest {
 
     @InjectMocks
     private NoteService noteService;
+    @InjectMocks
+    private GroupService groupService;
 
     @BeforeEach
     public void setUp() {
         noteRepository.deleteAll();
-        noteService = new NoteService(noteRepository, searchUtils);
+        noteService = new NoteService(noteRepository, searchUtils, groupService);
     }
 
 

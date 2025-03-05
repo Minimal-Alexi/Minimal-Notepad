@@ -1,6 +1,5 @@
 package org.metropolia.minimalnotepad.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -31,7 +30,7 @@ public class Note {
     private User user;
     @ManyToOne
     @JoinColumn(name = "group_id")
-    @JsonBackReference("group-reference")
+    @JsonIgnoreProperties({"notes"})
     private Group group;
     @ManyToMany
     @JoinTable(name = "note_categories",

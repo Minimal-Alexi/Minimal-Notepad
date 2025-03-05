@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "063e7f74-b652-4915-a16e-94178f909c92",
+		"_postman_id": "b39d15ca-fbe5-4c64-b5d9-c32f99b65ec5",
 		"name": "Minimal Notepad",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29851757"
@@ -332,6 +332,44 @@
 								"api",
 								"note",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get my groups' notes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/note/my-groups",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"note",
+								"my-groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get note by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/note/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"note",
+								"1"
 							]
 						}
 					},
@@ -817,7 +855,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzQwNTE1MjAxLCJleHAiOjE3NDA2MDE2MDF9.5dKUUfcPAO6Pe_sFWLFj14iNoK54WRhDCEVE1k3p4-0",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzQxMDkxNzcxLCJleHAiOjE3NDExNzgxNzF9.e_2_wonO7fPYORr8q9Z2NA650tKURtY_DUh8s6gPoB8",
 				"type": "string"
 			}
 		]

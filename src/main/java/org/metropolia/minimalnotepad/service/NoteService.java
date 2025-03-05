@@ -3,6 +3,7 @@ package org.metropolia.minimalnotepad.service;
 import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.exception.UserDoesntOwnResourceException;
 import org.metropolia.minimalnotepad.model.Category;
+import org.metropolia.minimalnotepad.model.Group;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.NoteRepository;
@@ -17,10 +18,12 @@ import java.util.stream.Collectors;
 @Service
 public class NoteService {
     private final NoteRepository noteRepository;
+    private final GroupService groupService;
     private SearchUtils searchUtils;
-    public NoteService(NoteRepository noteRepository,SearchUtils searchUtils) {
+    public NoteService(NoteRepository noteRepository, SearchUtils searchUtils, GroupService groupService) {
         this.noteRepository = noteRepository;
         this.searchUtils = searchUtils;
+        this.groupService = groupService;
     }
     public List<Note> getNoteListsByUser(User user) {
         List<Note> notesList =  noteRepository.getNotesByUserId(user.getId());
@@ -31,10 +34,30 @@ public class NoteService {
         if(note == null) {
             throw new ResourceDoesntExistException("This note doesn't exist");
         }
-        if (user == null || note.getUser().getId() != user.getId()) {
-            throw new UserDoesntOwnResourceException("You do not own this note.");
+        if (user == null) {
+            throw new UserDoesntOwnResourceException("This user doesn't exist");
         }
-        return note;
+
+        if (note.getUser().getId() == user.getId()) {
+            return note;
+        }
+
+        List<Group> groups = groupService.getUserGroups(user);
+        Group group = note.getGroup();
+
+        if (group != null && groups.contains(group)) {
+            return note;
+        }
+        throw new UserDoesntOwnResourceException("You do not have access to this note.");
+    }
+    public List<Note> getNotesFromGroups(List<Group> groups) {
+        List<Note> notes = new ArrayList<>();
+
+        for (Group group : groups) {
+            notes.addAll(group.getNotes());
+        }
+
+        return notes;
     }
     public void createNote(User user,Note note) {
         if(note == null)
