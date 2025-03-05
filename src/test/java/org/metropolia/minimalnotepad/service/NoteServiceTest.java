@@ -1,13 +1,16 @@
 package org.metropolia.minimalnotepad.service;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.exception.UserDoesntOwnResourceException;
 import org.metropolia.minimalnotepad.model.Category;
+import org.metropolia.minimalnotepad.model.Group;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
+import org.metropolia.minimalnotepad.repository.GroupRepository;
 import org.metropolia.minimalnotepad.repository.NoteRepository;
 import org.metropolia.minimalnotepad.utils.SearchUtils;
 import org.mockito.InjectMocks;
@@ -31,6 +34,8 @@ public class NoteServiceTest {
 
     @Mock
     private NoteRepository noteRepository;
+    @Mock
+    private GroupRepository groupRepository;
 
     @InjectMocks
     private NoteService noteService;
@@ -40,6 +45,7 @@ public class NoteServiceTest {
     @BeforeEach
     public void setUp() {
         noteRepository.deleteAll();
+        groupRepository.deleteAll();
         noteService = new NoteService(noteRepository, searchUtils, groupService);
     }
 
@@ -195,7 +201,7 @@ public class NoteServiceTest {
         assertThrows(ResourceDoesntExistException.class,() -> noteService.deleteNote(userMock,null));
     }
     @Test
-   public void testFilterNotesSuccess(){
+    public void testFilterNotesSuccess(){
         Category category1 = new Category(), category2 = new Category();
         category1.setId(1);
         category1.setName("category1");
@@ -316,4 +322,53 @@ public class NoteServiceTest {
         assertTrue(foundNotes.isEmpty());
     }
 
+    @Test
+    public void testGetNotesFromGroups() {
+        User user = new User();
+        user.setId(1);
+        user.setUsername("user1");
+        user.setPassword("password1");
+        user.setEmail("test@example.com");
+
+        // Creating Group objects
+        Group group1 = new Group();
+        group1.setName("Group 1");
+        group1.setUser(user);
+        groupRepository.save(group1);
+        Group group2 = new Group();
+        group2.setName("Group 2");
+        group2.setUser(user);
+        groupRepository.save(group2);
+
+        // Creating Note objects
+        Note note1 = new Note();
+        note1.setTitle("Note 1");
+        note1.setGroup(group1);
+        noteRepository.save(note1);
+        Note note2 = new Note();
+        note2.setTitle("Note 2");
+        note2.setGroup(group2);
+        noteRepository.save(note2);
+
+        List<Note> notesList1 = new ArrayList<>();
+        notesList1.add(note1);
+        group1.setNotes(notesList1);
+
+        List<Note> notesList2 = new ArrayList<>();
+        notesList2.add(note2);
+        group2.setNotes(notesList2);
+
+        when(groupRepository.findAll()).thenReturn(Arrays.asList(group1, group2));
+
+        // Creating a list of groups
+        List<Group> groups = groupService.getAllGroups();
+
+        // Calling the method under test
+        List<Note> result = noteService.getNotesFromGroups(groups);
+
+        // Assertions
+        assertEquals(2, result.size());
+        assertTrue(result.contains(note1));
+        assertTrue(result.contains(note2));
+    }
 }

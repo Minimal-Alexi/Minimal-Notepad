@@ -54,7 +54,9 @@ public class NoteService {
         List<Note> notes = new ArrayList<>();
 
         for (Group group : groups) {
-            notes.addAll(group.getNotes());
+            if (group.getNotes() != null) {
+                notes.addAll(group.getNotes());
+            }
         }
 
         return notes;
