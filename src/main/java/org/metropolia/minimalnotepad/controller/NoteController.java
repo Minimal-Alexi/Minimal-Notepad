@@ -5,8 +5,10 @@ import org.metropolia.minimalnotepad.dto.ErrorResponse;
 import org.metropolia.minimalnotepad.dto.NoteFilter;
 import org.metropolia.minimalnotepad.dto.SearchRequest;
 import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
+import org.metropolia.minimalnotepad.model.Group;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
+import org.metropolia.minimalnotepad.service.GroupService;
 import org.metropolia.minimalnotepad.service.NoteService;
 import org.metropolia.minimalnotepad.service.UserService;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
@@ -24,10 +26,12 @@ import java.util.stream.Collectors;
 public class NoteController {
     private final UserService userService;
     private final NoteService noteService;
+    private final GroupService groupService;
     private final JwtUtils jwtUtils;
-    public NoteController(UserService userService, NoteService noteService, JwtUtils jwtUtils) {
+    public NoteController(UserService userService, NoteService noteService, GroupService groupService, JwtUtils jwtUtils) {
         this.userService = userService;
         this.noteService = noteService;
+        this.groupService = groupService;
         this.jwtUtils = jwtUtils;
     }
     @GetMapping("/")
@@ -56,6 +60,26 @@ public class NoteController {
             return ResponseEntity.ok(note);
         }catch (Exception e) {
             if(e instanceof ResourceDoesntExistException) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
+        }
+    }
+    @GetMapping("/my-groups")
+    public ResponseEntity<?> getAllNotesFromUserGroups(@RequestHeader("Authorization") String authorizationHeader) {
+        try {
+            String token = getTokenFromHeader(authorizationHeader);
+            User user = getUserFromToken(token);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+            }
+
+            List<Group> userGroups = groupService.getUserGroups(user);
+            if (userGroups == null || userGroups.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User is not an owner or a member of any groups."));
+            }
+
+            List<Note> notesFromGroups = noteService.getNotesFromGroups(userGroups);
+            return ResponseEntity.ok(notesFromGroups);
+        }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
         }
     }

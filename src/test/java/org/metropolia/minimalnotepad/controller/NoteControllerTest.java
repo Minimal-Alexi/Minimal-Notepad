@@ -6,10 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.metropolia.minimalnotepad.dto.ErrorResponse;
 import org.metropolia.minimalnotepad.dto.SearchRequest;
+import org.metropolia.minimalnotepad.model.Group;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
+import org.metropolia.minimalnotepad.repository.GroupRepository;
 import org.metropolia.minimalnotepad.repository.NoteRepository;
 import org.metropolia.minimalnotepad.repository.UserRepository;
+import org.metropolia.minimalnotepad.service.UserGroupParticipationService;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,12 +21,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,10 +46,18 @@ public class NoteControllerTest {
     private NoteRepository noteRepository;
 
     @Autowired
+    private GroupRepository groupRepository;
+
+    @Autowired
     private JwtUtils jwtUtils;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserGroupParticipationService userGroupParticipationService;
+    @Autowired
+    private MockMvc mockMvc;
 
     @BeforeAll
     public static void setup() {
@@ -483,4 +497,53 @@ public class NoteControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
+    @Test
+    public void testGetAllNotesFromUserGroups() throws Exception {
+        User user = new User();
+        user.setUsername("testuser");
+        user.setPassword(passwordEncoder.encode("password"));
+        user.setEmail("testuser@example.com");
+        user = userRepository.save(user);
+
+        Group group = new Group();
+        group.setName("Test Group");
+        group.setUser(user);
+        groupRepository.save(group);
+
+        Note userNote = new Note();
+        userNote.setTitle("User Note");
+        userNote.setText("This is a user note.");
+        userNote.setUser(user);
+        userNote.setGroup(group);
+        noteRepository.save(userNote);
+
+        User testUser = new User();
+        testUser.setUsername("testuser2");
+        testUser.setPassword(passwordEncoder.encode("password"));
+        testUser.setEmail("testuser2@example.com");
+        testUser = userRepository.save(testUser);
+
+        Group newGroup = new Group();
+        newGroup.setName("Test Group 2");
+        newGroup.setUser(testUser);
+        groupRepository.save(newGroup);
+
+        Note groupNote = new Note();
+        groupNote.setTitle("Group Note");
+        groupNote.setText("This is a group note.");
+        groupNote.setUser(testUser);
+        groupNote.setGroup(newGroup);
+        noteRepository.save(groupNote);
+
+        userGroupParticipationService.joinGroup(user.getId(), newGroup.getId());
+
+        String token = jwtUtils.generateToken(user.getUsername());
+
+        mockMvc.perform(get("/api/note/my-groups")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].title").value("User Note"))
+                .andExpect(jsonPath("$[1].title").value("Group Note"));
+    }
 }
