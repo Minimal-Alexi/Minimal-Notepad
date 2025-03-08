@@ -49,7 +49,7 @@ public class GroupController {
         if (userGroups.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User is not an owner or a member of any groups."));
         }
-        return ResponseEntity.ok(userGroups);
+        return ResponseEntity.ok(GroupDetailedDTO.fromGroups(userGroups));
     }
 
     // Get all groups that the user can join (all groups - user's groups)
