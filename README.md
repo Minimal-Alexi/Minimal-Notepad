@@ -1,9 +1,17 @@
 # Minimal Notepad (Backend)
+<p align="center">
+  <img width="300" alt="Logo" src="https://github.com/user-attachments/assets/6362cfd7-3c9d-45a3-b4b7-c5bfd64b99c8" />
+</p>
+
 Minimal Notepad is a digital note-taking tool designed for students, teachers, and professionals. It simplifies creating, organizing, and sharing notes with a user-friendly interface. With features like tagging, annotations, and collaboration, it enhances learning and teamwork and offers a seamless and efficient note-taking experience.
 
-This project was created as part of SEP1 (Software Engineering Project 1).
+This project was created as part of SEP1 (Software Engineering Project 1) and SEP2 (Software Engineering Project 2) at Metropolia UAS. 
 
-📆 January - March, 2025
+This is the backend part of the Minimal Notepad Application.
+
+The frontend for this application is available at: [Frontend Repository](https://github.com/Minimal-Alexi/Minimal-Notepad-Client)
+
+📆 January - May, 2025
 
 ## Technical stack:
 - Spring Boot
@@ -21,3 +29,9 @@ This project was created as part of SEP1 (Software Engineering Project 1).
 2. [Postman JSON Import settings](./src/main/resources/POSTMAN)
 3. [Docker documentation](./docs/Docker_Setup.md)
 4. [Jenkins Setup Guide](./docs/Jenkins_Setup.md)
+
+## Authors
+- [Viktoriia Beloborodova](https://github.com/Viktoriia-code)
+- [Alex Pop](https://github.com/Minimal-Alexi)
+- [Trang Vu](https://github.com/cindy3377)
+- [Trung Doan](https://github.com/viettrung2103)
