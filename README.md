@@ -21,3 +21,4 @@ This project was created as part of SEP1 (Software Engineering Project 1).
 2. [Postman JSON Import settings](./src/main/resources/POSTMAN)
 3. [Docker documentation](./docs/Docker_Setup.md)
 4. [Jenkins Setup Guide](./docs/Jenkins_Setup.md)
+5. [Project diagram folder](./docs/diagrams)
