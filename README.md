@@ -15,6 +15,13 @@ The frontend for this application is available at: [Frontend Repository](https:/
 
 <img width="4400" alt="Minimal_Notepad_UI" src="https://github.com/user-attachments/assets/689d9b2f-b829-4998-a762-81aca88b9db2" />
 
+## Features
+- User authentication and authorization (JWT-based)
+- Create, read, update, and delete (CRUD) notes and groups
+- Secure API endpoints
+- Lightweight and efficient backend
+- Integration with the frontend
+
 ## Technical stack
 - **Java 17** – Java version for development
 - **Spring Boot** – Backend framework
@@ -49,6 +56,58 @@ The frontend for this application is available at: [Frontend Repository](https:/
 
 2. [Jenkins Setup Guide](./docs/Jenkins_Setup.md)  
    Instructions for configuring Jenkins for automated build and deployment.
+
+## API Endpoints
+
+### Users API
+| **Method** | **Endpoint**                | **Description**                |
+|-----------|------------------------------|--------------------------------|
+| **GET**   | `/api/user/`                 | Get current user details       |
+| **DELETE**| `/api/user/`                 | Delete user account            |
+| **PUT**   | `/api/user/`                 | Update username & email        |
+| **PUT**   | `/api/user/change-password`  | Change user password           |
+
+### Authentication API
+| **Method** | **Endpoint**                  | **Description**          |
+|-----------|--------------------------------|--------------------------|
+| **POST**  | `/api/users-authentication/login`  | Authenticate user and get JWT token |
+| **POST**  | `/api/users-authentication/register` | Register a new user and get JWT token |
+
+### Notes API
+| **Method** | **Endpoint**                    | **Description**                           |
+|-----------|---------------------------------|--------------------------------------------|
+| **GET**   | `/api/note/`                    | Get all notes for the authenticated user.  |
+| **GET**   | `/api/note/{noteId}`            | Get a specific note by its ID.             |
+| **GET**   | `/api/note/my-groups`           | Get notes from groups the user belongs to. |
+| **POST**  | `/api/note/`                    | Create a new note.                         |
+| **PATCH** | `/api/note/{noteId}`            | Update an existing note.                   |
+| **DELETE**| `/api/note/{noteId}`            | Delete a note by ID.                       |
+| **POST**  | `/api/note/filter`              | Filter notes by category.                  |
+| **POST**  | `/api/note/search`              | Search for notes using a query.            |
+
+### Groups API
+| **Method** | **Endpoint**                     | **Description**                         |
+|-----------|----------------------------------|-----------------------------------------|
+| **GET**   | `/api/groups/all`               | Get all groups.                        |
+| **GET**   | `/api/groups/my-groups`         | Get groups the user belongs to.        |
+| **GET**   | `/api/groups/available`         | Get groups the user can join.          |
+| **GET**   | `/api/groups/{id}`              | Get a specific group by ID.            |
+| **POST**  | `/api/groups`                   | Create a new group.                    |
+| **PUT**   | `/api/groups/{id}`              | Update a group by ID.                  |
+| **DELETE**| `/api/groups/{id}`              | Delete a group by ID.                  |
+| **POST**  | `/api/groups/{groupId}/join`    | Join a group.                          |
+| **DELETE**| `/api/groups/{groupId}/leave`   | Leave a group.                         |
+| **DELETE**| `/api/groups/{groupId}/remove/{userId}` | Remove a user from a group. |
+
+### Categories API
+
+| **Method** | **Endpoint**            | **Description**              |
+|-----------|------------------------|------------------------------|
+| **GET**   | `/api/categories`      | Get all categories.         |
+| **GET**   | `/api/categories/{id}` | Get a category by ID.       |
+| **POST**  | `/api/categories`      | Create a new category.      |
+| **PUT**   | `/api/categories/{id}` | Update a category by ID.    |
+| **DELETE**| `/api/categories/{id}` | Delete a category by ID.    |
 
 ## How to run locally
 
@@ -100,9 +159,18 @@ The project uses JaCoCo for code coverage analysis. After running the tests, you
 ### Entity-Relationship Diagram
 ![ER_diagram](https://github.com/user-attachments/assets/44063912-7a32-4d1a-84a1-67813e1d74fe)
 
-
 ### Relational Schema
 ![schema](https://github.com/user-attachments/assets/f2692353-fcba-4f2e-899b-6c0a906d70d0)
+
+### Class Diagram
+![11_class_diagram_version2](https://github.com/user-attachments/assets/97a38241-4fe2-458d-9992-ac72c5bc67b8)
+
+### Use Case Diagram
+![7_use_case_diagram](https://github.com/user-attachments/assets/c4a42eb4-4faf-4369-b966-231cb1b12b0f)
+
+### Deployment Diagram
+![13_deployment_diagram](https://github.com/user-attachments/assets/24ca4faf-dbc4-4934-9baf-bcd6ba31c31d)
+
 
 ## Authors
 - [Viktoriia Beloborodova](https://github.com/Viktoriia-code)
