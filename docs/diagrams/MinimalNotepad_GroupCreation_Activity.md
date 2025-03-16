@@ -1,4 +1,4 @@
-![img.png](ActivityGroupCreation.png)
+![img.png](resources/ActivityGroupCreation.png)
 
 # Sequence Diagram: Creating a Group
 
