@@ -13,7 +13,7 @@ The frontend for this application is available at: [Frontend Repository](https:/
 
 📆 January - May, 2025
 
-<img width="4580" alt="Minimal_Notepad_UI" src="https://github.com/user-attachments/assets/00506827-cb77-4c99-aa0b-4a6ebc288d4a" />
+<img width="4400" alt="Minimal_Notepad_UI" src="https://github.com/user-attachments/assets/689d9b2f-b829-4998-a762-81aca88b9db2" />
 
 ## Technical stack
 - **Java 17** – Java version for development
