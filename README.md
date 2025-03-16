@@ -155,20 +155,15 @@ The project uses JaCoCo for code coverage analysis. After running the tests, you
 
 ## UML Diagrams
 
-### Entity-Relationship Diagram
-![ER_diagram](https://github.com/user-attachments/assets/44063912-7a32-4d1a-84a1-67813e1d74fe)
+Below is a picture of the ERD structure of our project, which is essential to our apps development.
+![ER_diagram](./docs/diagrams/resources/ERD.png)
 
-### Relational Schema
-![schema](https://github.com/user-attachments/assets/f2692353-fcba-4f2e-899b-6c0a906d70d0)
+Our project has UML Diagrams made, for the purpose of explaining the code infrastructure and the workflow. [By clicking this link](./docs/diagrams), you can find more detailed explanations of the diagrams.
 
-### Class Diagram
-![11_class_diagram_version2](https://github.com/user-attachments/assets/97a38241-4fe2-458d-9992-ac72c5bc67b8)
 
-### Use Case Diagram
-![7_use_case_diagram](https://github.com/user-attachments/assets/c4a42eb4-4faf-4369-b966-231cb1b12b0f)
-
-### Deployment Diagram
-![13_deployment_diagram](https://github.com/user-attachments/assets/24ca4faf-dbc4-4934-9baf-bcd6ba31c31d)
+## Additional Development Documentation
+1. [Docker](./docs/Docker_Setup.md)
+2. [Jenkins](./docs/Jenkins_Setup.md)
 
 
 ## Authors
