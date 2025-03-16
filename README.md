@@ -100,7 +100,6 @@ The frontend for this application is available at: [Frontend Repository](https:/
 | **DELETE**| `/api/groups/{groupId}/remove/{userId}` | Remove a user from a group. |
 
 ### Categories API
-
 | **Method** | **Endpoint**            | **Description**              |
 |-----------|------------------------|------------------------------|
 | **GET**   | `/api/categories`      | Get all categories.         |
@@ -109,7 +108,7 @@ The frontend for this application is available at: [Frontend Repository](https:/
 | **PUT**   | `/api/categories/{id}` | Update a category by ID.    |
 | **DELETE**| `/api/categories/{id}` | Delete a category by ID.    |
 
-## How to run locally
+## How to Run Locally
 
 ### Pre-settings
 Before running the application locally, make sure you have the following tools installed:
