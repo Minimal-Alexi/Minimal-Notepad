@@ -161,11 +161,6 @@ Below is a picture of the ERD structure of our project, which is essential to ou
 Our project has UML Diagrams made, for the purpose of explaining the code infrastructure and the workflow. [By clicking this link](./docs/diagrams), you can find more detailed explanations of the diagrams.
 
 
-## Additional Development Documentation
-1. [Docker](./docs/Docker_Setup.md)
-2. [Jenkins](./docs/Jenkins_Setup.md)
-
-
 ## Authors
 - [Viktoriia Beloborodova](https://github.com/Viktoriia-code)
 - [Alex Pop](https://github.com/Minimal-Alexi)
