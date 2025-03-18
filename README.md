@@ -166,3 +166,4 @@ Our project has UML Diagrams made, for the purpose of explaining the code infras
 - [Alex Pop](https://github.com/Minimal-Alexi)
 - [Trang Vu](https://github.com/cindy3377)
 - [Trung Doan](https://github.com/viettrung2103)
+- [Runzhou Zhu](https://github.com/RunzhouZHu)
