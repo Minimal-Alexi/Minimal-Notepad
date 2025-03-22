@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 
 @Entity
 @Table(name="categories")
@@ -24,9 +27,13 @@ public class Category {
     public void setId(long id) {
         this.id = id;
     }
+
     public String getName() {
-        return name;
+        Locale locale = new Locale("ru", "RU");
+        ResourceBundle messages = ResourceBundle.getBundle("i18n/messages", locale);
+        return messages.getString("category." + name.toLowerCase());
     }
+
     public void setName(String name) {
         this.name = name;
     }
