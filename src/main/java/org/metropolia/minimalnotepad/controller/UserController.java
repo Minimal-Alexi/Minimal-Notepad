@@ -147,6 +147,36 @@ public class UserController {
         }
     }
 
+    // Change Language
+    @PutMapping("/change-language")
+    public ResponseEntity<?> changeLanguage(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody Map<String, String> requestBody) {
+        try {
+            String token = getTokenFromHeader(authorizationHeader);
+            User currentUser = getUserFromToken(token);
+
+            if (currentUser == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+            }
+
+            String language = requestBody.get("language");
+
+            if (language == null || language.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Language is required"));
+            }
+
+            if (language.equals(currentUser.getLanguage())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "No changes detected"));
+            }
+            userService.changeLanguage(currentUser.getId(), language);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(currentUser);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, e.getMessage()));
+        }
+    }
+
     private String getTokenFromHeader(String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Authorization header is invalid");

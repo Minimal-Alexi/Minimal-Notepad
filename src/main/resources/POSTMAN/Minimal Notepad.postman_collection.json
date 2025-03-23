@@ -164,6 +164,34 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Change User Language",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"language\": \"ru_RU\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/user/change-language",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"change-language"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -855,7 +883,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzQxMDkxNzcxLCJleHAiOjE3NDExNzgxNzF9.e_2_wonO7fPYORr8q9Z2NA650tKURtY_DUh8s6gPoB8",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzQyNzE5MTMxLCJleHAiOjE3NDI4MDU1MzF9.xXbk6Xm8LV8iUZ02qkIkM9PpVXxQEgjeu9Ze2T5eAVE",
 				"type": "string"
 			}
 		]

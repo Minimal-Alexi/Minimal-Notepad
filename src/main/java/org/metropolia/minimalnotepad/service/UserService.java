@@ -81,6 +81,22 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void changeLanguage(Long userId, String language) {
+        Optional<User> existingUser = userRepository.findById(userId);
+        if (existingUser.isEmpty()) {
+            throw new UserNotFoundException("User not found.");
+        }
+
+        User user = existingUser.get();
+
+        if (user.getLanguage().equals(language)) {
+            throw new IllegalArgumentException("No changes detected.");
+        }
+
+        user.setLanguage(language);
+        userRepository.save(user);
+    }
+
     public void deleteUser(Long userId) {
         Optional<User> existingUser = userRepository.findById(userId);
         if (existingUser.isEmpty()) {
