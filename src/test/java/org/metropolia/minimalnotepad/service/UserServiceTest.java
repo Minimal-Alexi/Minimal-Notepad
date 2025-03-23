@@ -46,18 +46,20 @@ public class UserServiceTest {
         userToRegister.setUsername("newUser");
         userToRegister.setPassword("encodedPassword");
         userToRegister.setEmail("newEmail@email.com");
+        userToRegister.setLanguage("fi_FI");
 
         when(userRepository.findUserByUsername("newUser")).thenReturn(null);
         when(userRepository.findUserByEmail("newEmail@email.com")).thenReturn(null);
         when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(userToRegister);
 
-        User result = userService.registerUser("newUser", "newEmail@email.com", "password");
+        User result = userService.registerUser("newUser", "newEmail@email.com", "password", "fi_FI");
 
         assertNotNull(result);
         assertEquals("newUser", result.getUsername());
         assertEquals("newEmail@email.com", result.getEmail());
         assertEquals("encodedPassword", result.getPassword());
+        assertEquals("fi_FI", result.getLanguage());
 
         verify(userRepository, times(1)).save(any(User.class));
     }
@@ -67,11 +69,12 @@ public class UserServiceTest {
         User existingUser = new User();
         existingUser.setUsername("existingUser");
         existingUser.setEmail("email@email.com");
+        existingUser.setLanguage("fi_FI");
 
         when(userRepository.findUserByUsername("existingUser")).thenReturn(existingUser);
 
         assertThrows(UserAlreadyExistsException.class, () -> {
-            userService.registerUser("existingUser", "newEmail@email.com", "password");
+            userService.registerUser("existingUser", "newEmail@email.com", "password", "fi_FI");
         });
 
         verify(userRepository, never()).save(any(User.class));
@@ -82,11 +85,12 @@ public class UserServiceTest {
         User existingUser = new User();
         existingUser.setUsername("username");
         existingUser.setEmail("existing@email.com");
+        existingUser.setLanguage("fi_FI");
 
         when(userRepository.findUserByEmail("existing@email.com")).thenReturn(existingUser);
 
         assertThrows(UserAlreadyExistsException.class, () -> {
-            userService.registerUser("newUsername", "existing@email.com", "password");
+            userService.registerUser("newUsername", "existing@email.com", "password", "fi_FI");
         });
 
         verify(userRepository, never()).save(any(User.class));

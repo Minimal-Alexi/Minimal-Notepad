@@ -92,8 +92,9 @@ public class AuthenticationControllerTest {
         userMock.setUsername("username");
         userMock.setPassword(passwordEncoder.encode("password"));
         userMock.setEmail("email@email.com");
+        userMock.setLanguage("fi_FI");
 
-        ResponseEntity<?> responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password"));
+        ResponseEntity<?> responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password",userMock.getLanguage()));
         AuthenticationResponse authenticationResponse = (AuthenticationResponse) responseEntity.getBody();
 
         assertEquals(200,responseEntity.getStatusCode().value());
@@ -106,9 +107,10 @@ public class AuthenticationControllerTest {
         userMock.setUsername("username");
         userMock.setPassword(passwordEncoder.encode("password"));
         userMock.setEmail("email@email.com");
+        userMock.setLanguage("fi_FI");
 
         userRepository.save(userMock);
-        ResponseEntity responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password"));
+        ResponseEntity responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password", userMock.getLanguage()));
         assertNotNull(responseEntity);
         assertEquals(409,responseEntity.getStatusCode().value());
     }
@@ -119,9 +121,10 @@ public class AuthenticationControllerTest {
         userMock.setUsername("username");
         userMock.setPassword(passwordEncoder.encode("password"));
         userMock.setEmail("email@email.com");
+        userMock.setLanguage("fi_FI");
 
         userRepository.save(userMock);
-        ResponseEntity responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password"));
+        ResponseEntity responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password",userMock.getLanguage()));
         assertNotNull(responseEntity);
         assertEquals(409,responseEntity.getStatusCode().value());
     }

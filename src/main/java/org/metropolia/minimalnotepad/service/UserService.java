@@ -22,7 +22,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
     }
-    public User registerUser(String username, String email, String password) {
+    public User registerUser(String username, String email, String password, String language) {
         if(userRepository.findUserByEmail(email) != null)
         {
             throw new UserAlreadyExistsException("Email already exists.");
@@ -36,6 +36,7 @@ public class UserService {
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(encodedPassword);
+        user.setLanguage(language);
 
         return userRepository.save(user);
     }
