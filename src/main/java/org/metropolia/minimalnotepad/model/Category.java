@@ -3,6 +3,7 @@ package org.metropolia.minimalnotepad.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.List;
 import java.util.Locale;
@@ -29,7 +30,7 @@ public class Category {
     }
 
     public String getName() {
-        Locale locale = new Locale("ru", "RU");
+        Locale locale = LocaleContextHolder.getLocale();
         ResourceBundle messages = ResourceBundle.getBundle("i18n/messages", locale);
         return messages.getString("category." + name.toLowerCase());
     }

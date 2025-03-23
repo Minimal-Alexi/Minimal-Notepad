@@ -21,6 +21,7 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
+    private String language;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"users"})
     private List<Note> notes;
@@ -55,6 +56,8 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+    public String getLanguage() { return language; }
+    public void setLanguage(String language) { this.language = language; }
     public List<Group> getGroups(){
         return groups;
     }
