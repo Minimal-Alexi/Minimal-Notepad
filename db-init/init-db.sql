@@ -3,21 +3,21 @@ CREATE DATABASE minimalnotepad;
 
 USE minimalnotepad;
 
+CREATE TABLE languages
+(
+    id      INT AUTO_INCREMENT PRIMARY KEY,
+    name    VARCHAR(20) NOT NULL,
+    country VARCHAR(20) NOT NULL
+);
+
 CREATE TABLE users
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     username    VARCHAR(50)  NOT NULL,
     email       VARCHAR(100) NOT NULL UNIQUE,
     password    VARCHAR(255) NOT NULL,
-    language_id INT          NOT NULL,
-    FOREIGN KEY (language_id) REFERENCES language (id)
-);
-
-CREATE TABLE language
-(
-    id      INT AUTO_INCREMENT PRIMARY KEY,
-    name    VARCHAR(20) NOT NULL,
-    country VARCHAR(20) NOT NULL
+    language_id INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (language_id) REFERENCES languages (id)
 );
 
 CREATE TABLE groups
@@ -62,7 +62,7 @@ CREATE TABLE categories_localizations
     language_id INT NOT NULL,
     category_id INT NOT NULL,
     translation VARCHAR(100) NOT NULL,
-    FOREIGN KEY (language_id) REFERENCES language(id),
+    FOREIGN KEY (language_id) REFERENCES languages(id),
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
@@ -82,6 +82,13 @@ CREATE TABLE figures
     note_id INT,
     FOREIGN KEY (note_id) REFERENCES notes (id)
 );
+
+-- Languages
+INSERT INTO languages (id, name, country)
+VALUES (1,'en','US'),
+       (2,'fi','FI'),
+       (3,'ru','RU'),
+       (4,'zh','CN');
 
 INSERT INTO users (username, email, password)
 VALUES ('admin', 'admin@example.com', 'admin');
@@ -137,12 +144,6 @@ VALUES (1, 1),
        (2, 2),
        (2, 3),
        (3, 1);
-
-INSERT INTO language (id, name, country)
-VALUES (1,'en','US'),
-       (2,'fi','FI'),
-       (3,'ru','RU'),
-       (4,'zh','CN');
 
 INSERT INTO categories_localizations(language_id, category_id, translation)
 VALUES (2,1,'STUDY_FI'),
