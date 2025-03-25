@@ -20,6 +20,7 @@ public class User implements UserDetails {
     private long id;
     private String username;
     private String email;
+    @JsonIgnore
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"users"})
