@@ -1,6 +1,7 @@
 package org.metropolia.minimalnotepad.service;
 
 import org.metropolia.minimalnotepad.exception.UserAlreadyExistsException;
+import org.metropolia.minimalnotepad.model.Language;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.metropolia.minimalnotepad.exception.UserNotFoundException;
@@ -36,6 +37,11 @@ public class UserService {
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(encodedPassword);
+
+        // TEMPORARY, TO BE FIXED!
+        Language language = new Language();
+        language.setId(1);
+        user.setLanguage(language);
 
         return userRepository.save(user);
     }

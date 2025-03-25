@@ -31,6 +31,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"groups"})
     private List<Group> groups;
+    @ManyToOne
+    private Language language;
 
     public long getId() {
         return id;
@@ -61,6 +63,12 @@ public class User implements UserDetails {
     }
     public List<UserGroupParticipation> getGroupParticipationsList() {
         return groupParticipationsList;
+    }
+    public Language getLanguage() {
+        return language;
+    }
+    public void setLanguage(Language language) {
+        this.language = language;
     }
     @JsonIgnore
     @Override
