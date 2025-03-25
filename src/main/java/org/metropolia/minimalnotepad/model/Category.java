@@ -17,6 +17,8 @@ public class Category {
     @JsonManagedReference("category-note")
     @JsonIgnore
     private List<Note> noteList;
+    @OneToMany
+    private List<CategoryLocalization> localizationList;
 
     public long getId() {
         return id;
@@ -35,5 +37,11 @@ public class Category {
     }
     public void setNoteList(List<Note> noteList) {
         this.noteList = noteList;
+    }
+    public List<CategoryLocalization> getLocalizationList() {
+        return localizationList;
+    }
+    public void setLocalizationList(List<CategoryLocalization> localizationList) {
+        this.localizationList = localizationList;
     }
 }
