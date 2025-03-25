@@ -57,6 +57,14 @@ CREATE TABLE categories
     id   INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL
 );
+CREATE TABLE categories_localizations
+(
+    language_id INT NOT NULL,
+    category_id INT NOT NULL,
+    translation VARCHAR(100) NOT NULL,
+    FOREIGN KEY (language_id) REFERENCES language(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
 
 CREATE TABLE note_categories
 (
