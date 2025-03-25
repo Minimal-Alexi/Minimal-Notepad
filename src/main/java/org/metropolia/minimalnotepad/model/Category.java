@@ -16,7 +16,7 @@ public class Category {
     @ManyToMany(mappedBy = "categoriesList")
     @JsonManagedReference("category-note")
     @JsonIgnore
-    List<Note> noteList;
+    private List<Note> noteList;
 
     public long getId() {
         return id;
