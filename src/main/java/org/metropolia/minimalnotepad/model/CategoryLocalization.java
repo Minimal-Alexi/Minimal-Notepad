@@ -17,6 +17,9 @@ public class CategoryLocalization {
     private Language language;
     private String translation;
 
+    public Language getLanguage() {
+        return language;
+    }
     public String getTranslation() {
         return translation;
     }
