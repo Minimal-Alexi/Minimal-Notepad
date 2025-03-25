@@ -17,7 +17,7 @@ public class Category {
     @JsonManagedReference("category-note")
     @JsonIgnore
     private List<Note> noteList;
-    @OneToMany
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CategoryLocalization> localizationList;
 
     public long getId() {
