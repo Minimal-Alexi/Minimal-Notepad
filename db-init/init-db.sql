@@ -137,3 +137,20 @@ VALUES (1, 1),
        (2, 2),
        (2, 3),
        (3, 1);
+
+INSERT INTO language (id, name, country)
+VALUES (1,'en','US'),
+       (2,'fi','FI'),
+       (3,'ru','RU'),
+       (4,'zh','CN');
+
+INSERT INTO categories_localizations(language_id, category_id, translation)
+VALUES (2,1,'STUDY_FI'),
+       (2,2,'MEETING_FI'),
+       (2,3,'PROGRAMMING_FI'),
+       (3,1,'STUDY_RU'),
+       (3,2,'MEETING_RU'),
+       (3,3,'PROGRAMMING_RU'),
+       (4,1,'STUDY_ZH'),
+       (4,2,'MEETING_ZH'),
+       (4,3,'PROGRAMMING_ZH');
