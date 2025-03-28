@@ -3,6 +3,7 @@ package org.metropolia.minimalnotepad.controller;
 import org.metropolia.minimalnotepad.model.Category;
 import org.metropolia.minimalnotepad.service.CategoryService;
 
+import org.metropolia.minimalnotepad.service.LanguageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,15 +13,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
-    
+    private final LanguageService languageService;
     private final CategoryService categoryService;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, LanguageService languageService) {
+        this.languageService = languageService;
         this.categoryService = categoryService;
     }
 
     @GetMapping
-    public List<Category> getAllCategories() {
+    public List<Category> getAllCategories(@RequestParam(required = false) Long languageId) {
+        if (languageId != 1) {
+
+            return categoryService.getAllCategories(languageService.getLanguageById(languageId));
+        }
         return categoryService.getAllCategories();
     }
 

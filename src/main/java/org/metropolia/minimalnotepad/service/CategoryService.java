@@ -1,6 +1,8 @@
 package org.metropolia.minimalnotepad.service;
 
 import org.metropolia.minimalnotepad.model.Category;
+import org.metropolia.minimalnotepad.model.Language;
+import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,15 @@ public class CategoryService {
 
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
+    }
+    public List<Category> getAllCategories(Language language) {
+        List<Category> allCategories = categoryRepository.findAll();
+        if (language.getId() != 1) {
+            for (Category category : allCategories) {
+                category.setLocalization(language);
+            }
+        }
+        return allCategories;
     }
 
     public Category getCategoryById(Long id) {

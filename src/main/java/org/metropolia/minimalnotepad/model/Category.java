@@ -16,7 +16,10 @@ public class Category {
     @ManyToMany(mappedBy = "categoriesList")
     @JsonManagedReference("category-note")
     @JsonIgnore
-    List<Note> noteList;
+    private List<Note> noteList;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<CategoryLocalization> localizationList;
 
     public long getId() {
         return id;
@@ -35,5 +38,21 @@ public class Category {
     }
     public void setNoteList(List<Note> noteList) {
         this.noteList = noteList;
+    }
+    public List<CategoryLocalization> getLocalizationList() {
+        return localizationList;
+    }
+    public void setLocalizationList(List<CategoryLocalization> localizationList) {
+        this.localizationList = localizationList;
+    }
+    public void setLocalization(Language language) {
+        if(language != null && language.getId() != 1) {
+            for(CategoryLocalization localization : localizationList) {
+                if(localization.getLanguage().getId() == language.getId()) {
+                    name = localization.getTranslation();
+                    return;
+                }
+            }
+        }
     }
 }
