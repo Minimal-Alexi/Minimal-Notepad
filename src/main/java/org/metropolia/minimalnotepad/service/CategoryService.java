@@ -29,6 +29,9 @@ public class CategoryService {
         return allCategories;
     }
 
+    public Category getCategoryById(Long id, Language language) {
+        return categoryRepository.findById(id).orElse(null); // Using orElse on Optional<Category>
+    }
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElse(null); // Using orElse on Optional<Category>
     }
