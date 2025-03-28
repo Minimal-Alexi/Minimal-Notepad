@@ -18,6 +18,7 @@ public class Category {
     @JsonIgnore
     private List<Note> noteList;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<CategoryLocalization> localizationList;
 
     public long getId() {
@@ -43,5 +44,15 @@ public class Category {
     }
     public void setLocalizationList(List<CategoryLocalization> localizationList) {
         this.localizationList = localizationList;
+    }
+    public void setLocalization(Language language) {
+        if(language != null && language.getId() != 1) {
+            for(CategoryLocalization localization : localizationList) {
+                if(localization.getLanguage().getId() == language.getId()) {
+                    name = localization.getTranslation();
+                    return;
+                }
+            }
+        }
     }
 }
