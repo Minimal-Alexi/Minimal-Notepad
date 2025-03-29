@@ -147,6 +147,52 @@ public class UserController {
         }
     }
 
+    // Change Language
+    @PutMapping("/change-language")
+    public ResponseEntity<?> changeLanguage(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestParam String lang) {
+        try {
+            String token = getTokenFromHeader(authorizationHeader);
+            User currentUser = getUserFromToken(token);
+
+            if (currentUser == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+            }
+
+            if (lang == null || lang.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Language code is required"));
+            }
+
+            String languageName;
+            switch (lang.trim().toLowerCase()) {
+                case "en":
+                    languageName = "English";
+                    break;
+                case "fi":
+                    languageName = "Finnish";
+                    break;
+                case "ru":
+                    languageName = "Russian";
+                    break;
+                case "zh":
+                    languageName = "Chinese";
+                    break;
+                default:
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Invalid language code"));
+            }
+
+            if (lang.equals(currentUser.getLanguage().getName())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Language is already set to " + languageName));
+            }
+
+            userService.updateUserLanguage(currentUser.getId(), lang);
+            return ResponseEntity.ok(new ErrorResponse(200, "Language successfully changed to " + languageName));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, e.getMessage()));
+        }
+    }
+
     private String getTokenFromHeader(String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Authorization header is invalid");

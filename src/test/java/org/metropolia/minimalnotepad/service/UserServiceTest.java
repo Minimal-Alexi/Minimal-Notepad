@@ -1,11 +1,14 @@
 package org.metropolia.minimalnotepad.service;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.metropolia.minimalnotepad.exception.UserAlreadyExistsException;
 import org.metropolia.minimalnotepad.exception.UserNotFoundException;
+import org.metropolia.minimalnotepad.model.Language;
 import org.metropolia.minimalnotepad.model.User;
+import org.metropolia.minimalnotepad.repository.LanguageRepository;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.mockito.InjectMocks;
@@ -32,12 +35,28 @@ public class UserServiceTest {
     @Mock
     private JwtUtils jwtUtils;
 
+    @Mock
+    private LanguageRepository languageRepository;
+
     @InjectMocks
     private UserService userService;
 
+    Language language = new Language();
+
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository, passwordEncoder, jwtUtils);
+        userService = new UserService(userRepository, passwordEncoder, jwtUtils, languageRepository);
+
+        // Set up a mock Language object
+        language.setName("en");
+        language.setId(1L);
+        language.setCountry("US");
+        languageRepository.save(language);
+    }
+
+    @AfterEach
+    void tearDown() {
+        languageRepository.deleteAll();
     }
 
     @Test
@@ -46,18 +65,21 @@ public class UserServiceTest {
         userToRegister.setUsername("newUser");
         userToRegister.setPassword("encodedPassword");
         userToRegister.setEmail("newEmail@email.com");
+        userToRegister.setLanguage(language);
 
         when(userRepository.findUserByUsername("newUser")).thenReturn(null);
         when(userRepository.findUserByEmail("newEmail@email.com")).thenReturn(null);
         when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
+        when(languageRepository.findByName("en")).thenReturn(Optional.of(language));
         when(userRepository.save(any(User.class))).thenReturn(userToRegister);
 
-        User result = userService.registerUser("newUser", "newEmail@email.com", "password");
+        User result = userService.registerUser("newUser", "newEmail@email.com", "password", "en");
 
         assertNotNull(result);
         assertEquals("newUser", result.getUsername());
         assertEquals("newEmail@email.com", result.getEmail());
         assertEquals("encodedPassword", result.getPassword());
+        assertEquals("en", result.getLanguage().getName());
 
         verify(userRepository, times(1)).save(any(User.class));
     }
@@ -71,7 +93,7 @@ public class UserServiceTest {
         when(userRepository.findUserByUsername("existingUser")).thenReturn(existingUser);
 
         assertThrows(UserAlreadyExistsException.class, () -> {
-            userService.registerUser("existingUser", "newEmail@email.com", "password");
+            userService.registerUser("existingUser", "newEmail@email.com", "password", "EN");
         });
 
         verify(userRepository, never()).save(any(User.class));
@@ -86,7 +108,7 @@ public class UserServiceTest {
         when(userRepository.findUserByEmail("existing@email.com")).thenReturn(existingUser);
 
         assertThrows(UserAlreadyExistsException.class, () -> {
-            userService.registerUser("newUsername", "existing@email.com", "password");
+            userService.registerUser("newUsername", "existing@email.com", "password", "EN");
         });
 
         verify(userRepository, never()).save(any(User.class));
@@ -222,7 +244,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void deleteUserTest() {
+    public void testDeleteUser() {
         long userId = 1L;
         User user = new User();
         user.setId(userId);
@@ -235,5 +257,26 @@ public class UserServiceTest {
         verify(userRepository, times(1)).deleteById(userId);
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
         assertTrue(userRepository.findById(userId).isEmpty());
+    }
+
+    @Test
+    public void testUpdateUserLanguage() {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("testUser");
+        user.setLanguage(language);
+
+        Language newLanguage = new Language();
+        newLanguage.setName("fi");
+        newLanguage.setId(2L);
+        newLanguage.setCountry("FI");
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(languageRepository.findByName("fi")).thenReturn(Optional.of(newLanguage));
+
+        userService.updateUserLanguage(1L, "fi");
+
+        assertEquals("fi", user.getLanguage().getName());
+        verify(userRepository, times(1)).save(user);
     }
 }
