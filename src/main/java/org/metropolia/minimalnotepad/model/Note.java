@@ -101,9 +101,11 @@ public class Note {
     public List<Category> getCategoriesList() {
         return categoriesList;
     }
-    public void noteCategoryLocalization(Language language) {
-        for (Category category : categoriesList) {
-            category.setNameToTranslation(language);
+    public void categoryLocalization(Language language) {
+        if(categoriesList != null) {
+            for (Category category : categoriesList) {
+                category.setNameToTranslation(language);
+            }
         }
     }
 

@@ -39,6 +39,7 @@ public class NoteService {
         }
 
         if (note.getUser().getId() == user.getId()) {
+            note.categoryLocalization(user.getLanguage());
             return note;
         }
 

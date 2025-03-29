@@ -5,10 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.metropolia.minimalnotepad.exception.ResourceDoesntExistException;
 import org.metropolia.minimalnotepad.exception.UserDoesntOwnResourceException;
-import org.metropolia.minimalnotepad.model.Category;
-import org.metropolia.minimalnotepad.model.Group;
-import org.metropolia.minimalnotepad.model.Note;
-import org.metropolia.minimalnotepad.model.User;
+import org.metropolia.minimalnotepad.model.*;
 import org.metropolia.minimalnotepad.repository.GroupRepository;
 import org.metropolia.minimalnotepad.repository.NoteRepository;
 import org.metropolia.minimalnotepad.utils.SearchUtils;
@@ -30,7 +27,7 @@ import static org.mockito.Mockito.*;
 public class NoteServiceTest {
 
     private SearchUtils searchUtils = new SearchUtils();
-
+    private Language defaultLanguage;
     @Mock
     private NoteRepository noteRepository;
     @Mock
@@ -46,6 +43,8 @@ public class NoteServiceTest {
         noteRepository.deleteAll();
         groupRepository.deleteAll();
         noteService = new NoteService(noteRepository, searchUtils, groupService);
+        defaultLanguage = new Language();
+        defaultLanguage.setId(1);
     }
 
 
@@ -56,11 +55,13 @@ public class NoteServiceTest {
         userMock1.setUsername("user1");
         userMock1.setPassword("password1");
         userMock1.setEmail("user1@email.com");
+        userMock1.setLanguage(defaultLanguage);
 
         userMock2.setId(2);
         userMock2.setUsername("user2");
         userMock2.setPassword("password2");
         userMock2.setEmail("user2@email.com");
+        userMock2.setLanguage(defaultLanguage);
 
         Note note1 = new Note(),note2 = new Note(),note3 = new Note();
         note1.setId(1);
@@ -90,6 +91,7 @@ public class NoteServiceTest {
         userMock.setUsername("user1");
         userMock.setPassword("password1");
         userMock.setEmail("user1@email.com");
+        userMock.setLanguage(defaultLanguage);
 
         Note note1 = new Note();
         note1.setId(1);
@@ -110,6 +112,7 @@ public class NoteServiceTest {
         userMock.setUsername("user1");
         userMock.setPassword("password1");
         userMock.setEmail("user1@email.com");
+        userMock.setLanguage(defaultLanguage);
 
         Note note = new Note();
         note.setId(1);
@@ -129,6 +132,7 @@ public class NoteServiceTest {
         userMock.setUsername("user1");
         userMock.setPassword("password1");
         userMock.setEmail("user1@email.com");
+        userMock.setLanguage(defaultLanguage);
 
         assertThrows(ResourceDoesntExistException.class , () -> {
             noteService.getNoteById(userMock, 1);
@@ -141,6 +145,7 @@ public class NoteServiceTest {
         userMock.setUsername("user1");
         userMock.setPassword("password1");
         userMock.setEmail("user1@email.com");
+        userMock.setLanguage(defaultLanguage);
 
         Note note = new Note();
         note.setId(1);
@@ -328,6 +333,7 @@ public class NoteServiceTest {
         user.setUsername("user1");
         user.setPassword("password1");
         user.setEmail("test@example.com");
+        user.setLanguage(defaultLanguage);
 
         // Creating Group objects
         Group group1 = new Group();
