@@ -2,11 +2,14 @@ package org.metropolia.minimalnotepad.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.metropolia.minimalnotepad.dto.PasswordChangeRequest;
+import org.metropolia.minimalnotepad.model.Language;
 import org.metropolia.minimalnotepad.model.User;
+import org.metropolia.minimalnotepad.repository.LanguageRepository;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.metropolia.minimalnotepad.service.UserService;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
@@ -40,12 +43,15 @@ class UserControllerTest {
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Autowired
+    private LanguageRepository languageRepository;
+
     @MockitoBean
     private UserService userService;
 
     private User testUser;
     private String token;
-
+    private Language testLanguage;
 
     @BeforeAll
     public static void setup() {
@@ -55,13 +61,25 @@ class UserControllerTest {
 
     @BeforeEach
     public void setUp() {
-        userRepository.deleteAll();
+        testLanguage = new Language();
+        testLanguage.setName("en");
+        testLanguage.setCountry("US");
+        languageRepository.save(testLanguage);
+
         testUser = new User();
         testUser.setUsername("testUser");
         testUser.setEmail("test@example.com");
         testUser.setPassword("password");
+        testUser.setLanguage(testLanguage);
         testUser = userRepository.save(testUser);
+
         token = jwtUtils.generateToken(testUser.getUsername());
+    }
+
+    @AfterEach
+    public void tearDown() {
+        userRepository.deleteAll();
+        languageRepository.deleteAll();
     }
 
     @Test
@@ -136,5 +154,22 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.message").value("Password changed successfully"));
 
         verify(userService, times(1)).changePassword(testUser.getId(), oldPassword, newPassword);
+    }
+
+    @Test
+    @WithMockUser(username = "test")
+    void changeLanguage() throws Exception {
+        Language language = new Language();
+        language.setName("fi");
+        language.setCountry("FI");
+        languageRepository.save(language);
+
+        when(userService.getUserByUsername("testUser")).thenReturn(testUser);
+
+        mockMvc.perform(put("/api/user/change-language")
+                        .header("Authorization", "Bearer " + token)
+                        .param("lang", language.getName()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Language successfully changed to Finnish"));
     }
 }

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b39d15ca-fbe5-4c64-b5d9-c32f99b65ec5",
+		"_postman_id": "566da1d7-063f-4155-897d-1eb3ad923f6d",
 		"name": "Minimal Notepad",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29851757"
@@ -50,7 +50,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"username\":\"test\",\"email\":\"test@examle.com\",\"password\":\"test\"}",
+							"raw": "{\r\n    \"username\":\"test\",\r\n    \"email\":\"test@examle.com\",\r\n    \"password\":\"test\",\r\n    \"language\": \"fi\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -160,6 +160,31 @@
 								"api",
 								"user",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change User Language",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/user/change-language?lang=fi",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"change-language"
+							],
+							"query": [
+								{
+									"key": "lang",
+									"value": "fi"
+								}
 							]
 						}
 					},
@@ -855,7 +880,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzQxMDkxNzcxLCJleHAiOjE3NDExNzgxNzF9.e_2_wonO7fPYORr8q9Z2NA650tKURtY_DUh8s6gPoB8",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0NyIsImlhdCI6MTc0MzI4MTI1NSwiZXhwIjoxNzQzMzY3NjU1fQ.9KI99eIVsQeB5xTIGWdzkQJTuLFHYuesYJneQAO7k2c",
 				"type": "string"
 			}
 		]

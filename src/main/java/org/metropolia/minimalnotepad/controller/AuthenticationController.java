@@ -41,11 +41,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest)
-    {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         try
         {
-            User registeredUser = userService.registerUser(registerRequest.getUsername(),registerRequest.getEmail(),registerRequest.getPassword());
+            User registeredUser = userService.registerUser(registerRequest.getUsername(),registerRequest.getEmail(),registerRequest.getPassword(),registerRequest.getLanguage());
             String jwt = authenticationService.authenticate(registeredUser.getUsername(),registerRequest.getPassword());
             return ResponseEntity.ok(new AuthenticationResponse(jwt, registerRequest.getUsername()));
         }catch (Exception e)
@@ -53,5 +52,4 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(409, e.getMessage()));
         }
     }
-
 }

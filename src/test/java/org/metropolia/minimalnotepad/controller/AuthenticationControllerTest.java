@@ -1,13 +1,16 @@
 package org.metropolia.minimalnotepad.controller;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.metropolia.minimalnotepad.dto.AuthenticationResponse;
 import org.metropolia.minimalnotepad.dto.LoginRequest;
 import org.metropolia.minimalnotepad.dto.RegisterRequest;
+import org.metropolia.minimalnotepad.model.Language;
 import org.metropolia.minimalnotepad.model.User;
+import org.metropolia.minimalnotepad.repository.LanguageRepository;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,8 @@ public class AuthenticationControllerTest {
     private UserRepository userRepository;
     @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
+    private LanguageRepository languageRepository;
 
     @BeforeAll
     public static void setup() {
@@ -41,8 +46,19 @@ public class AuthenticationControllerTest {
 
     @BeforeEach
     public void setUp() {
-        userRepository.deleteAll();
+        Language language = new Language();
+        language.setName("en");
+        language.setId(1L);
+        language.setCountry("US");
+        languageRepository.save(language);
     }
+
+    @AfterEach
+    public void tearDown() {
+        userRepository.deleteAll();
+        languageRepository.deleteAll();
+    }
+
     @Test
     public void testLoginValidUser()
     {
@@ -93,7 +109,7 @@ public class AuthenticationControllerTest {
         userMock.setPassword(passwordEncoder.encode("password"));
         userMock.setEmail("email@email.com");
 
-        ResponseEntity<?> responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password"));
+        ResponseEntity<?> responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password", "en"));
         AuthenticationResponse authenticationResponse = (AuthenticationResponse) responseEntity.getBody();
 
         assertEquals(200,responseEntity.getStatusCode().value());
@@ -108,7 +124,7 @@ public class AuthenticationControllerTest {
         userMock.setEmail("email@email.com");
 
         userRepository.save(userMock);
-        ResponseEntity responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password"));
+        ResponseEntity responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password", "en"));
         assertNotNull(responseEntity);
         assertEquals(409,responseEntity.getStatusCode().value());
     }
@@ -121,7 +137,7 @@ public class AuthenticationControllerTest {
         userMock.setEmail("email@email.com");
 
         userRepository.save(userMock);
-        ResponseEntity responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password"));
+        ResponseEntity responseEntity = authenticationController.register(new RegisterRequest(userMock.getUsername(),userMock.getEmail(), "password", "en"));
         assertNotNull(responseEntity);
         assertEquals(409,responseEntity.getStatusCode().value());
     }

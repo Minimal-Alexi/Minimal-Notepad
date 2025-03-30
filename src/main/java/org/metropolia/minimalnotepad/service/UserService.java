@@ -3,6 +3,7 @@ package org.metropolia.minimalnotepad.service;
 import org.metropolia.minimalnotepad.exception.UserAlreadyExistsException;
 import org.metropolia.minimalnotepad.model.Language;
 import org.metropolia.minimalnotepad.model.User;
+import org.metropolia.minimalnotepad.repository.LanguageRepository;
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.metropolia.minimalnotepad.exception.UserNotFoundException;
 
@@ -17,13 +18,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
+    private final LanguageRepository languageRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, LanguageRepository languageRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
+        this.languageRepository = languageRepository;
     }
-    public User registerUser(String username, String email, String password) {
+    public User registerUser(String username, String email, String password, String languageName) {
         if(userRepository.findUserByEmail(email) != null)
         {
             throw new UserAlreadyExistsException("Email already exists.");
@@ -38,9 +41,9 @@ public class UserService {
         user.setEmail(email);
         user.setPassword(encodedPassword);
 
-        // TEMPORARY, TO BE FIXED!
-        Language language = new Language();
-        language.setId(1);
+        Language language = languageRepository.findByName(languageName.trim().toLowerCase())
+                .orElseThrow(() -> new RuntimeException("Language not found"));
+
         user.setLanguage(language);
 
         return userRepository.save(user);
@@ -84,6 +87,27 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+    }
+
+    public User updateUserLanguage(Long userId, String languageName) {
+        Optional<User> existingUser = userRepository.findById(userId);
+        if (existingUser.isEmpty()) {
+            throw new UserNotFoundException("User with ID " + userId + " not found.");
+        }
+
+        User user = existingUser.get();
+
+        if (languageName == null || languageName.isBlank()) {
+            throw new IllegalArgumentException("Language name cannot be empty.");
+        }
+
+        String normalizedLanguageName = languageName.trim().toLowerCase();
+
+        Language language = languageRepository.findByName(normalizedLanguageName)
+                .orElseThrow(() -> new IllegalArgumentException("Language '" + normalizedLanguageName + "' not found."));
+
+        user.setLanguage(language);
+        return userRepository.save(user);
     }
 
     public void deleteUser(Long userId) {
