@@ -23,4 +23,16 @@ public class CategoryLocalization {
     public String getTranslation() {
         return translation;
     }
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
+    public void setTranslation(String translation) {
+        this.translation = translation;
+    }
 }

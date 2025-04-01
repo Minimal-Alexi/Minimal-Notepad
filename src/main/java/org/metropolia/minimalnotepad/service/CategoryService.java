@@ -2,7 +2,6 @@ package org.metropolia.minimalnotepad.service;
 
 import org.metropolia.minimalnotepad.model.Category;
 import org.metropolia.minimalnotepad.model.Language;
-import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +15,25 @@ public class CategoryService {
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
-
+    @Deprecated
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
     public List<Category> getAllCategories(Language language) {
         List<Category> allCategories = categoryRepository.findAll();
-        if (language.getId() != 1) {
-            for (Category category : allCategories) {
-                category.setLocalization(language);
-            }
+        for (Category category : allCategories) {
+            category.setNameToTranslation(language);
         }
         return allCategories;
     }
 
+    public Category getCategoryById(Long id, Language language) {
+        Category category =  categoryRepository.findById(id).orElse(null);
+        if (category != null) {
+            category.setNameToTranslation(language);
+        }
+        return category;
+    }
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElse(null); // Using orElse on Optional<Category>
     }

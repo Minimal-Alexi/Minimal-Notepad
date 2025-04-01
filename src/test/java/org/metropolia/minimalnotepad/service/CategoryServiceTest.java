@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.metropolia.minimalnotepad.model.Category;
+import org.metropolia.minimalnotepad.model.Language;
 import org.metropolia.minimalnotepad.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -27,7 +28,7 @@ class CategoryServiceTest {
     private CategoryService categoryService;
 
     private Long testCategoryId;
-
+    private Language language;
     @BeforeAll
     public static void setup() {
         Dotenv dotenv = Dotenv.load();
@@ -40,6 +41,8 @@ class CategoryServiceTest {
         category.setName("Test Category #1");
         categoryRepository.save(category);
         testCategoryId = category.getId();
+        language = new Language();
+        language.setId(1);
     }
 
     @AfterEach
@@ -50,6 +53,8 @@ class CategoryServiceTest {
     @Test
     @WithMockUser(username = "test")
     void getAllCategories() {
+        Language language = new Language();
+        language.setId(1);
         List<Category> categories = categoryService.getAllCategories();
         assertFalse(categories.isEmpty(), "The category list should not be empty");
     }
@@ -57,7 +62,7 @@ class CategoryServiceTest {
     @Test
     @WithMockUser(username = "test")
     void getCategoryById() {
-        Category foundCategory = categoryService.getCategoryById(testCategoryId);
+        Category foundCategory = categoryService.getCategoryById(testCategoryId,language);
         assertNotNull(foundCategory, "The category should be found");
     }
 

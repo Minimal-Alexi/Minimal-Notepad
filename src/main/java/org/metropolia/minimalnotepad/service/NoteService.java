@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class NoteService {
     private final NoteRepository noteRepository;
     private final GroupService groupService;
-    private SearchUtils searchUtils;
+    private final SearchUtils searchUtils;
     public NoteService(NoteRepository noteRepository, SearchUtils searchUtils, GroupService groupService) {
         this.noteRepository = noteRepository;
         this.searchUtils = searchUtils;
@@ -27,6 +27,9 @@ public class NoteService {
     }
     public List<Note> getNoteListsByUser(User user) {
         List<Note> notesList =  noteRepository.getNotesByUserId(user.getId());
+        for (Note note : notesList) {
+            note.categoryLocalization(user.getLanguage());
+        }
         return notesList;
     }
     public Note getNoteById(User user, long id) {
@@ -39,6 +42,7 @@ public class NoteService {
         }
 
         if (note.getUser().getId() == user.getId()) {
+            note.categoryLocalization(user.getLanguage());
             return note;
         }
 
@@ -78,6 +82,7 @@ public class NoteService {
         if (existingNote.getUser().getId() != user.getId()) {
             throw new UserDoesntOwnResourceException("You do not own this note.");
         }
+        updatedNote.categoryLocalization(user.getLanguage());
         updatedNote.setId(noteId);
         updatedNote.setUser(user);
         updatedNote.setUpdatedAt(new Timestamp(System.currentTimeMillis()));

@@ -101,6 +101,13 @@ public class Note {
     public List<Category> getCategoriesList() {
         return categoriesList;
     }
+    public void categoryLocalization(Language language) {
+        if(categoriesList != null) {
+            for (Category category : categoriesList) {
+                category.setNameToTranslation(language);
+            }
+        }
+    }
 
     public String getCategory() {
         if (categoriesList != null && !categoriesList.isEmpty()) {
