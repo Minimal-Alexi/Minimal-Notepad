@@ -25,10 +25,13 @@ public class NoteService {
         this.searchUtils = searchUtils;
         this.groupService = groupService;
     }
+
     public List<Note> getNoteListsByUser(User user) {
-        List<Note> notesList =  noteRepository.getNotesByUserId(user.getId());
+        List<Note> notesList = noteRepository.getNotesByUserId(user.getId());
         for (Note note : notesList) {
-            note.categoryLocalization(user.getLanguage());
+            if (note.getCategoriesList() != null && !note.getCategoriesList().isEmpty()) {
+                note.categoryLocalization(user.getLanguage());
+            }
         }
         return notesList;
     }
@@ -42,7 +45,9 @@ public class NoteService {
         }
 
         if (note.getUser().getId() == user.getId()) {
-            note.categoryLocalization(user.getLanguage());
+            if(note.getCategoriesList() != null && !note.getCategoriesList().isEmpty()) {
+                note.categoryLocalization(user.getLanguage());
+            }
             return note;
         }
 
