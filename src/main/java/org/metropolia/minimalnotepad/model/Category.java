@@ -46,7 +46,7 @@ public class Category {
         this.localizationList = localizationList;
     }
     public void setNameToTranslation(Language language) {
-        if(language != null && language.getId() != 1) {
+        if(language != null && language.getId() != 1 && localizationList != null) {
             for(CategoryLocalization localization : localizationList) {
                 if(localization.getLanguage().getId() == language.getId()) {
                     name = localization.getTranslation();
