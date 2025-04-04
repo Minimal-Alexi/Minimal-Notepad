@@ -1,17 +1,18 @@
 package org.metropolia.minimalnotepad.controller;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.metropolia.minimalnotepad.dto.ErrorResponse;
 import org.metropolia.minimalnotepad.dto.SearchRequest;
 import org.metropolia.minimalnotepad.model.Group;
+import org.metropolia.minimalnotepad.model.Language;
 import org.metropolia.minimalnotepad.model.Note;
 import org.metropolia.minimalnotepad.model.User;
-import org.metropolia.minimalnotepad.repository.GroupRepository;
-import org.metropolia.minimalnotepad.repository.NoteRepository;
-import org.metropolia.minimalnotepad.repository.UserRepository;
+import org.metropolia.minimalnotepad.repository.*;
 import org.metropolia.minimalnotepad.service.UserGroupParticipationService;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -35,12 +37,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class NoteControllerTest {
+    private Language language;
 
     @Autowired
     private NoteController noteController;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private LanguageRepository languageRepository;
 
     @Autowired
     private NoteRepository noteRepository;
@@ -69,20 +75,28 @@ public class NoteControllerTest {
     public void setUp() {
         noteRepository.deleteAll();
         userRepository.deleteAll();
+        languageRepository.deleteAll();
+        language = new Language();
+        language.setName("en");
+        language.setCountry("US");
+        languageRepository.saveAndFlush(language);
     }
-
+    @Transactional
     @Test
     public void testGetAllNotesFromUserValidUser() {
         User user = new User();
         user.setUsername("testuser");
         user.setPassword(passwordEncoder.encode("password"));
         user.setEmail("testuser@example.com");
+        user.setLanguage(language);
         userRepository.save(user);
 
         Note note = new Note();
         note.setTitle("Test Note");
         note.setText("This is a test note.");
         note.setUser(user);
+        note.setCategoriesList(new ArrayList<>());
+        Hibernate.initialize(note.getCategoriesList());
         noteRepository.save(note);
 
         String token = jwtUtils.generateToken(user.getUsername());
@@ -134,7 +148,7 @@ public class NoteControllerTest {
         assertEquals(404, error.getStatus());
         assertEquals("User not found", error.getMessage());
     }
-
+    @Transactional
     @Test
     public void testGetNoteFromUserValidNote() {
         User user = new User();
@@ -147,6 +161,8 @@ public class NoteControllerTest {
         note.setTitle("Note Title");
         note.setText("Note Content");
         note.setUser(user);
+        note.setCategoriesList(new ArrayList<>());
+        Hibernate.initialize(note.getCategoriesList());
         noteRepository.save(note);
 
         String token = jwtUtils.generateToken(user.getUsername());
@@ -275,7 +291,7 @@ public class NoteControllerTest {
         assertEquals(404, error.getStatus());
         assertEquals("User not found", error.getMessage());
     }
-
+    @Transactional
     @Test
     public void testDeleteNoteValid() {
         User user = new User();
@@ -288,6 +304,8 @@ public class NoteControllerTest {
         note.setTitle("Note to Delete");
         note.setText("This note will be deleted.");
         note.setUser(user);
+        note.setCategoriesList(new ArrayList<>());
+        Hibernate.initialize(note.getCategoriesList());
         noteRepository.save(note);
 
         String token = jwtUtils.generateToken(user.getUsername());
