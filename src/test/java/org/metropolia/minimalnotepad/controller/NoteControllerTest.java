@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -73,11 +74,12 @@ public class NoteControllerTest {
     @BeforeEach
     public void setUp() {
         noteRepository.deleteAll();
-        languageRepository.deleteAll();
         userRepository.deleteAll();
+        languageRepository.deleteAll();
         language = new Language();
-        language.setId(1);
-        languageRepository.save(language);
+        language.setName("en");
+        language.setCountry("US");
+        languageRepository.saveAndFlush(language);
     }
     @Transactional
     @Test
