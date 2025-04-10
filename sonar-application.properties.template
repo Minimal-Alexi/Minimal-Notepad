@@ -1,0 +1,8 @@
+sonar.projectKey=minimalNotepad
+sonar.projectName=MinimalNotepad
+sonar.projectVersion=1.0
+sonar.sources=src
+sonar.java.binaries=target/classes
+sonar.host.url=http://localhost:9000
+sonar.language=java
+sonar.login=LOGIN TOKEN HERE
