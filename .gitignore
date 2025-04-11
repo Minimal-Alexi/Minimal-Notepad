@@ -34,4 +34,4 @@ build/
 .env
 sonar-project.properties
 .scannerwork
-/sonar-application.properties
+/sonar-project.properties
