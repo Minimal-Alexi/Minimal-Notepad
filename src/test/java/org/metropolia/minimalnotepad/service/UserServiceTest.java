@@ -41,11 +41,14 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
+    @Mock
+    private MessageService messageService;
+
     Language language = new Language();
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository, passwordEncoder, jwtUtils, languageRepository);
+        userService = new UserService(userRepository, passwordEncoder, jwtUtils, languageRepository, messageService);
 
         // Set up a mock Language object
         language.setName("en");

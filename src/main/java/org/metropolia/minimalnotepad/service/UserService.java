@@ -11,6 +11,7 @@ import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -19,21 +20,26 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final LanguageRepository languageRepository;
+    private final MessageService messageService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, LanguageRepository languageRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, LanguageRepository languageRepository, MessageService messageService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
         this.languageRepository = languageRepository;
+        this.messageService = messageService;
     }
     public User registerUser(String username, String email, String password, String languageName) {
+        Locale locale = new Locale(languageName);
         if(userRepository.findUserByEmail(email) != null)
         {
-            throw new UserAlreadyExistsException("Email already exists.");
+            String message = messageService.get("error.register.emailExists", locale);
+            throw new UserAlreadyExistsException(message);
         }
         if(userRepository.findUserByUsername(username) != null)
         {
-            throw new UserAlreadyExistsException("Username already exists.");
+            String message = messageService.get("error.register.usernameExists", locale);
+            throw new UserAlreadyExistsException(message);
         }
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User();
@@ -42,7 +48,7 @@ public class UserService {
         user.setPassword(encodedPassword);
 
         Language language = languageRepository.findByName(languageName.trim().toLowerCase())
-                .orElseThrow(() -> new RuntimeException("Language not found"));
+                .orElseGet(() -> languageRepository.findByName("en").orElse(null));
 
         user.setLanguage(language);
 
