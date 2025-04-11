@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "566da1d7-063f-4155-897d-1eb3ad923f6d",
+		"_postman_id": "9b47b608-4e1a-4ef8-a3d3-5ba6ac307c62",
 		"name": "Minimal Notepad",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29851757"
@@ -16,10 +16,16 @@
 							"type": "noauth"
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "fi",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\":\"test\"\r\n}",
+							"raw": "{\r\n    \"username\": \"test16\",\r\n    \"password\":\"test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
