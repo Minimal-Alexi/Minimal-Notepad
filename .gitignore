@@ -32,3 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 .env
+sonar-project.properties
+.scannerwork
+/sonar-application.properties
