@@ -77,7 +77,7 @@ public class NoteController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User is not an owner or a member of any groups."));
             }
 
-            List<Note> notesFromGroups = noteService.getNotesFromGroups(userGroups);
+            List<Note> notesFromGroups = noteService.getNotesFromGroups(userGroups,user);
             return ResponseEntity.ok(notesFromGroups);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
