@@ -6,3 +6,4 @@ sonar.java.binaries=target/classes
 sonar.host.url=http://localhost:9000
 sonar.language=java
 sonar.login=LOGIN TOKEN HERE
+sonar.coverage.exclusions=**/src/test/**/*
