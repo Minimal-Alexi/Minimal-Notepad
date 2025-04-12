@@ -13,12 +13,12 @@ public class UserGroupParticipation {
     @MapsId("user_id")
     @JoinColumn(name="user_id")
     @JsonBackReference("participation-user")
-    public User user;
+    private User user;
     @ManyToOne
     @MapsId("group_id")
     @JoinColumn(name = "group_id")
     @JsonBackReference("participation-group")
-    public Group group;
+    private Group group;
 
     public UserGroupParticipation() {
 

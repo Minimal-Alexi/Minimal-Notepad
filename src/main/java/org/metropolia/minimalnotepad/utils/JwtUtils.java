@@ -13,7 +13,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtils {
     // nrMilliseconds * nrSeconds * nrMinutes * nrHours * nrDays
-    private final int timeValidity = 1000 * 60 * 60 * 24;
+    private final static int timeValidity = 1000 * 60 * 60 * 24;
     @Value("${myapp.secret-key}")
     private String secretKey;
 

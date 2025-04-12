@@ -58,9 +58,6 @@ public class AuthenticationServiceTest {
     @Test
     public void testAuthenticateUserNotFound()
     {
-        User mockUser = new User();
-        mockUser.setUsername("testuser");
-        mockUser.setPassword("encodedPassword123");
         when(userRepository.findUserByUsername("testuser")).thenReturn(null);
         assertThrows(UsernameNotFoundException.class, () -> authService.authenticate("testuser", "password123", Locale.getDefault()));
     }

@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CategoryTests {
-    private static Category category;
+    private Category category;
     @BeforeEach
     public void setUp() {
         category = new Category();
