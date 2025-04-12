@@ -5,9 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.metropolia.minimalnotepad.dto.AuthenticationResponse;
-import org.metropolia.minimalnotepad.dto.LoginRequest;
-import org.metropolia.minimalnotepad.dto.RegisterRequest;
+import org.metropolia.minimalnotepad.dto.*;
 import org.metropolia.minimalnotepad.model.Language;
 import org.metropolia.minimalnotepad.model.User;
 import org.metropolia.minimalnotepad.repository.LanguageRepository;
@@ -19,6 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -66,14 +66,17 @@ public class AuthenticationControllerTest {
         userMock.setUsername("username");
         userMock.setPassword(passwordEncoder.encode("password"));
         userMock.setEmail("email@email.com");
+        userMock.setLanguage(languageRepository.findByName("en").orElse(null));
 
         userRepository.save(userMock);
 
-        ResponseEntity<?> responseEntity = authenticationController.login(new LoginRequest(userMock.getUsername(), "password"));
+        Locale locale = Locale.forLanguageTag("en");
+
+        ResponseEntity<?> responseEntity = authenticationController.login(new LoginRequest(userMock.getUsername(), "password"), locale);
 
         assertNotNull(responseEntity);
         assertEquals(200,responseEntity.getStatusCode().value());
-        AuthenticationResponse authenticationResponse = (AuthenticationResponse) responseEntity.getBody();
+        LoginResponse authenticationResponse = (LoginResponse) responseEntity.getBody();
         assertEquals("username", authenticationResponse.getUsername());
         assertEquals(jwtUtils.generateToken(userMock.getUsername()), authenticationResponse.getToken());
     }
@@ -87,7 +90,9 @@ public class AuthenticationControllerTest {
 
         userRepository.save(userMock);
 
-        ResponseEntity<?> responseEntity = authenticationController.login(new LoginRequest(userMock.getUsername(), "badPassword"));
+        Locale locale = Locale.forLanguageTag("en");
+
+        ResponseEntity<?> responseEntity = authenticationController.login(new LoginRequest(userMock.getUsername(), "badPassword"), locale);
         assertNotNull(responseEntity);
         assertEquals(401,responseEntity.getStatusCode().value());
 
@@ -95,7 +100,8 @@ public class AuthenticationControllerTest {
     @Test
     public void testLoginInvalidUser()
     {
-        ResponseEntity<?> responseEntity = authenticationController.login(new LoginRequest("username", "badPassword"));
+        Locale locale = Locale.forLanguageTag("en");
+        ResponseEntity<?> responseEntity = authenticationController.login(new LoginRequest("username", "badPassword"), locale);
 
         assertNotNull(responseEntity);
         assertEquals(404,responseEntity.getStatusCode().value());

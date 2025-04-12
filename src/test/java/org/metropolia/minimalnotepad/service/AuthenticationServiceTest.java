@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Locale;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,6 +33,9 @@ public class AuthenticationServiceTest {
     @InjectMocks
     private AuthenticationService authService;
 
+    @Mock
+    private MessageService messageService;
+
     @Test
     public void testAuthenticateValidAttempt()
     {
@@ -42,7 +47,7 @@ public class AuthenticationServiceTest {
         when(passwordEncoder.matches("password123","encodedPassword123")).thenReturn(true);
         when(jwtUtils.generateToken(mockUser.getUsername())).thenReturn("mockToken");
 
-        String token = authService.authenticate("testuser", "password123");
+        String token = authService.authenticate("testuser", "password123", Locale.getDefault());
 
         assertNotNull(token);
         assertEquals("mockToken", token);
@@ -57,6 +62,6 @@ public class AuthenticationServiceTest {
         mockUser.setUsername("testuser");
         mockUser.setPassword("encodedPassword123");
         when(userRepository.findUserByUsername("testuser")).thenReturn(null);
-        assertThrows(UsernameNotFoundException.class, () -> authService.authenticate("testuser", "password123"));
+        assertThrows(UsernameNotFoundException.class, () -> authService.authenticate("testuser", "password123", Locale.getDefault()));
     }
 }
