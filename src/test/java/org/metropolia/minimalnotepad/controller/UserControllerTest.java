@@ -54,7 +54,7 @@ class UserControllerTest {
     private Language testLanguage;
 
     @BeforeAll
-    public static void setup() {
+    public static void initialSetUp() {
         Dotenv dotenv = Dotenv.load();
         System.setProperty("SECRET_KEY", dotenv.get("SECRET_KEY"));
     }

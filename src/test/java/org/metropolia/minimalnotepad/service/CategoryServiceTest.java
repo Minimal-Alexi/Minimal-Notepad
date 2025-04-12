@@ -30,7 +30,7 @@ class CategoryServiceTest {
     private Long testCategoryId;
     private Language language;
     @BeforeAll
-    public static void setup() {
+    public static void initialSetUp() {
         Dotenv dotenv = Dotenv.load();
         System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
     }
