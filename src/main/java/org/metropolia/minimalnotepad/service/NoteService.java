@@ -59,13 +59,17 @@ public class NoteService {
         }
         throw new UserDoesntOwnResourceException("You do not have access to this note.");
     }
-    public List<Note> getNotesFromGroups(List<Group> groups) {
+    public List<Note> getNotesFromGroups(List<Group> groups, User user) {
         List<Note> notes = new ArrayList<>();
 
         for (Group group : groups) {
             if (group.getNotes() != null) {
                 notes.addAll(group.getNotes());
             }
+        }
+
+        for(Note note : notes) {
+            note.categoryLocalization(user.getLanguage());
         }
 
         return notes;

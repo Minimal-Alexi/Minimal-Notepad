@@ -369,7 +369,7 @@ public class NoteServiceTest {
         List<Group> groups = groupService.getAllGroups();
 
         // Calling the method under test
-        List<Note> result = noteService.getNotesFromGroups(groups);
+        List<Note> result = noteService.getNotesFromGroups(groups,user);
 
         // Assertions
         assertEquals(2, result.size());
