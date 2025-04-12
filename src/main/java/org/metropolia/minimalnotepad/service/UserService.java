@@ -31,13 +31,11 @@ public class UserService {
     }
     public User registerUser(String username, String email, String password, String languageName) {
         Locale locale = new Locale(languageName);
-        if(userRepository.findUserByEmail(email) != null)
-        {
+        if (userRepository.findUserByEmail(email) != null) {
             String message = messageService.get("error.register.emailExists", locale);
             throw new UserAlreadyExistsException(message);
         }
-        if(userRepository.findUserByUsername(username) != null)
-        {
+        if (userRepository.findUserByUsername(username) != null) {
             String message = messageService.get("error.register.usernameExists", locale);
             throw new UserAlreadyExistsException(message);
         }

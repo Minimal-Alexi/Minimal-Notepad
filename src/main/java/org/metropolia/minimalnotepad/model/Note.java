@@ -102,7 +102,7 @@ public class Note {
         return categoriesList;
     }
     public void categoryLocalization(Language language) {
-        if(categoriesList != null) {
+        if (categoriesList != null) {
             for (Category category : categoriesList) {
                 category.setNameToTranslation(language);
             }

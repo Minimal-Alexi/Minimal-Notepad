@@ -1,7 +1,6 @@
 package org.metropolia.minimalnotepad.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,7 +10,7 @@ public class UserGroupParticipation {
     private UserGroupId id = new UserGroupId();
     @ManyToOne
     @MapsId("user_id")
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     @JsonBackReference("participation-user")
     private User user;
     @ManyToOne
@@ -24,8 +23,12 @@ public class UserGroupParticipation {
 
     }
 
-    public UserGroupId getId() { return id; }
-    public void setId(UserGroupId id) { this.id = id; }
+    public UserGroupId getId() {
+        return id;
+    }
+    public void setId(UserGroupId id) {
+        this.id = id;
+    }
     public void setUser(User user) {
         this.user = user;
     }

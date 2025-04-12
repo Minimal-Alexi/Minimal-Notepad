@@ -15,11 +15,18 @@ import org.metropolia.minimalnotepad.utils.JwtUtils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/note")
@@ -28,24 +35,28 @@ public class NoteController {
     private final NoteService noteService;
     private final GroupService groupService;
     private final JwtUtils jwtUtils;
-    public NoteController(UserService userService, NoteService noteService, GroupService groupService, JwtUtils jwtUtils) {
+    public NoteController(UserService userService, NoteService noteService,
+                          GroupService groupService, JwtUtils jwtUtils) {
         this.userService = userService;
         this.noteService = noteService;
         this.groupService = groupService;
         this.jwtUtils = jwtUtils;
     }
     @GetMapping("/")
-    public ResponseEntity<?> getAllNotesFromUser(@RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<?> getAllNotesFromUser(
+            @RequestHeader("Authorization") String authorizationHeader
+    ) {
         try {
             String token = getTokenFromHeader(authorizationHeader);
             User user = getUserFromToken(token);
             if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
             List<Note> noteList = noteService.getNoteListsByUser(user);
             return ResponseEntity.ok(noteList);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
         }
     }
     @GetMapping("/{noteId}")
@@ -54,13 +65,15 @@ public class NoteController {
             String token = getTokenFromHeader(authorizationHeader);
             User user = getUserFromToken(token);
             if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
             Note note = noteService.getNoteById(user, noteId);
             return ResponseEntity.ok(note);
-        }catch (Exception e) {
-            if(e instanceof ResourceDoesntExistException) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, e.getMessage()));
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
+        } catch (Exception e) {
+            if (e instanceof ResourceDoesntExistException) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
         }
     }
     @GetMapping("/my-groups")
@@ -69,18 +82,17 @@ public class NoteController {
             String token = getTokenFromHeader(authorizationHeader);
             User user = getUserFromToken(token);
             if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
 
             List<Group> userGroups = groupService.getUserGroups(user);
             if (userGroups == null || userGroups.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User is not an owner or a member of any groups."));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User is not an owner or a member of any groups."));
             }
-
-            List<Note> notesFromGroups = noteService.getNotesFromGroups(userGroups,user);
+            List<Note> notesFromGroups = noteService.getNotesFromGroups(userGroups, user);
             return ResponseEntity.ok(notesFromGroups);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
         }
     }
     @PostMapping("/")
@@ -89,13 +101,13 @@ public class NoteController {
             String token = getTokenFromHeader(authorizationHeader);
             User user = getUserFromToken(token);
             if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
             note.setUser(user);
-            noteService.createNote(user,note);
+            noteService.createNote(user, note);
             return ResponseEntity.status(HttpStatus.CREATED).body(note);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
         }
     }
 
@@ -110,7 +122,7 @@ public class NoteController {
             User user = getUserFromToken(token);
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ErrorResponse(404, "User not found"));
+                        .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
 
             Note savedNote = noteService.updateNote(user, noteId, updatedNote);
@@ -118,13 +130,13 @@ public class NoteController {
 
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ErrorResponse(401, "Authorization header is invalid"));
+                    .body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "Authorization header is invalid"));
         } catch (ResourceDoesntExistException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorResponse(404, e.getMessage()));
+                    .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorResponse(500, "An unexpected error occurred"));
+                    .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "An unexpected error occurred"));
         }
     }
 
@@ -134,14 +146,16 @@ public class NoteController {
             String token = getTokenFromHeader(authorizationHeader);
             User user = getUserFromToken(token);
             if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
             Note note = noteService.getNoteById(user, noteId);
-            noteService.deleteNote(user,note);
+            noteService.deleteNote(user, note);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(note);
-        }catch (Exception e) {
-            if(e instanceof ResourceDoesntExistException) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, e.getMessage()));
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
+        } catch (Exception e) {
+            if (e instanceof ResourceDoesntExistException) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
         }
     }
 
@@ -155,12 +169,12 @@ public class NoteController {
 
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ErrorResponse(404, "User not found"));
+                        .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
 
             if (filterDTO == null || filterDTO.getNotes() == null) {
                 return ResponseEntity.badRequest()
-                        .body(new ErrorResponse(400, "Invalid request body"));
+                        .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Invalid request body"));
             }
 
             ArrayList<Note> filteredNotes = noteService.filterNotes(filterDTO.getNotes(), filterDTO.getCategory());
@@ -168,25 +182,25 @@ public class NoteController {
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorResponse(500, "An error occurred: " + e.getMessage()));
+                    .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "An error occurred: " + e.getMessage()));
         }
     }
 
     @PostMapping("/search")
     public ResponseEntity<?> searchNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody SearchRequest searchRequest) {
-        try{
+        try {
             ArrayList<Note> unfilteredNotes = searchRequest.getNotes();
             String query = searchRequest.getQuery();
-            if(query == null || unfilteredNotes.isEmpty()){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Nothing to search"));
+            if (query == null || unfilteredNotes.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Nothing to search"));
             }
             ArrayList<Note> filteredNotes = noteService.findNotes(unfilteredNotes, query);
-            if(filteredNotes.isEmpty()){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "No results found"));
+            if (filteredNotes.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "No results found"));
             }
             return ResponseEntity.ok(filteredNotes);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(500, "An unexpected error occurred"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "An unexpected error occurred"));
         }
     }
 

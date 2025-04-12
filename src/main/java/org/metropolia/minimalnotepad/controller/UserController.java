@@ -10,7 +10,15 @@ import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,13 +42,13 @@ public class UserController {
             User currentUser = getUserFromToken(token);
 
             if (currentUser == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
 
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(currentUser);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
         }
     }
 
@@ -52,13 +60,13 @@ public class UserController {
             User currentUser = getUserFromToken(token);
 
             if (currentUser == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
 
             userService.deleteUser(currentUser.getId());
-            return ResponseEntity.ok(new ErrorResponse(200, "User deleted successfully"));
+            return ResponseEntity.ok(new ErrorResponse(HttpStatus.OK.value(), "User deleted successfully"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
         }
     }
 
@@ -72,19 +80,19 @@ public class UserController {
             User currentUser = getUserFromToken(token);
 
             if (currentUser == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
 
             if (updatedUser.getUsername() == null || updatedUser.getUsername().trim().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Username is required"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Username is required"));
             }
 
             if (updatedUser.getEmail() == null || updatedUser.getEmail().trim().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Email is required"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Email is required"));
             }
 
             if (updatedUser.getUsername().equals(currentUser.getUsername()) && updatedUser.getEmail().equals(currentUser.getEmail())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "No changes detected"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "No changes detected"));
             }
 
             boolean isUsernameChanged = !currentUser.getUsername().equals(updatedUser.getUsername());
@@ -103,7 +111,7 @@ public class UserController {
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -117,33 +125,33 @@ public class UserController {
             User currentUser = getUserFromToken(token);
 
             if (currentUser == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
 
             if (passwordChangeRequest.getOldPassword() == null || passwordChangeRequest.getOldPassword().trim().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Old password is required"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Old password is required"));
             }
 
             if (passwordChangeRequest.getNewPassword() == null || passwordChangeRequest.getNewPassword().trim().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "New password is required"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "New password is required"));
             }
 
             if (passwordChangeRequest.getConfirmPassword() == null || passwordChangeRequest.getConfirmPassword().trim().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Confirm password is required"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Confirm password is required"));
             }
 
             if (!passwordChangeRequest.getNewPassword().equals(passwordChangeRequest.getConfirmPassword())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "New password and confirm password do not match"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "New password and confirm password do not match"));
             }
 
             if (passwordChangeRequest.getOldPassword().equals(passwordChangeRequest.getNewPassword())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "New password is the same as the old password"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "New password is the same as the old password"));
             }
 
             userService.changePassword(currentUser.getId(), passwordChangeRequest.getOldPassword(), passwordChangeRequest.getNewPassword());
-            return ResponseEntity.ok(new ErrorResponse(200, "Password changed successfully"));
+            return ResponseEntity.ok(new ErrorResponse(HttpStatus.OK.value(), "Password changed successfully"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -157,11 +165,11 @@ public class UserController {
             User currentUser = getUserFromToken(token);
 
             if (currentUser == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));
             }
 
             if (lang == null || lang.trim().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Language code is required"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Language code is required"));
             }
 
             String languageName;
@@ -179,17 +187,17 @@ public class UserController {
                     languageName = "Chinese";
                     break;
                 default:
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Invalid language code"));
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Invalid language code"));
             }
 
             if (lang.equals(currentUser.getLanguage().getName())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Language is already set to " + languageName));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Language is already set to " + languageName));
             }
 
             userService.updateUserLanguage(currentUser.getId(), lang);
-            return ResponseEntity.ok(new ErrorResponse(200, "Language successfully changed to " + languageName));
+            return ResponseEntity.ok(new ErrorResponse(HttpStatus.OK.value(), "Language successfully changed to " + languageName));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 

@@ -12,8 +12,8 @@ public class SearchUtils {
     public ArrayList<Integer> searchText(ArrayList<String> listOfStringsToSearch, String searchText) {
         ArrayList<Integer> stringPositions = new ArrayList<>();
         searchText = searchText.toLowerCase();
-        for(int i = 0; i < listOfStringsToSearch.size(); i++) {
-            if(listOfStringsToSearch.get(i).toLowerCase().contains(searchText) ||fuzzySearch(listOfStringsToSearch.get(i).toLowerCase(), searchText)) {
+        for (int i = 0; i < listOfStringsToSearch.size(); i++) {
+            if (listOfStringsToSearch.get(i).toLowerCase().contains(searchText) || fuzzySearch(listOfStringsToSearch.get(i).toLowerCase(), searchText)) {
                 stringPositions.add(i);
             }
         }

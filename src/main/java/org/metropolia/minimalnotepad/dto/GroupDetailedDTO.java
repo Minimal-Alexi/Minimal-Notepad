@@ -12,7 +12,7 @@ public class GroupDetailedDTO {
     private Long id;
     private String name;
     private String description;
-    @JsonIgnoreProperties({"notes", "password", "groupParticipationsList", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired","groups"})
+    @JsonIgnoreProperties({"notes", "password", "groupParticipationsList", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "groups"})
     private User owner;
     private List<UserGroupParticipationDTO> userGroupParticipationsList;
 
@@ -35,9 +35,19 @@ public class GroupDetailedDTO {
         return groupDetailedDTOList;
     }
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public User getOwner() { return owner; }
-    public List<UserGroupParticipationDTO> getUserGroupParticipationsList() { return userGroupParticipationsList; }
+    public Long getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public User getOwner() {
+        return owner;
+    }
+    public List<UserGroupParticipationDTO> getUserGroupParticipationsList() {
+        return userGroupParticipationsList;
+    }
 }
