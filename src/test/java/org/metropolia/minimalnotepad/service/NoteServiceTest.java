@@ -284,7 +284,7 @@ public class NoteServiceTest {
         assertTrue(category1Notes.get(0).getCategoriesList().contains(category1));
         assertEquals("title1", category1Notes.get(0).getTitle());
         assertThrows(IndexOutOfBoundsException.class, () -> {
-            category1Notes.get(1);
+            Note failedNote = category1Notes.get(1);
         });
 
         ArrayList<Note> category2Notes = noteService.filterNotes(notes,category2);
@@ -293,14 +293,14 @@ public class NoteServiceTest {
         assertTrue(category2Notes.get(1).getCategoriesList().contains(category2));
         assertEquals("title2", category2Notes.get(1).getTitle());
         assertThrows(IndexOutOfBoundsException.class, () -> {
-            category2Notes.get(2);
+            Note failedNote = category2Notes.get(2);
         });
 
         ArrayList<Note> noCategoryNotes = noteService.filterNotes(notes,null);
         assertTrue(noCategoryNotes.get(0).getCategoriesList().isEmpty());
         assertEquals("title3", noCategoryNotes.get(0).getTitle());
         assertThrows(IndexOutOfBoundsException.class, () -> {
-            noCategoryNotes.get(1);
+            Note failedNote = noCategoryNotes.get(1);
         });
 
     }

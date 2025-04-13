@@ -34,7 +34,7 @@ public class SearchUtilsTest {
         assertEquals("Summer Car", searchList.get(foundResults.get(1)));
         assertThrows(IndexOutOfBoundsException.class, () ->
         {
-            foundResults.get(2);
+            int found = foundResults.get(2);
         });
 
         ArrayList<Integer> foundResults2 = searchUtils.searchText(searchList, searchTerm2);
@@ -42,7 +42,7 @@ public class SearchUtilsTest {
         assertEquals("Coca cola espuma", searchList.get(foundResults2.get(0)));
         assertThrows(IndexOutOfBoundsException.class, () ->
         {
-            foundResults2.get(2);
+            int found = foundResults2.get(2);
         });
     }
 
