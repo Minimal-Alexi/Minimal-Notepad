@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="groups")
+@Table(name = "groups")
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class Group {
     private String description;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnoreProperties({"email", "notes", "password", "groupParticipationsList", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired","groups"})
+    @JsonIgnoreProperties({"email", "notes", "password", "groupParticipationsList", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "groups"})
     @JsonProperty("owner")
     private User user;
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -31,7 +31,7 @@ public class Group {
     private List<UserGroupParticipation> userGroupParticipationsList;
     @JsonProperty("numberOfMembers")
     public int getNumberOfMembers() {
-        return userGroupParticipationsList != null ? userGroupParticipationsList.size()+1 : 1;
+        return userGroupParticipationsList != null ? userGroupParticipationsList.size() + 1 : 1;
     }
 
     public long getId() {
@@ -46,7 +46,7 @@ public class Group {
     public void setName(String name) {
         this.name = name;
     }
-    public String getDescription(){
+    public String getDescription() {
         return description;
     }
     public void setDescription(String description) {
@@ -58,13 +58,13 @@ public class Group {
     public void setUser(User user) {
         this.user = user;
     }
-    public List<Note> getNotes(){
+    public List<Note> getNotes() {
         return notes;
     }
-    public void setNotes(List<Note> notes){
+    public void setNotes(List<Note> notes) {
         this.notes = notes;
     }
-    public List<UserGroupParticipation> getUserGroupParticipationsList(){
+    public List<UserGroupParticipation> getUserGroupParticipationsList() {
         return userGroupParticipationsList;
     }
 }

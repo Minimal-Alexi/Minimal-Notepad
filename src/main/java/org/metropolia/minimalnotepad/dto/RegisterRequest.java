@@ -5,7 +5,7 @@ public class RegisterRequest {
     private String password;
     private String username;
     private String language;
-    public RegisterRequest( String username,String email, String password, String language) {
+    public RegisterRequest(String username, String email, String password, String language) {
         this.email = email;
         this.password = password;
         this.username = username;

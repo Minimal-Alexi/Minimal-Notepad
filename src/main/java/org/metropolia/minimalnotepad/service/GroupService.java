@@ -27,7 +27,7 @@ public class GroupService {
         List<Group> userCreatedGroups = user.getGroups();
         List<Group> userJoinedGroups = new ArrayList<>();
         List<UserGroupParticipation> userParticipations = user.getGroupParticipationsList();
-        for(UserGroupParticipation userGroupParticipation : userParticipations){
+        for (UserGroupParticipation userGroupParticipation : userParticipations) {
             userJoinedGroups.add(userGroupParticipation.getGroup());
         }
         userCreatedGroups.addAll(userJoinedGroups);

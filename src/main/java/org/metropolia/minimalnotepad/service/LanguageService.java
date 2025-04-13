@@ -10,7 +10,7 @@ public class LanguageService {
     public LanguageService(LanguageRepository languageRepository) {
         this.languageRepository = languageRepository;
     }
-    public Language getLanguageById(long id){
+    public Language getLanguageById(long id) {
         return languageRepository.findById(id).orElse(null);
     }
 

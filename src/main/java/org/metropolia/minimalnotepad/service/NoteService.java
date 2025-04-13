@@ -37,7 +37,7 @@ public class NoteService {
     }
     public Note getNoteById(User user, long id) {
         Note note = noteRepository.getNoteById(id);
-        if(note == null) {
+        if (note == null) {
             throw new ResourceDoesntExistException("This note doesn't exist");
         }
         if (user == null) {
@@ -45,7 +45,7 @@ public class NoteService {
         }
 
         if (note.getUser().getId() == user.getId()) {
-            if(note.getCategoriesList() != null && !note.getCategoriesList().isEmpty()) {
+            if (note.getCategoriesList() != null && !note.getCategoriesList().isEmpty()) {
                 note.categoryLocalization(user.getLanguage());
             }
             return note;
@@ -68,15 +68,14 @@ public class NoteService {
             }
         }
 
-        for(Note note : notes) {
+        for (Note note : notes) {
             note.categoryLocalization(user.getLanguage());
         }
 
         return notes;
     }
-    public void createNote(User user,Note note) {
-        if(note == null)
-        {
+    public void createNote(User user, Note note) {
+        if (note == null) {
             throw new ResourceDoesntExistException("You do not have a note");
         }
         if (user == null || note.getUser().getId() != user.getId()) {
@@ -99,9 +98,8 @@ public class NoteService {
         return noteRepository.save(updatedNote);
     }
 
-    public void deleteNote(User user,Note note) {
-        if(note == null)
-        {
+    public void deleteNote(User user, Note note) {
+        if (note == null) {
             throw new ResourceDoesntExistException("You do not have a note");
         }
         if (user == null || note.getUser().getId() != user.getId()) {
@@ -109,34 +107,30 @@ public class NoteService {
         }
         noteRepository.delete(note);
     }
-    public ArrayList<Note> filterNotes(ArrayList<Note> unfilteredNotes, Category filterCategory){
+    public ArrayList<Note> filterNotes(ArrayList<Note> unfilteredNotes, Category filterCategory) {
         ArrayList<Note> filteredNotes = new ArrayList<>();
-        if(filterCategory != null) {
-            for(Note note : unfilteredNotes){
+        if (filterCategory != null) {
+            for (Note note : unfilteredNotes) {
                 ArrayList<Category> categoryList = (ArrayList<Category>) note.getCategoriesList();
-                if(categoryList.stream().anyMatch(category -> category.getId() == filterCategory.getId()))
-                {
+                if (categoryList.stream().anyMatch(category -> category.getId() == filterCategory.getId())) {
                     filteredNotes.add(note);
                 }
             }
-        }
-        else
-        {
-            for(Note note : unfilteredNotes){
-                if(note.getCategoriesList().isEmpty())
-                {
+        } else {
+            for (Note note : unfilteredNotes) {
+                if (note.getCategoriesList().isEmpty()) {
                     filteredNotes.add(note);
                 }
             }
         }
         return filteredNotes;
     }
-    public ArrayList<Note> findNotes(ArrayList<Note> unfilteredNotes, String searchTerm){
+    public ArrayList<Note> findNotes(ArrayList<Note> unfilteredNotes, String searchTerm) {
         ArrayList<Note> foundNotes = new ArrayList<>();
         ArrayList<String> titleList = unfilteredNotes.stream().map(Note::getTitle)
                 .collect(Collectors.toCollection(ArrayList::new));
         ArrayList<Integer> foundNotesIndexes = searchUtils.searchText(titleList, searchTerm);
-        for(int i = 0; i < foundNotesIndexes.size(); i++){
+        for (int i = 0; i < foundNotesIndexes.size(); i++) {
             foundNotes.add(unfilteredNotes.get(foundNotesIndexes.get(i)));
         }
         return foundNotes;

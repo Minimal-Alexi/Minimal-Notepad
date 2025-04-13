@@ -53,8 +53,6 @@ class CategoryServiceTest {
     @Test
     @WithMockUser(username = "test")
     void getAllCategories() {
-        Language language = new Language();
-        language.setId(1);
         List<Category> categories = categoryService.getAllCategories();
         assertFalse(categories.isEmpty(), "The category list should not be empty");
     }

@@ -15,5 +15,7 @@ public class LoginResponse {
     public String getUsername() {
         return username;
     }
-    public String getLanguageCode() { return languageCode; }
+    public String getLanguageCode() {
+        return languageCode;
+    }
 }

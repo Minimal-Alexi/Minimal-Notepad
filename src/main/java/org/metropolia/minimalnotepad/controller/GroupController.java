@@ -12,7 +12,15 @@ import org.metropolia.minimalnotepad.service.UserService;
 import org.metropolia.minimalnotepad.utils.JwtUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.List;
@@ -47,7 +55,7 @@ public class GroupController {
         List<Group> userGroups = groupService.getUserGroups(user);
 
         if (userGroups.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "User is not an owner or a member of any groups."));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User is not an owner or a member of any groups."));
         }
         return ResponseEntity.ok(GroupDetailedDTO.fromGroups(userGroups));
     }
@@ -61,7 +69,7 @@ public class GroupController {
         List<Group> groups = groupService.getAvailableGroups(user);
 
         if (groups.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "No groups available to join."));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "No groups available to join."));
         }
         return ResponseEntity.ok(groups);
     }
@@ -78,7 +86,7 @@ public class GroupController {
 
         // Check if the group name is unique
         if (groupService.isGroupNameTaken(group.getName())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, "Group name is already taken."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Group name is already taken."));
         }
 
         group.setUser(user);

@@ -17,8 +17,7 @@ public class AuthenticationService {
     private JwtUtils jwtUtils;
     private PasswordEncoder passwordEncoder;
     private MessageService messageService;
-    public AuthenticationService(UserRepository userRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder, MessageService messageService)
-    {
+    public AuthenticationService(UserRepository userRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder, MessageService messageService) {
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
@@ -31,8 +30,7 @@ public class AuthenticationService {
             String message = messageService.get("error.login.usernameNotFound", locale);
             throw new UsernameNotFoundException(message);
         }
-        if (!passwordEncoder.matches(password, findUser.getPassword()))
-        {
+        if (!passwordEncoder.matches(password, findUser.getPassword())) {
             String message = messageService.get("error.login.failed", locale);
             throw new BadCredentialsException(message);
         }

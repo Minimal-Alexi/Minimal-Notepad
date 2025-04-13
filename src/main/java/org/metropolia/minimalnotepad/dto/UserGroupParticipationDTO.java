@@ -14,7 +14,13 @@ public class UserGroupParticipationDTO {
         this.email = participation.getUser().getEmail();
     }
 
-    public Long getId() { return id; }
-    public String getUsername() { return username; }
-    public String getEmail() { return email; }
+    public Long getId() {
+        return id;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public String getEmail() {
+        return email;
+    }
 }

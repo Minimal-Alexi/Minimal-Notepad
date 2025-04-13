@@ -233,10 +233,6 @@ class GroupControllerTest {
 
     @Test
     void testJoinGroup() throws Exception {
-        UserGroupParticipation membership = new UserGroupParticipation();
-        membership.setUser(testUser);
-        membership.setGroup(testGroup);
-
         String token = jwtUtils.generateToken(testUser.getUsername());
         Long groupId = testGroup.getId();
 
@@ -247,10 +243,6 @@ class GroupControllerTest {
 
     @Test
     void testLeaveGroup() throws Exception {
-        UserGroupParticipation membership = new UserGroupParticipation();
-        membership.setUser(testUser);
-        membership.setGroup(testGroup);
-
         String token = jwtUtils.generateToken(testUser.getUsername());
         Long groupId = testGroup.getId();
 

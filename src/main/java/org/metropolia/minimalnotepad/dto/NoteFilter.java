@@ -9,7 +9,7 @@ public class NoteFilter {
     private Category category;
 
     // Constructors
-    public NoteFilter() {}
+    public NoteFilter() { }
 
     public NoteFilter(ArrayList<Note> notes, Category category) {
         this.notes = notes;

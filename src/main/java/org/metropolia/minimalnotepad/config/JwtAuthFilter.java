@@ -16,7 +16,6 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
-import java.util.Collections;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {

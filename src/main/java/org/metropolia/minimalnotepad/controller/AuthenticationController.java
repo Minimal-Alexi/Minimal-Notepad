@@ -12,7 +12,11 @@ import org.metropolia.minimalnotepad.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Locale;
 
@@ -40,25 +44,23 @@ public class AuthenticationController {
         } catch (Exception e) {
             if (e instanceof UsernameNotFoundException) {
                 String message = messageService.get("error.login.usernameNotFound", locale);
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, message));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), message));
             }
 
             String message = messageService.get("error.login.failed", locale);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(401, message));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), message));
         }
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
-        try
-        {
-            User registeredUser = userService.registerUser(registerRequest.getUsername(),registerRequest.getEmail(),registerRequest.getPassword(),registerRequest.getLanguage());
+        try {
+            User registeredUser = userService.registerUser(registerRequest.getUsername(), registerRequest.getEmail(), registerRequest.getPassword(), registerRequest.getLanguage());
             Locale locale = new Locale(registerRequest.getLanguage());
-            String jwt = authenticationService.authenticate(registeredUser.getUsername(),registerRequest.getPassword(),locale);
+            String jwt = authenticationService.authenticate(registeredUser.getUsername(), registerRequest.getPassword(), locale);
             return ResponseEntity.ok(new AuthenticationResponse(jwt, registerRequest.getUsername()));
-        }catch (Exception e)
-        {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(409, e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage()));
         }
     }
 }
