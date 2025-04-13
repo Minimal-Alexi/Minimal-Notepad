@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Note controller.
+ */
 @RestController
 @RequestMapping("/api/note")
 public class NoteController {
@@ -35,6 +38,15 @@ public class NoteController {
     private final NoteService noteService;
     private final GroupService groupService;
     private final JwtUtils jwtUtils;
+
+    /**
+     * Instantiates a new Note controller.
+     *
+     * @param userService  the user service
+     * @param noteService  the note service
+     * @param groupService the group service
+     * @param jwtUtils     the jwt utils
+     */
     public NoteController(UserService userService, NoteService noteService,
                           GroupService groupService, JwtUtils jwtUtils) {
         this.userService = userService;
@@ -42,6 +54,13 @@ public class NoteController {
         this.groupService = groupService;
         this.jwtUtils = jwtUtils;
     }
+
+    /**
+     * Gets all notes from user.
+     *
+     * @param authorizationHeader the authorization header
+     * @return the all notes from user
+     */
     @GetMapping("/")
     public ResponseEntity<?> getAllNotesFromUser(
             @RequestHeader("Authorization") String authorizationHeader
@@ -59,6 +78,14 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
         }
     }
+
+    /**
+     * Gets note from user.
+     *
+     * @param authorizationHeader the authorization header
+     * @param noteId              the note id
+     * @return the note from user
+     */
     @GetMapping("/{noteId}")
     public ResponseEntity<?> getNoteFromUser(@RequestHeader("Authorization") String authorizationHeader, @PathVariable long noteId) {
         try {
@@ -76,6 +103,13 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
         }
     }
+
+    /**
+     * Gets all notes from user groups.
+     *
+     * @param authorizationHeader the authorization header
+     * @return the all notes from user groups
+     */
     @GetMapping("/my-groups")
     public ResponseEntity<?> getAllNotesFromUserGroups(@RequestHeader("Authorization") String authorizationHeader) {
         try {
@@ -95,6 +129,14 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
         }
     }
+
+    /**
+     * Create note response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @param note                the note
+     * @return the response entity
+     */
     @PostMapping("/")
     public ResponseEntity<?> createNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody Note note) {
         try {
@@ -111,6 +153,14 @@ public class NoteController {
         }
     }
 
+    /**
+     * Update note response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @param noteId              the note id
+     * @param updatedNote         the updated note
+     * @return the response entity
+     */
     @PatchMapping("/{noteId}")
     public ResponseEntity<?> updateNote(
             @RequestHeader("Authorization") String authorizationHeader,
@@ -140,6 +190,13 @@ public class NoteController {
         }
     }
 
+    /**
+     * Delete note response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @param noteId              the note id
+     * @return the response entity
+     */
     @DeleteMapping("/{noteId}")
     public ResponseEntity<?> deleteNote(@RequestHeader("Authorization") String authorizationHeader, @PathVariable long noteId) {
         try {
@@ -159,6 +216,13 @@ public class NoteController {
         }
     }
 
+    /**
+     * Filter note response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @param filterDTO           the filter dto
+     * @return the response entity
+     */
     @PostMapping("/filter")
     public ResponseEntity<?> filterNote(
             @RequestHeader("Authorization") String authorizationHeader,
@@ -186,6 +250,13 @@ public class NoteController {
         }
     }
 
+    /**
+     * Search note response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @param searchRequest       the search request
+     * @return the response entity
+     */
     @PostMapping("/search")
     public ResponseEntity<?> searchNote(@RequestHeader("Authorization") String authorizationHeader, @RequestBody SearchRequest searchRequest) {
         try {

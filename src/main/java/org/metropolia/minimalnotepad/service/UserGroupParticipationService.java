@@ -12,6 +12,9 @@ import org.metropolia.minimalnotepad.repository.UserGroupParticipationRepository
 import org.metropolia.minimalnotepad.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type User group participation service.
+ */
 @Service
 public class UserGroupParticipationService {
 
@@ -19,6 +22,13 @@ public class UserGroupParticipationService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
 
+    /**
+     * Instantiates a new User group participation service.
+     *
+     * @param userGroupParticipationRepository the user group participation repository
+     * @param groupRepository                  the group repository
+     * @param userRepository                   the user repository
+     */
     public UserGroupParticipationService(UserGroupParticipationRepository userGroupParticipationRepository,
                                          GroupRepository groupRepository,
                                          UserRepository userRepository) {
@@ -27,7 +37,14 @@ public class UserGroupParticipationService {
         this.userRepository = userRepository;
     }
 
-    // Join a group
+    /**
+     * Join group user group participation.
+     *
+     * @param userId  the user id
+     * @param groupId the group id
+     * @return the user group participation
+     */
+// Join a group
     public UserGroupParticipation joinGroup(Long userId, Long groupId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -48,7 +65,13 @@ public class UserGroupParticipationService {
         return userGroupParticipationRepository.save(participation);
     }
 
-    // Leave a group
+    /**
+     * Leave group.
+     *
+     * @param userId  the user id
+     * @param groupId the group id
+     */
+// Leave a group
     public void leaveGroup(Long userId, Long groupId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -62,7 +85,14 @@ public class UserGroupParticipationService {
         userGroupParticipationRepository.delete(membership);
     }
 
-    // Remove user from group
+    /**
+     * Remove user from group.
+     *
+     * @param ownerId      the owner id
+     * @param groupId      the group id
+     * @param targetUserId the target user id
+     */
+// Remove user from group
     public void removeUserFromGroup(Long ownerId, Long groupId, Long targetUserId) {
         if (userRepository.findById(ownerId).isEmpty()) {
             throw new UserNotFoundException("User not found.");

@@ -7,6 +7,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
+/**
+ * The type Category localization.
+ */
 @Entity
 @Table(name = "categories_localizations")
 public class CategoryLocalization {
@@ -22,21 +25,56 @@ public class CategoryLocalization {
     private Language language;
     private String translation;
 
+    /**
+     * Gets language.
+     *
+     * @return the language
+     */
     public Language getLanguage() {
         return language;
     }
+
+    /**
+     * Gets translation.
+     *
+     * @return the translation
+     */
     public String getTranslation() {
         return translation;
     }
+
+    /**
+     * Gets category.
+     *
+     * @return the category
+     */
     public Category getCategory() {
         return category;
     }
+
+    /**
+     * Sets category.
+     *
+     * @param category the category
+     */
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    /**
+     * Sets language.
+     *
+     * @param language the language
+     */
     public void setLanguage(Language language) {
         this.language = language;
     }
+
+    /**
+     * Sets translation.
+     *
+     * @param translation the translation
+     */
     public void setTranslation(String translation) {
         this.translation = translation;
     }

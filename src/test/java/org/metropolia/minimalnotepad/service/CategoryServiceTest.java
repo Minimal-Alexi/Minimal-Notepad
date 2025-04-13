@@ -17,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+/**
+ * The type Category service test.
+ */
 @ActiveProfiles("test")
 @SpringBootTest
 class CategoryServiceTest {
@@ -29,12 +32,19 @@ class CategoryServiceTest {
 
     private Long testCategoryId;
     private Language language;
+
+    /**
+     * Initial set up.
+     */
     @BeforeAll
     public static void initialSetUp() {
         Dotenv dotenv = Dotenv.load();
         System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
     }
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     void setUp() {
         Category category = new Category();
@@ -45,11 +55,17 @@ class CategoryServiceTest {
         language.setId(1);
     }
 
+    /**
+     * Clean up.
+     */
     @AfterEach
     void cleanUp() {
         categoryRepository.deleteById(testCategoryId);
     }
 
+    /**
+     * Gets all categories.
+     */
     @Test
     @WithMockUser(username = "test")
     void getAllCategories() {
@@ -57,6 +73,9 @@ class CategoryServiceTest {
         assertFalse(categories.isEmpty(), "The category list should not be empty");
     }
 
+    /**
+     * Gets category by id.
+     */
     @Test
     @WithMockUser(username = "test")
     void getCategoryById() {
@@ -64,6 +83,9 @@ class CategoryServiceTest {
         assertNotNull(foundCategory, "The category should be found");
     }
 
+    /**
+     * Create category.
+     */
     @Test
     @WithMockUser(username = "test")
     void createCategory() {
@@ -79,6 +101,9 @@ class CategoryServiceTest {
         categoryRepository.deleteById(category.getId());
     }
 
+    /**
+     * Update category.
+     */
     @Test
     @WithMockUser(username = "test")
     void updateCategory() {
@@ -90,6 +115,9 @@ class CategoryServiceTest {
         assertEquals("Updated Category", foundCategory.getName(), "The category name should be updated");
     }
 
+    /**
+     * Delete category.
+     */
     @Test
     @WithMockUser(username = "test")
     void deleteCategory() {

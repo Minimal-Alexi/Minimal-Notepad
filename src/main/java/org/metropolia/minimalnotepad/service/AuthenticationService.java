@@ -11,12 +11,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.Locale;
 
+/**
+ * The type Authentication service.
+ */
 @Service
 public class AuthenticationService {
     private UserRepository userRepository;
     private JwtUtils jwtUtils;
     private PasswordEncoder passwordEncoder;
     private MessageService messageService;
+
+    /**
+     * Instantiates a new Authentication service.
+     *
+     * @param userRepository  the user repository
+     * @param jwtUtils        the jwt utils
+     * @param passwordEncoder the password encoder
+     * @param messageService  the message service
+     */
     public AuthenticationService(UserRepository userRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder, MessageService messageService) {
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
@@ -24,6 +36,14 @@ public class AuthenticationService {
         this.messageService = messageService;
     }
 
+    /**
+     * Authenticate string.
+     *
+     * @param username the username
+     * @param password the password
+     * @param locale   the locale
+     * @return the string
+     */
     public String authenticate(String username, String password, Locale locale) {
         User findUser = userRepository.findUserByUsername(username);
         if (findUser == null) {

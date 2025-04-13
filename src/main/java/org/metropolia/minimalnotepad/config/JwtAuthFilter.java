@@ -17,12 +17,22 @@ import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
 
+/**
+ * The type Jwt auth filter.
+ */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final HandlerExceptionResolver handlerExceptionResolver;
     private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Instantiates a new Jwt auth filter.
+     *
+     * @param jwtUtils                 the jwt utils
+     * @param userDetailsService       the user details service
+     * @param handlerExceptionResolver the handler exception resolver
+     */
     public JwtAuthFilter(
             JwtUtils jwtUtils,
             UserDetailsService userDetailsService,

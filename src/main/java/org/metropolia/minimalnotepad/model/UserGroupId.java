@@ -6,6 +6,9 @@ import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * The type User group id.
+ */
 @Embeddable
 public class UserGroupId implements Serializable {
     @Column(name = "user_id")
@@ -13,23 +16,54 @@ public class UserGroupId implements Serializable {
     @Column(name = "group_id")
     private Long groupId;
 
+    /**
+     * Instantiates a new User group id.
+     */
     public UserGroupId() { }
 
+    /**
+     * Instantiates a new User group id.
+     *
+     * @param userId  the user id
+     * @param groupId the group id
+     */
     public UserGroupId(Long userId, Long groupId) {
         this.userId = userId;
         this.groupId = groupId;
     }
 
+    /**
+     * Gets user id.
+     *
+     * @return the user id
+     */
     public Long getUserId() {
         return userId;
     }
+
+    /**
+     * Sets user id.
+     *
+     * @param userId the user id
+     */
     public void setUserId(Long userId) {
         this.userId = userId;
     }
 
+    /**
+     * Gets group id.
+     *
+     * @return the group id
+     */
     public Long getGroupId() {
         return groupId;
     }
+
+    /**
+     * Sets group id.
+     *
+     * @param groupId the group id
+     */
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }

@@ -22,6 +22,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * The type User service test.
+ */
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -44,8 +47,14 @@ public class UserServiceTest {
     @Mock
     private MessageService messageService;
 
+    /**
+     * The Language.
+     */
     Language language = new Language();
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     void setUp() {
         userService = new UserService(userRepository, passwordEncoder, jwtUtils, languageRepository, messageService);
@@ -57,11 +66,17 @@ public class UserServiceTest {
         languageRepository.save(language);
     }
 
+    /**
+     * Tear down.
+     */
     @AfterEach
     void tearDown() {
         languageRepository.deleteAll();
     }
 
+    /**
+     * Test register user successful registration.
+     */
     @Test
     public void testRegisterUserSuccessfulRegistration() {
         User userToRegister = new User();
@@ -87,6 +102,9 @@ public class UserServiceTest {
         verify(userRepository, times(1)).save(any(User.class));
     }
 
+    /**
+     * Test register user failure user.
+     */
     @Test
     public void testRegisterUserFailureUser() {
         User existingUser = new User();
@@ -102,6 +120,9 @@ public class UserServiceTest {
         verify(userRepository, never()).save(any(User.class));
     }
 
+    /**
+     * Test register user failure email.
+     */
     @Test
     public void testRegisterUserFailureEmail() {
         User existingUser = new User();
@@ -116,6 +137,10 @@ public class UserServiceTest {
 
         verify(userRepository, never()).save(any(User.class));
     }
+
+    /**
+     * Test get user by username.
+     */
     @Test
     public void testGetUserByUsername(){
         User user = new User();
@@ -130,6 +155,9 @@ public class UserServiceTest {
         assertEquals("email@email.com",result.getEmail());
     }
 
+    /**
+     * Test update user success.
+     */
     @Test
     public void testUpdateUserSuccess() {
         User existingUser = new User();
@@ -154,6 +182,9 @@ public class UserServiceTest {
         verify(userRepository, times(1)).save(existingUser);
     }
 
+    /**
+     * Test update user not found.
+     */
     @Test
     public void testUpdateUserNotFound() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
@@ -163,6 +194,9 @@ public class UserServiceTest {
         });
     }
 
+    /**
+     * Test update user username already exists.
+     */
     @Test
     public void testUpdateUserUsernameAlreadyExists() {
         User existingUser = new User();
@@ -183,6 +217,9 @@ public class UserServiceTest {
         });
     }
 
+    /**
+     * Test update user email already exists.
+     */
     @Test
     public void testUpdateUserEmailAlreadyExists() {
         User existingUser = new User();
@@ -203,6 +240,9 @@ public class UserServiceTest {
         });
     }
 
+    /**
+     * Test change password success.
+     */
     @Test
     public void testChangePasswordSuccess() {
         when(passwordEncoder.encode("newPassword")).thenReturn("hashedNewPassword");
@@ -223,6 +263,9 @@ public class UserServiceTest {
         verify(userRepository, times(1)).save(user);
     }
 
+    /**
+     * Test change password user not found.
+     */
     @Test
     public void testChangePasswordUserNotFound() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
@@ -232,6 +275,9 @@ public class UserServiceTest {
         });
     }
 
+    /**
+     * Test change password incorrect old password.
+     */
     @Test
     public void testChangePasswordIncorrectOldPassword() {
         User existingUser = new User();
@@ -246,6 +292,9 @@ public class UserServiceTest {
         });
     }
 
+    /**
+     * Test delete user.
+     */
     @Test
     public void testDeleteUser() {
         long userId = 1L;
@@ -262,6 +311,9 @@ public class UserServiceTest {
         assertTrue(userRepository.findById(userId).isEmpty());
     }
 
+    /**
+     * Test update user language.
+     */
     @Test
     public void testUpdateUserLanguage() {
         User user = new User();

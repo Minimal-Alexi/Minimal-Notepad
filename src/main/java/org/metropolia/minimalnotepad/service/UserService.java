@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.Locale;
 import java.util.Optional;
 
+/**
+ * The type User service.
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -22,6 +25,15 @@ public class UserService {
     private final LanguageRepository languageRepository;
     private final MessageService messageService;
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param userRepository     the user repository
+     * @param passwordEncoder    the password encoder
+     * @param jwtUtils           the jwt utils
+     * @param languageRepository the language repository
+     * @param messageService     the message service
+     */
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, LanguageRepository languageRepository, MessageService messageService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -29,6 +41,16 @@ public class UserService {
         this.languageRepository = languageRepository;
         this.messageService = messageService;
     }
+
+    /**
+     * Register user user.
+     *
+     * @param username     the username
+     * @param email        the email
+     * @param password     the password
+     * @param languageName the language name
+     * @return the user
+     */
     public User registerUser(String username, String email, String password, String languageName) {
         Locale locale = new Locale(languageName);
         if (userRepository.findUserByEmail(email) != null) {
@@ -52,10 +74,25 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    /**
+     * Gets user by username.
+     *
+     * @param username the username
+     * @return the user by username
+     */
     public User getUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
     }
 
+    /**
+     * Update user user.
+     *
+     * @param userId      the user id
+     * @param newUsername the new username
+     * @param newEmail    the new email
+     * @return the user
+     */
     public User updateUser(Long userId, String newUsername, String newEmail) {
         Optional<User> existingUser = userRepository.findById(userId);
         if (existingUser.isEmpty()) {
@@ -77,6 +114,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * Change password.
+     *
+     * @param userId      the user id
+     * @param oldPassword the old password
+     * @param newPassword the new password
+     */
     public void changePassword(Long userId, String oldPassword, String newPassword) {
         Optional<User> existingUser = userRepository.findById(userId);
         if (existingUser.isEmpty()) {
@@ -93,6 +137,13 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Update user language user.
+     *
+     * @param userId       the user id
+     * @param languageName the language name
+     * @return the user
+     */
     public User updateUserLanguage(Long userId, String languageName) {
         Optional<User> existingUser = userRepository.findById(userId);
         if (existingUser.isEmpty()) {
@@ -114,6 +165,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * Delete user.
+     *
+     * @param userId the user id
+     */
     public void deleteUser(Long userId) {
         Optional<User> existingUser = userRepository.findById(userId);
         if (existingUser.isEmpty()) {
@@ -123,6 +179,12 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
+    /**
+     * Gets user from token.
+     *
+     * @param token the token
+     * @return the user from token
+     */
     public User getUserFromToken(String token) {
         String username = jwtUtils.extractUsername(token);
         return this.getUserByUsername(username);

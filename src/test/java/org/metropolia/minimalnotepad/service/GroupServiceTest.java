@@ -19,6 +19,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The type Group service test.
+ */
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class GroupServiceTest {
@@ -33,6 +36,9 @@ class GroupServiceTest {
     private Long testGroupId;
     private User testUser;
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     void setUp() {
         groupRepository.deleteAll();
@@ -53,6 +59,9 @@ class GroupServiceTest {
         testGroupId = group.getId();
     }
 
+    /**
+     * Gets all groups.
+     */
     @Test
     void getAllGroups() {
         when(groupRepository.findAll()).thenReturn(List.of(new Group()));
@@ -60,6 +69,9 @@ class GroupServiceTest {
         assertFalse(groups.isEmpty(), "The group list should not be empty");
     }
 
+    /**
+     * Gets group by id.
+     */
     @Test
     void getGroupById() {
         when(groupRepository.findById(testGroupId)).thenReturn(java.util.Optional.of(new Group()));
@@ -67,6 +79,9 @@ class GroupServiceTest {
         assertNotNull(foundGroup, "The group should be found");
     }
 
+    /**
+     * Create group.
+     */
     @Test
     void createGroup() {
         when(groupRepository.findAll()).thenReturn(List.of());
@@ -86,6 +101,9 @@ class GroupServiceTest {
         assertEquals(groupCountBefore + 1, groupCountAfter, "The group should be created");
     }
 
+    /**
+     * Update group.
+     */
     @Test
     void updateGroup() {
         Group existingGroup = new Group();
@@ -107,6 +125,9 @@ class GroupServiceTest {
         verify(groupRepository).save(existingGroup);
     }
 
+    /**
+     * Delete group.
+     */
     @Test
     @WithMockUser(username = "test")
     void deleteGroup() {
@@ -121,6 +142,9 @@ class GroupServiceTest {
         assertNull(deletedGroup, "The group should be deleted and not found");
     }
 
+    /**
+     * Is group name taken.
+     */
     @Test
     void isGroupNameTaken() {
         when(groupRepository.existsByName("Existing Group")).thenReturn(true);

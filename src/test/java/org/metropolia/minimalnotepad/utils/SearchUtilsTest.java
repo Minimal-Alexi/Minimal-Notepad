@@ -7,8 +7,18 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The type Search utils test.
+ */
 public class SearchUtilsTest {
+    /**
+     * The Search utils.
+     */
     SearchUtils searchUtils = new SearchUtils();
+
+    /**
+     * Test search function success.
+     */
     @Test
     public void testSearchFunctionSuccess(){
         ArrayList<String> searchList = new ArrayList<>();
@@ -24,7 +34,7 @@ public class SearchUtilsTest {
         assertEquals("Summer Car", searchList.get(foundResults.get(1)));
         assertThrows(IndexOutOfBoundsException.class, () ->
         {
-            foundResults.get(2);
+            int found = foundResults.get(2);
         });
 
         ArrayList<Integer> foundResults2 = searchUtils.searchText(searchList, searchTerm2);
@@ -32,9 +42,13 @@ public class SearchUtilsTest {
         assertEquals("Coca cola espuma", searchList.get(foundResults2.get(0)));
         assertThrows(IndexOutOfBoundsException.class, () ->
         {
-            foundResults2.get(2);
+            int found = foundResults2.get(2);
         });
     }
+
+    /**
+     * Test search function failure.
+     */
     @Test
     public void testSearchFunctionFailure(){
         ArrayList<String> searchList = new ArrayList<>();

@@ -14,6 +14,9 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The type User group participation service test.
+ */
 class UserGroupParticipationServiceTest {
 
     @Mock
@@ -31,6 +34,9 @@ class UserGroupParticipationServiceTest {
     private User testUser;
     private Group testGroup;
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -41,6 +47,9 @@ class UserGroupParticipationServiceTest {
         testGroup.setUser(testUser);
     }
 
+    /**
+     * Test join group.
+     */
     @Test
     void testJoinGroup() {
         when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
@@ -62,6 +71,9 @@ class UserGroupParticipationServiceTest {
         verify(userGroupParticipationRepository, times(1)).save(any(UserGroupParticipation.class));
     }
 
+    /**
+     * Test join group user already member.
+     */
     @Test
     void testJoinGroup_UserAlreadyMember() {
         when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
@@ -75,6 +87,9 @@ class UserGroupParticipationServiceTest {
         assertEquals("User is already a member of this group.", exception.getMessage());
     }
 
+    /**
+     * Test join group user not found.
+     */
     @Test
     void testJoinGroup_UserNotFound() {
         when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.empty());
@@ -86,6 +101,9 @@ class UserGroupParticipationServiceTest {
         assertEquals("User not found", exception.getMessage());
     }
 
+    /**
+     * Test join group group not found.
+     */
     @Test
     void testJoinGroup_GroupNotFound() {
         when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
@@ -98,6 +116,9 @@ class UserGroupParticipationServiceTest {
         assertEquals("Group not found", exception.getMessage());
     }
 
+    /**
+     * Test leave group.
+     */
     @Test
     void testLeaveGroup() {
         UserGroupParticipation participation = new UserGroupParticipation();
@@ -113,6 +134,9 @@ class UserGroupParticipationServiceTest {
         verify(userGroupParticipationRepository, times(1)).delete(participation);
     }
 
+    /**
+     * Test leave group user not found.
+     */
     @Test
     void testLeaveGroup_UserNotFound() {
         when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.empty());
@@ -124,6 +148,9 @@ class UserGroupParticipationServiceTest {
         assertEquals("User not found", exception.getMessage());
     }
 
+    /**
+     * Test leave group group not found.
+     */
     @Test
     void testLeaveGroup_GroupNotFound() {
         when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
@@ -136,6 +163,9 @@ class UserGroupParticipationServiceTest {
         assertEquals("Group not found", exception.getMessage());
     }
 
+    /**
+     * Test leave group membership not found.
+     */
     @Test
     void testLeaveGroup_MembershipNotFound() {
         when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
@@ -149,6 +179,9 @@ class UserGroupParticipationServiceTest {
         assertEquals("User is not a member of this group.", exception.getMessage());
     }
 
+    /**
+     * Test remove user from group.
+     */
     @Test
     void testRemoveUserFromGroup() {
         User newUser = new User();
@@ -168,6 +201,9 @@ class UserGroupParticipationServiceTest {
         verify(userGroupParticipationRepository, times(1)).delete(participation);
     }
 
+    /**
+     * Test remove user from group user not found.
+     */
     @Test
     void testRemoveUserFromGroup_UserNotFound() {
         when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.empty());
@@ -179,6 +215,9 @@ class UserGroupParticipationServiceTest {
         assertEquals("User not found.", exception.getMessage());
     }
 
+    /**
+     * Test remove user from group group not found.
+     */
     @Test
     void testRemoveUserFromGroup_GroupNotFound() {
         when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
@@ -191,6 +230,9 @@ class UserGroupParticipationServiceTest {
         assertEquals("Group not found.", exception.getMessage());
     }
 
+    /**
+     * Test remove user from group user not member.
+     */
     @Test
     void testRemoveUserFromGroup_UserNotMember() {
         User newUser = new User();
@@ -208,6 +250,9 @@ class UserGroupParticipationServiceTest {
         assertEquals("Target user is not a member of this group.", exception.getMessage());
     }
 
+    /**
+     * Test remove user from group target user not found.
+     */
     @Test
     void testRemoveUserFromGroup_TargetUserNotFound() {
         when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
@@ -221,6 +266,9 @@ class UserGroupParticipationServiceTest {
         assertEquals("Target user not found.", exception.getMessage());
     }
 
+    /**
+     * Test remove user from group not owner.
+     */
     @Test
     void testRemoveUserFromGroup_NotOwner() {
         User newUser = new User();
@@ -242,6 +290,9 @@ class UserGroupParticipationServiceTest {
         assertEquals("Only the owner of the group can remove members.", exception.getMessage());
     }
 
+    /**
+     * Test remove user from group remove self.
+     */
     @Test
     void testRemoveUserFromGroup_RemoveSelf() {
         User newUser = new User();

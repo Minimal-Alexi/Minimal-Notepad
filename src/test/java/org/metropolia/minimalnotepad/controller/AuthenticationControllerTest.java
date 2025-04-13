@@ -23,6 +23,9 @@ import java.util.Locale;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * The type Authentication controller test.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -38,12 +41,18 @@ public class AuthenticationControllerTest {
     @Autowired
     private LanguageRepository languageRepository;
 
+    /**
+     * Initial set up.
+     */
     @BeforeAll
     public static void initialSetUp() {
         Dotenv dotenv = Dotenv.load();
         System.setProperty("SECRET_KEY", dotenv.get("SECRET_KEY"));
     }
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     public void setUp() {
         Language language = new Language();
@@ -53,12 +62,18 @@ public class AuthenticationControllerTest {
         languageRepository.save(language);
     }
 
+    /**
+     * Tear down.
+     */
     @AfterEach
     public void tearDown() {
         userRepository.deleteAll();
         languageRepository.deleteAll();
     }
 
+    /**
+     * Test login valid user.
+     */
     @Test
     public void testLoginValidUser()
     {
@@ -80,6 +95,10 @@ public class AuthenticationControllerTest {
         assertEquals("username", authenticationResponse.getUsername());
         assertEquals(jwtUtils.generateToken(userMock.getUsername()), authenticationResponse.getToken());
     }
+
+    /**
+     * Test login invalid password.
+     */
     @Test
     public void testLoginInvalidPassword()
     {
@@ -97,6 +116,10 @@ public class AuthenticationControllerTest {
         assertEquals(401,responseEntity.getStatusCode().value());
 
     }
+
+    /**
+     * Test login invalid user.
+     */
     @Test
     public void testLoginInvalidUser()
     {
@@ -107,6 +130,10 @@ public class AuthenticationControllerTest {
         assertEquals(404,responseEntity.getStatusCode().value());
 
     }
+
+    /**
+     * Test register valid user.
+     */
     @Test
     public void testRegisterValidUser()
     {
@@ -121,6 +148,10 @@ public class AuthenticationControllerTest {
         assertEquals(200,responseEntity.getStatusCode().value());
         assertEquals("username",authenticationResponse.getUsername());
     }
+
+    /**
+     * Test register taken email.
+     */
     @Test
     public void testRegisterTakenEmail()
     {
@@ -134,6 +165,10 @@ public class AuthenticationControllerTest {
         assertNotNull(responseEntity);
         assertEquals(409,responseEntity.getStatusCode().value());
     }
+
+    /**
+     * Test register taken username.
+     */
     @Test
     public void testRegisterTakenUsername()
     {
