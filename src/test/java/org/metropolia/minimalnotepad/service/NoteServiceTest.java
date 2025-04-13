@@ -22,6 +22,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * The type Note service test.
+ */
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 public class NoteServiceTest {
@@ -38,6 +41,9 @@ public class NoteServiceTest {
     @InjectMocks
     private GroupService groupService;
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     public void setUp() {
         noteRepository.deleteAll();
@@ -48,6 +54,9 @@ public class NoteServiceTest {
     }
 
 
+    /**
+     * Test get notes list by users success.
+     */
     @Test
     public void testGetNotesListByUsersSuccess() {
         User userMock1 = new User(), userMock2 = new User();
@@ -84,6 +93,10 @@ public class NoteServiceTest {
         assertEquals(3, result.size());
         assertTrue(resultEmpty.isEmpty());
     }
+
+    /**
+     * Test get note by id success.
+     */
     @Test
     public void testGetNoteByIdSuccess() {
         User userMock = new User();
@@ -105,6 +118,10 @@ public class NoteServiceTest {
         assertEquals("title1", resultNote.getTitle());
         assertEquals(userMock, resultNote.getUser());
     }
+
+    /**
+     * Test get notes by id no auth.
+     */
     @Test
     public void testGetNotesByIdNoAuth() {
         User userMock = new User();
@@ -125,6 +142,10 @@ public class NoteServiceTest {
             noteService.getNoteById(null, note.getId());
         });
     }
+
+    /**
+     * Test get notes by id failure.
+     */
     @Test
     public void testGetNotesByIdFailure() {
         User userMock = new User();
@@ -138,6 +159,10 @@ public class NoteServiceTest {
             noteService.getNoteById(userMock, 1);
         });
     }
+
+    /**
+     * Test create note success.
+     */
     @Test
     public void testCreateNoteSuccess() {
         User userMock = new User();
@@ -162,6 +187,10 @@ public class NoteServiceTest {
         assertEquals("title1", result.getTitle());
         assertEquals(userMock, result.getUser());
     }
+
+    /**
+     * Test create note failure.
+     */
     @Test
     public void testCreateNoteFailure(){
         Note note = new Note();
@@ -171,6 +200,10 @@ public class NoteServiceTest {
 
         assertThrows(UserDoesntOwnResourceException.class,() ->noteService.createNote(note.getUser(), note));
     }
+
+    /**
+     * Test delete note success.
+     */
     @Test
     public void testDeleteNoteSuccess() {
         User userMock = new User();
@@ -187,6 +220,10 @@ public class NoteServiceTest {
         noteService.deleteNote(userMock, note);
         verify(noteRepository, times(1)).delete(note);
     }
+
+    /**
+     * Test delete note no auth.
+     */
     @Test
     public void testDeleteNoteNoAuth(){
         Note note = new Note();
@@ -195,6 +232,10 @@ public class NoteServiceTest {
         note.setUser(null);
         assertThrows(UserDoesntOwnResourceException.class,() -> noteService.deleteNote(null,note));
     }
+
+    /**
+     * Test delete note failure.
+     */
     @Test
     public void testDeleteNoteFailure(){
         User userMock = new User();
@@ -204,6 +245,10 @@ public class NoteServiceTest {
         userMock.setEmail("user1@email.com");
         assertThrows(ResourceDoesntExistException.class,() -> noteService.deleteNote(userMock,null));
     }
+
+    /**
+     * Test filter notes success.
+     */
     @Test
     public void testFilterNotesSuccess(){
         Category category1 = new Category(), category2 = new Category();
@@ -259,6 +304,10 @@ public class NoteServiceTest {
         });
 
     }
+
+    /**
+     * Test filter notes none found.
+     */
     @Test
     public void testFilterNotesNoneFound(){
         Category category1 = new Category(), category2 = new Category();
@@ -287,6 +336,10 @@ public class NoteServiceTest {
         ArrayList<Note> none = noteService.filterNotes(notes,null);
         assertTrue(none.isEmpty());
     }
+
+    /**
+     * Test find notes success.
+     */
     @Test
     public void testFindNotesSuccess(){
         Note note1 = new Note(), note2 = new Note(), note3 = new Note();
@@ -311,6 +364,10 @@ public class NoteServiceTest {
         assertEquals("I love milk", foundNotes.get(1).getTitle());
 
     }
+
+    /**
+     * Test find notes failure.
+     */
     @Test
     public void testFindNotesFailure(){
         Note note1 = new Note(), note2 = new Note(), note3 = new Note();
@@ -326,6 +383,9 @@ public class NoteServiceTest {
         assertTrue(foundNotes.isEmpty());
     }
 
+    /**
+     * Test get notes from groups.
+     */
     @Test
     public void testGetNotesFromGroups() {
         User user = new User();

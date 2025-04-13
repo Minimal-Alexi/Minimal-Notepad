@@ -4,11 +4,25 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
+/**
+ * The type Search utils.
+ */
 @Component
 public class SearchUtils {
+    /**
+     * Instantiates a new Search utils.
+     */
     public SearchUtils() {
 
     }
+
+    /**
+     * Search text array list.
+     *
+     * @param listOfStringsToSearch the list of strings to search
+     * @param searchText            the search text
+     * @return the array list
+     */
     public ArrayList<Integer> searchText(ArrayList<String> listOfStringsToSearch, String searchText) {
         ArrayList<Integer> stringPositions = new ArrayList<>();
         searchText = searchText.toLowerCase();

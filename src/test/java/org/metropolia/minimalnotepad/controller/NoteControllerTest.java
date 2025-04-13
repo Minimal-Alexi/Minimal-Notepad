@@ -33,6 +33,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * The type Note controller test.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -65,12 +68,18 @@ public class NoteControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    /**
+     * Initial set up.
+     */
     @BeforeAll
     public static void initialSetUp() {
         Dotenv dotenv = Dotenv.load();
         System.setProperty("SECRET_KEY", dotenv.get("SECRET_KEY"));
     }
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     public void setUp() {
         noteRepository.deleteAll();
@@ -81,6 +90,10 @@ public class NoteControllerTest {
         language.setCountry("US");
         languageRepository.saveAndFlush(language);
     }
+
+    /**
+     * Test get all notes from user valid user.
+     */
     @Transactional
     @Test
     public void testGetAllNotesFromUserValidUser() {
@@ -117,6 +130,9 @@ public class NoteControllerTest {
         assertEquals("This is a test note.", returnedNote.getText());
     }
 
+    /**
+     * Test get all notes from user invalid header.
+     */
     @Test
     public void testGetAllNotesFromUserInvalidHeader() {
         String invalidHeader = "InvalidHeader";
@@ -132,6 +148,9 @@ public class NoteControllerTest {
         assertEquals("Authorization header is invalid", error.getMessage());
     }
 
+    /**
+     * Test get all notes from user user not found.
+     */
     @Test
     public void testGetAllNotesFromUserUserNotFound() {
         String token = jwtUtils.generateToken("nonexistent");
@@ -148,6 +167,10 @@ public class NoteControllerTest {
         assertEquals(404, error.getStatus());
         assertEquals("User not found", error.getMessage());
     }
+
+    /**
+     * Test get note from user valid note.
+     */
     @Transactional
     @Test
     public void testGetNoteFromUserValidNote() {
@@ -180,6 +203,9 @@ public class NoteControllerTest {
         assertEquals("Note Content", returnedNote.getText());
     }
 
+    /**
+     * Test get note from user note not found.
+     */
     @Test
     public void testGetNoteFromUserNoteNotFound() {
         User user = new User();
@@ -204,6 +230,9 @@ public class NoteControllerTest {
         assertEquals("This note doesn't exist", error.getMessage());
     }
 
+    /**
+     * Test get note from user invalid header.
+     */
     @Test
     public void testGetNoteFromUserInvalidHeader() {
         long dummyNoteId = 1L;
@@ -220,6 +249,9 @@ public class NoteControllerTest {
         assertEquals("Authorization header is invalid", error.getMessage());
     }
 
+    /**
+     * Test create note valid.
+     */
     @Test
     public void testCreateNoteValid() {
 
@@ -252,6 +284,9 @@ public class NoteControllerTest {
         assertEquals(user.getUsername(), createdNote.getUser().getUsername());
     }
 
+    /**
+     * Test create note invalid header.
+     */
     @Test
     public void testCreateNoteInvalidHeader() {
         Note note = new Note();
@@ -271,6 +306,9 @@ public class NoteControllerTest {
         assertEquals("Authorization header is invalid", error.getMessage());
     }
 
+    /**
+     * Test create note user not found.
+     */
     @Test
     public void testCreateNoteUserNotFound() {
         String token = jwtUtils.generateToken("nonexistentUser");
@@ -291,6 +329,10 @@ public class NoteControllerTest {
         assertEquals(404, error.getStatus());
         assertEquals("User not found", error.getMessage());
     }
+
+    /**
+     * Test delete note valid.
+     */
     @Transactional
     @Test
     public void testDeleteNoteValid() {
@@ -319,6 +361,9 @@ public class NoteControllerTest {
         assertFalse(deletedNote.isPresent());
     }
 
+    /**
+     * Test delete note note not found.
+     */
     @Test
     public void testDeleteNoteNoteNotFound() {
         User user = new User();
@@ -343,6 +388,9 @@ public class NoteControllerTest {
         assertEquals("This note doesn't exist", error.getMessage());
     }
 
+    /**
+     * Test delete note invalid header.
+     */
     @Test
     public void testDeleteNoteInvalidHeader() {
         long dummyNoteId = 1L;
@@ -359,6 +407,9 @@ public class NoteControllerTest {
         assertEquals("Authorization header is invalid", error.getMessage());
     }
 
+    /**
+     * Test update note valid.
+     */
     @Test
     public void testUpdateNoteValid() {
         User user = new User();
@@ -395,6 +446,9 @@ public class NoteControllerTest {
         assertEquals("Updated text.", returnedNote.getText());
     }
 
+    /**
+     * Test update note user not found.
+     */
     @Test
     public void testUpdateNoteUserNotFound() {
         String token = jwtUtils.generateToken("nonexistent");
@@ -416,6 +470,9 @@ public class NoteControllerTest {
         assertEquals("User not found", error.getMessage());
     }
 
+    /**
+     * Test update note note not found.
+     */
     @Test
     public void testUpdateNoteNoteNotFound() {
         User user = new User();
@@ -444,6 +501,9 @@ public class NoteControllerTest {
         assertEquals("This note doesn't exist", error.getMessage());
     }
 
+    /**
+     * Test update note invalid header.
+     */
     @Test
     public void testUpdateNoteInvalidHeader() {
         long dummyNoteId = 1L;
@@ -463,7 +523,10 @@ public class NoteControllerTest {
         assertEquals(401, error.getStatus());
         assertEquals("Authorization header is invalid", error.getMessage());
     }
-  
+
+    /**
+     * Test get searched notes success.
+     */
     @Test
     public void testGetSearchedNotesSuccess(){
         Note note1 = new Note(), note2 = new Note(), note3 = new Note();
@@ -493,6 +556,10 @@ public class NoteControllerTest {
         returnedNotes = (ArrayList<Note>) body;
         assertEquals(returnedNotes.size(), 2);
     }
+
+    /**
+     * Test get searched notes none found.
+     */
     @Test
     public void testGetSearchedNotesNoneFound(){
         Note note1 = new Note(), note2 = new Note(), note3 = new Note();
@@ -508,6 +575,10 @@ public class NoteControllerTest {
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
+
+    /**
+     * Test get searched notes bad query.
+     */
     @Test
     public void testGetSearchedNotesBadQuery(){
         ResponseEntity<?> responseEntity = noteController.searchNote("non-applicable",new SearchRequest(null,null));
@@ -515,6 +586,11 @@ public class NoteControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
+    /**
+     * Test get all notes from user groups.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void testGetAllNotesFromUserGroups() throws Exception {
         User user = new User();

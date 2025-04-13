@@ -18,6 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * The type Authentication service test.
+ */
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 public class AuthenticationServiceTest {
@@ -36,6 +39,9 @@ public class AuthenticationServiceTest {
     @Mock
     private MessageService messageService;
 
+    /**
+     * Test authenticate valid attempt.
+     */
     @Test
     public void testAuthenticateValidAttempt()
     {
@@ -55,6 +61,10 @@ public class AuthenticationServiceTest {
         verify(userRepository).findUserByUsername("testuser");
         verify(jwtUtils).generateToken(mockUser.getUsername());
     }
+
+    /**
+     * Test authenticate user not found.
+     */
     @Test
     public void testAuthenticateUserNotFound()
     {

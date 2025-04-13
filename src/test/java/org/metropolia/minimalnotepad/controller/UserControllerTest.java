@@ -26,6 +26,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * The type User controller test.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -53,12 +56,18 @@ class UserControllerTest {
     private String token;
     private Language testLanguage;
 
+    /**
+     * Initial set up.
+     */
     @BeforeAll
     public static void initialSetUp() {
         Dotenv dotenv = Dotenv.load();
         System.setProperty("SECRET_KEY", dotenv.get("SECRET_KEY"));
     }
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     public void setUp() {
         testLanguage = new Language();
@@ -76,12 +85,20 @@ class UserControllerTest {
         token = jwtUtils.generateToken(testUser.getUsername());
     }
 
+    /**
+     * Tear down.
+     */
     @AfterEach
     public void tearDown() {
         userRepository.deleteAll();
         languageRepository.deleteAll();
     }
 
+    /**
+     * Gets user account.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void getUserAccount() throws Exception {
@@ -96,6 +113,11 @@ class UserControllerTest {
         verify(userService, times(1)).getUserByUsername("testUser");
     }
 
+    /**
+     * Delete user account.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void deleteUserAccount() throws Exception {
@@ -108,6 +130,11 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.status").value(200));
     }
 
+    /**
+     * Update user.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void updateUser() throws Exception {
@@ -131,6 +158,11 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.email").value(updatedEmail));
     }
 
+    /**
+     * Change password.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void changePassword() throws Exception {
@@ -156,6 +188,11 @@ class UserControllerTest {
         verify(userService, times(1)).changePassword(testUser.getId(), oldPassword, newPassword);
     }
 
+    /**
+     * Change language.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void changeLanguage() throws Exception {

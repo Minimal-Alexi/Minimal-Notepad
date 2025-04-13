@@ -23,18 +23,33 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type User controller.
+ */
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
     private final JwtUtils jwtUtils;
 
+    /**
+     * Instantiates a new User controller.
+     *
+     * @param userService the user service
+     * @param jwtUtils    the jwt utils
+     */
     public UserController(UserService userService, JwtUtils jwtUtils) {
         this.userService = userService;
         this.jwtUtils = jwtUtils;
     }
 
-    // Get User Account
+    /**
+     * Gets user account.
+     *
+     * @param authorizationHeader the authorization header
+     * @return the user account
+     */
+// Get User Account
     @GetMapping("/")
     public ResponseEntity<?> getUserAccount(@RequestHeader("Authorization") String authorizationHeader) {
         try {
@@ -52,7 +67,13 @@ public class UserController {
         }
     }
 
-    // Delete User Account
+    /**
+     * Delete user account response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @return the response entity
+     */
+// Delete User Account
     @DeleteMapping("/")
     public ResponseEntity<?> deleteUserAccount(@RequestHeader("Authorization") String authorizationHeader) {
         try {
@@ -70,7 +91,14 @@ public class UserController {
         }
     }
 
-    // Update User (Username & Email)
+    /**
+     * Update user response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @param updatedUser         the updated user
+     * @return the response entity
+     */
+// Update User (Username & Email)
     @PutMapping("/")
     public ResponseEntity<?> updateUser(
             @RequestHeader("Authorization") String authorizationHeader,
@@ -115,7 +143,14 @@ public class UserController {
         }
     }
 
-    // Change Password
+    /**
+     * Change password response entity.
+     *
+     * @param authorizationHeader   the authorization header
+     * @param passwordChangeRequest the password change request
+     * @return the response entity
+     */
+// Change Password
     @PutMapping("/change-password")
     public ResponseEntity<?> changePassword(
             @RequestHeader("Authorization") String authorizationHeader,
@@ -155,7 +190,14 @@ public class UserController {
         }
     }
 
-    // Change Language
+    /**
+     * Change language response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @param lang                the lang
+     * @return the response entity
+     */
+// Change Language
     @PutMapping("/change-language")
     public ResponseEntity<?> changeLanguage(
             @RequestHeader("Authorization") String authorizationHeader,

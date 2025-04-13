@@ -8,8 +8,16 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import java.util.Locale;
 
+/**
+ * The type Message source config.
+ */
 @Configuration
 public class MessageSourceConfig {
+    /**
+     * Locale resolver locale resolver.
+     *
+     * @return the locale resolver
+     */
     @Bean
     public LocaleResolver localeResolver() {
         AcceptHeaderLocaleResolver locale = new AcceptHeaderLocaleResolver();
@@ -17,6 +25,11 @@ public class MessageSourceConfig {
         return locale;
     }
 
+    /**
+     * Message source message source.
+     *
+     * @return the message source
+     */
     @Bean("messageSource")
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();

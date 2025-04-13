@@ -11,8 +11,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * The type Category tests.
+ */
 public class CategoryTests {
     private Category category;
+
+    /**
+     * Sets up.
+     */
     @BeforeEach
     public void setUp() {
         category = new Category();
@@ -35,6 +42,10 @@ public class CategoryTests {
 
         category.setLocalizationList(localizations);
     }
+
+    /**
+     * Localization change successful.
+     */
     @Test
     public void localizationChangeSuccessful(){
         Language language1 = new Language(),language2 = new Language();
@@ -46,7 +57,11 @@ public class CategoryTests {
         category.setNameToTranslation(language2);
         assertEquals("Test 2",category.getName());
     }
-    // If localization fails, default to english.
+
+    /**
+     * Localization change failed.
+     */
+// If localization fails, default to english.
     @Test
     public void localizationChangeFailed(){
         Language noResource = new Language();

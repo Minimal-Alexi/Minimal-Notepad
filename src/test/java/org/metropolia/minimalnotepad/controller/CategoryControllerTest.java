@@ -25,6 +25,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * The type Category controller test.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -54,12 +57,18 @@ class CategoryControllerTest {
 
     private Category testCategory;
 
+    /**
+     * Initial set up.
+     */
     @BeforeAll
     public static void initialSetUp() {
         Dotenv dotenv = Dotenv.load();
         System.setProperty("SECRET_KEY", dotenv.get("SECRET_KEY"));
     }
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     public void setUp() {
         categoryRepository.deleteAll();
@@ -87,6 +96,11 @@ class CategoryControllerTest {
 
     }
 
+    /**
+     * Gets all categories.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void getAllCategories() throws Exception {
@@ -97,6 +111,11 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$[0].name").value("Test Category"));
     }
 
+    /**
+     * Gets category by id.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void getCategoryById() throws Exception {
@@ -106,6 +125,11 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$.name").value("Test Category"));
     }
 
+    /**
+     * Create category.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void createCategory() throws Exception {
@@ -119,6 +143,11 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$.name").value("New Category"));
     }
 
+    /**
+     * Update category.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void updateCategory() throws Exception {
@@ -131,6 +160,11 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$.name").value("Updated Category"));
     }
 
+    /**
+     * Delete category.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void deleteCategory() throws Exception {

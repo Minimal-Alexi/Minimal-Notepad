@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * The type Group controller.
+ */
 @RestController
 @RequestMapping("/api/groups")
 public class GroupController {
@@ -33,6 +36,14 @@ public class GroupController {
     private final JwtUtils jwtUtils;
     private final UserGroupParticipationService userGroupParticipationService;
 
+    /**
+     * Instantiates a new Group controller.
+     *
+     * @param userService                   the user service
+     * @param groupService                  the group service
+     * @param jwtUtils                      the jwt utils
+     * @param userGroupParticipationService the user group participation service
+     */
     public GroupController(UserService userService, GroupService groupService, JwtUtils jwtUtils, UserGroupParticipationService userGroupParticipationService) {
         this.userService = userService;
         this.groupService = groupService;
@@ -40,13 +51,24 @@ public class GroupController {
         this.userGroupParticipationService = userGroupParticipationService;
     }
 
+    /**
+     * Gets all groups.
+     *
+     * @return the all groups
+     */
     @GetMapping("/all")
     public List<GroupDetailedDTO> getAllGroups() {
         List<Group> groups = groupService.getAllGroups();
         return GroupDetailedDTO.fromGroups(groups);
     }
 
-    // Get all groups that the user is a member of (created + joined)
+    /**
+     * Gets user groups.
+     *
+     * @param authorizationHeader the authorization header
+     * @return the user groups
+     */
+// Get all groups that the user is a member of (created + joined)
     @GetMapping("/my-groups")
     public ResponseEntity<?> getUserGroups(@RequestHeader("Authorization") String authorizationHeader) {
         String token = jwtUtils.getTokenFromHeader(authorizationHeader);
@@ -60,7 +82,13 @@ public class GroupController {
         return ResponseEntity.ok(GroupDetailedDTO.fromGroups(userGroups));
     }
 
-    // Get all groups that the user can join (all groups - user's groups)
+    /**
+     * Gets available groups.
+     *
+     * @param authorizationHeader the authorization header
+     * @return the available groups
+     */
+// Get all groups that the user can join (all groups - user's groups)
     @GetMapping("/available")
     public ResponseEntity<?> getAvailableGroups(@RequestHeader("Authorization") String authorizationHeader) {
         String token = jwtUtils.getTokenFromHeader(authorizationHeader);
@@ -74,11 +102,24 @@ public class GroupController {
         return ResponseEntity.ok(groups);
     }
 
+    /**
+     * Gets group by id.
+     *
+     * @param id the id
+     * @return the group by id
+     */
     @GetMapping("/{id}")
     public GroupDetailedDTO getGroupById(@PathVariable Long id) {
         return new GroupDetailedDTO(groupService.getGroupById(id));
     }
 
+    /**
+     * Create group response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @param group               the group
+     * @return the response entity
+     */
     @PostMapping
     public ResponseEntity<?> createGroup(@RequestHeader("Authorization") String authorizationHeader, @RequestBody Group group) {
         String token = jwtUtils.getTokenFromHeader(authorizationHeader);
@@ -96,18 +137,38 @@ public class GroupController {
                 .body(createdGroup);
     }
 
+    /**
+     * Update group group.
+     *
+     * @param id           the id
+     * @param updatedGroup the updated group
+     * @return the group
+     */
     @PutMapping("/{id}")
     public Group updateGroup(@PathVariable Long id, @RequestBody Group updatedGroup) {
         return groupService.updateGroup(id, updatedGroup);
     }
 
+    /**
+     * Delete group response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGroup(@PathVariable Long id) {
         groupService.deleteGroup(id);
         return ResponseEntity.noContent().build();
     }
 
-    // User joins a group
+    /**
+     * Join group response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @param groupId             the group id
+     * @return the response entity
+     */
+// User joins a group
     @PostMapping("/{groupId}/join")
     public ResponseEntity<?> joinGroup(@RequestHeader("Authorization") String authorizationHeader,
                                        @PathVariable Long groupId) {
@@ -118,7 +179,14 @@ public class GroupController {
         return ResponseEntity.ok(membership);
     }
 
-    // User leaves a group
+    /**
+     * Leave group response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @param groupId             the group id
+     * @return the response entity
+     */
+// User leaves a group
     @DeleteMapping("/{groupId}/leave")
     public ResponseEntity<?> leaveGroup(@RequestHeader("Authorization") String authorizationHeader,
                                         @PathVariable Long groupId) {
@@ -129,7 +197,15 @@ public class GroupController {
         return ResponseEntity.noContent().build();
     }
 
-    // Remove user from group
+    /**
+     * Remove user from group response entity.
+     *
+     * @param authorizationHeader the authorization header
+     * @param groupId             the group id
+     * @param userId              the user id
+     * @return the response entity
+     */
+// Remove user from group
     @DeleteMapping("/{groupId}/remove/{userId}")
     public ResponseEntity<?> removeUserFromGroup(@RequestHeader("Authorization") String authorizationHeader,
                                                  @PathVariable Long groupId, @PathVariable Long userId) {

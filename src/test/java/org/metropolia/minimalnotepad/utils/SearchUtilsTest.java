@@ -7,8 +7,18 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The type Search utils test.
+ */
 public class SearchUtilsTest {
+    /**
+     * The Search utils.
+     */
     SearchUtils searchUtils = new SearchUtils();
+
+    /**
+     * Test search function success.
+     */
     @Test
     public void testSearchFunctionSuccess(){
         ArrayList<String> searchList = new ArrayList<>();
@@ -35,6 +45,10 @@ public class SearchUtilsTest {
             foundResults2.get(2);
         });
     }
+
+    /**
+     * Test search function failure.
+     */
     @Test
     public void testSearchFunctionFailure(){
         ArrayList<String> searchList = new ArrayList<>();

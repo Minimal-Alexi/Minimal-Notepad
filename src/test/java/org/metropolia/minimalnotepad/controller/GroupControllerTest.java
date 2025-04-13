@@ -27,6 +27,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * The type Group controller test.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -54,12 +57,18 @@ class GroupControllerTest {
     @Autowired
     private UserService userService;
 
+    /**
+     * Initial set up.
+     */
     @BeforeAll
     public static void initialSetUp() {
         Dotenv dotenv = Dotenv.load();
         System.setProperty("SECRET_KEY", dotenv.get("SECRET_KEY"));
     }
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     @WithMockUser(username = "test")
     public void setUp() {
@@ -79,6 +88,11 @@ class GroupControllerTest {
         testUser = userRepository.save(testUser);
     }
 
+    /**
+     * Gets all groups.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void getAllGroups() throws Exception {
@@ -88,6 +102,11 @@ class GroupControllerTest {
                 .andExpect(jsonPath("$[0].name").value("Test Group"));
     }
 
+    /**
+     * Gets group by id.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void getGroupById() throws Exception {
@@ -96,6 +115,11 @@ class GroupControllerTest {
                 .andExpect(jsonPath("$.name").value("Test Group"));
     }
 
+    /**
+     * Create group.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void createGroup() throws Exception {
@@ -114,6 +138,11 @@ class GroupControllerTest {
                 .andExpect(jsonPath("$.name").value("New Group"));
     }
 
+    /**
+     * Update group.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void updateGroup() throws Exception {
@@ -126,6 +155,11 @@ class GroupControllerTest {
                 .andExpect(jsonPath("$.name").value("Updated Group"));
     }
 
+    /**
+     * Delete group.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void deleteGroup() throws Exception {
@@ -135,6 +169,11 @@ class GroupControllerTest {
         assertFalse(groupRepository.findById(testGroup.getId()).isPresent());
     }
 
+    /**
+     * Test get user groups.
+     *
+     * @throws Exception the exception
+     */
     @Test
     @WithMockUser(username = "test")
     void testGetUserGroups() throws Exception {
@@ -160,6 +199,11 @@ class GroupControllerTest {
                 .andExpect(jsonPath("$[1].name").value("Test Group"));
     }
 
+    /**
+     * Test get user groups empty list.
+     *
+     * @throws Exception the exception
+     */
     @Test
     void testGetUserGroups_EmptyList() throws Exception {
         User newUser = new User();
@@ -174,6 +218,11 @@ class GroupControllerTest {
                 .andExpect(jsonPath("$.message").value("User is not an owner or a member of any groups."));
     }
 
+    /**
+     * Test get available groups.
+     *
+     * @throws Exception the exception
+     */
     @Test
     void testGetAvailableGroups() throws Exception {
         User newUser = new User();
@@ -189,6 +238,11 @@ class GroupControllerTest {
                 .andExpect(jsonPath("$[0].name").value("Test Group"));
     }
 
+    /**
+     * Test get available groups empty list.
+     *
+     * @throws Exception the exception
+     */
     @Test
     void testGetAvailableGroups_EmptyList() throws Exception {
         userGroupParticipationService.joinGroup(testUser.getId(), testGroup.getId());
@@ -201,6 +255,11 @@ class GroupControllerTest {
                 .andExpect(jsonPath("$.message").value("No groups available to join."));
     }
 
+    /**
+     * Test create group with duplicate name.
+     *
+     * @throws Exception the exception
+     */
     @Test
     void testCreateGroupWithDuplicateName() throws Exception {
         Group group1 = new Group();
@@ -231,6 +290,11 @@ class GroupControllerTest {
                 .andExpect(jsonPath("$.message").value("Group name is already taken."));
     }
 
+    /**
+     * Test join group.
+     *
+     * @throws Exception the exception
+     */
     @Test
     void testJoinGroup() throws Exception {
         String token = jwtUtils.generateToken(testUser.getUsername());
@@ -241,6 +305,11 @@ class GroupControllerTest {
                 .andExpect(status().isOk());
     }
 
+    /**
+     * Test leave group.
+     *
+     * @throws Exception the exception
+     */
     @Test
     void testLeaveGroup() throws Exception {
         String token = jwtUtils.generateToken(testUser.getUsername());
@@ -254,6 +323,11 @@ class GroupControllerTest {
                 .andExpect(status().isNoContent());
     }
 
+    /**
+     * Test remove user from group.
+     *
+     * @throws Exception the exception
+     */
     @Test
     void testRemoveUserFromGroup() throws Exception {
         User newUser = new User();

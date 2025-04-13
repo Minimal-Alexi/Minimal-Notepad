@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Locale;
 
+/**
+ * The type Authentication controller.
+ */
 @RestController
 @RequestMapping("/api/users-authentication")
 public class AuthenticationController {
@@ -27,12 +30,26 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final MessageService messageService;
 
+    /**
+     * Instantiates a new Authentication controller.
+     *
+     * @param userService           the user service
+     * @param authenticationService the authentication service
+     * @param messageService        the message service
+     */
     public AuthenticationController(UserService userService, AuthenticationService authenticationService, MessageService messageService) {
         this.userService = userService;
         this.authenticationService = authenticationService;
         this.messageService = messageService;
     }
 
+    /**
+     * Login response entity.
+     *
+     * @param loginRequest the login request
+     * @param locale       the locale
+     * @return the response entity
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest,
                                    @RequestHeader(name = "Accept-Language", required = false) Locale locale) {
@@ -52,6 +69,12 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Register response entity.
+     *
+     * @param registerRequest the register request
+     * @return the response entity
+     */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         try {
