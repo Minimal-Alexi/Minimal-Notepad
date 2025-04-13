@@ -35,3 +35,6 @@ build/
 sonar-project.properties
 .scannerwork
 /sonar-project.properties
+
+### JavaDoc ###
+docs/javadoc
