@@ -11,26 +11,41 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/Minimal-Alexi/Minimal-Notepad.git'
             }
         }
+
         stage('Inject .env') {
             steps {
                 withCredentials([file(credentialsId: 'minimal-notepad-env-file', variable: 'ENV_FILE')]) {
-                    sh 'cp "$ENV_FILE" $HOME/.env'
+                    sh '''
+                        echo "Copying .env file to workspace"
+                        cp "$ENV_FILE" "$WORKSPACE/.env"
+                        ls -lah $WORKSPACE/.env  # Debug: Check if .env exists
+                    '''
                 }
             }
         }
+
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh '''
+                    echo "Verifying .env file before build..."
+                    ls -lah $WORKSPACE/.env
+                    mvn clean package
+                '''
             }
         }
+
         stage('Test & Coverage') {
             steps {
-                sh 'mvn test jacoco:report' // Runs tests & generates JaCoCo coverage report
+                sh '''
+                    echo "Verifying .env file before tests..."
+                    ls -lah $WORKSPACE/.env
+                    mvn test jacoco:report
+                '''
             }
             post {
                 always {
-                    junit 'target/surefire-reports/*.xml' // Publish JUnit test results
-                    jacoco execPattern: '**/target/jacoco.exec', // Reads JaCoCo execution file
+                    junit 'target/surefire-reports/*.xml'
+                    jacoco execPattern: '**/target/jacoco.exec',
                            classPattern: '**/target/classes',
                            sourcePattern: '**/src/main/java',
                            exclusionPattern: '**/test/**'
