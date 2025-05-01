@@ -146,12 +146,12 @@ VALUES (1, 1),
        (3, 1);
 
 INSERT INTO categories_localizations(language_id, category_id, translation)
-VALUES (2,1,'Opiskella'),
+VALUES (2,1,'Opiskelu'),
        (2,2,'Kokous'),
        (2,3,'Ohjelmointi'),
-       (3,1,'изучать'),
-       (3,2,'встреча'),
-       (3,3,'программирование'),
+       (3,1,'Учёба'),
+       (3,2,'Встреча'),
+       (3,3,'Программирование'),
        (4,1,'学习'),
        (4,2,'会议'),
        (4,3,'编程');
