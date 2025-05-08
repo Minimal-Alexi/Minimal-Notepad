@@ -21,6 +21,7 @@ The frontend for this application is available at: [Frontend Repository](https:/
 - Secure API endpoints
 - Lightweight and efficient backend
 - Integration with the frontend
+- Localization: Translations available in English, Finnish, Russian, and Chinese
 
 ## Technical stack
 - **Java 17** – Java version for development
@@ -33,6 +34,10 @@ The frontend for this application is available at: [Frontend Repository](https:/
 - **JUnit 5** – Testing framework
 - **MockMvc** – Web layer testing
 - **JaCoCo** – Code coverage
+- **SonarQube** – Static code analysis and quality inspection
+- **Checkstyle** – Code style enforcement
+- **BugSpot** – Identification of risky code areas
+- **Javadoc** – Automated code documentation
 
 ## Project Structure
 
