@@ -165,7 +165,7 @@ The project uses JaCoCo for code coverage analysis. After running the tests, you
 ## UML Diagrams
 
 Below is a picture of the ERD structure of our project, which is essential to our apps development.
-![ER_diagram](./docs/diagrams/resources/ERD.png)
+![ER_diagram](./docs/diagrams/resources/ERD_v2.jpg)
 
 Our project has UML Diagrams made, for the purpose of explaining the code infrastructure and the workflow. [By clicking this link](./docs/diagrams), you can find more detailed explanations of the diagrams.
 
