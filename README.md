@@ -21,7 +21,9 @@ The frontend for this application is available at: [Frontend Repository](https:/
 - Secure API endpoints
 - Lightweight and efficient backend
 - Integration with the frontend
-- Localization: Translations available in English, Finnish, Russian, and Chinese
+- Localization:
+  - Translations available in English, Finnish, Russian, and Chinese
+  - Localized components: User Interface (UI), error messages, and notes' categories
 
 ## Technical stack
 - **Java 17** – Java version for development
