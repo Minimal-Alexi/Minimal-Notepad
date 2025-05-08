@@ -25,6 +25,8 @@ The frontend for this application is available at: [Frontend Repository](https:/
   - Translations available in English, Finnish, Russian, and Chinese
   - Localized components: User Interface (UI), error messages, and notes' categories
 
+<img width="4400" alt="Notepad_Localization" src="https://github.com/user-attachments/assets/0c08d79f-92ec-44a3-a3ab-06bbe93fd7c2" />
+
 ## Technical stack
 - **Java 17** – Java version for development
 - **Spring Boot** – Backend framework
